@@ -3,84 +3,154 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const grid_size = 30;
-const spacingX = canvas.width / grid_size;
-const spacingY = canvas.height / grid_size;
 
-let spring_constant = 0.05;
-let damping = 0.95;
-let click_strength = 0.5;
-let click_decay = 0.9;
+// Reference resolution
+const REF_WIDTH = 1920;
+const REF_HEIGHT = 1080;
+const REF_DOT_RADIUS = 2;  // Dot radius at reference resolution
+const REF_SPACING = 11;   // Spacing between dots at reference resolution
+
+// Calculate scaling factor
+const scaleFactor = 1; // window.innerWidth / REF_WIDTH;
+
+//const spacingX = canvas.width / grid_size;
+//const spacingY = canvas.height / grid_size;
+
+const DOT_RADIUS = REF_DOT_RADIUS * scaleFactor;
+
+// Adjust grid size to maintain consistent spacing
+const spacingX = REF_SPACING * scaleFactor;
+const spacingY = REF_SPACING * scaleFactor;
+const grid_size_x = spacingX;
+const grid_size_y = spacingY;
+
 
 const dots = [];
+const dotSpeed = .8;  // Adjust this for faster/slower movement
 for (let x = 0; x < canvas.width; x += spacingX) {
     for (let y = 0; y < canvas.height; y += spacingY) {
-        dots.push({ x, y, vx: 0, vy: 0, originalX: x, originalY: y });
+        dots.push({ x, y, vx: 0, vy: 0, originalX: x, originalY: y, speed: dotSpeed });
     }
 }
 
-const click_positions = [];
 
-function apply_force(dot, click_position, strength) {
-    const dx = dot.x - click_position[0];
-    const dy = dot.y - click_position[1];
+
+function applyRippleEffect(dot, clickX, clickY) {
+    const dx = clickX - dot.originalX;
+    const dy = clickY - dot.originalY;
     const distance = Math.sqrt(dx * dx + dy * dy);
-    const force = strength * Math.exp(-0.2 * distance * distance);
-    const angle = Math.atan2(dy, dx);
-    return {
-        fx: force * Math.cos(angle),
-        fy: force * Math.sin(angle)
-    };
-}
+    const maxDistance = 350;  // Adjust for larger/smaller ripple effect
+    const offset = 25;  // Adjust for more/less pronounced effect
+    //const movementDuringRipple = dot.speed * (800 / 60);  // Assuming 60fps and 800ms duration
 
-function update() {
-    for (const dot of dots) {
-        let fx = -spring_constant * (dot.x - dot.originalX);
-        let fy = -spring_constant * (dot.y - dot.originalY);
 
-        for (const [click_position, strength] of click_positions) {
-            const force = apply_force(dot, click_position, strength);
-            fx += force.fx;
-            fy += force.fy;
-        }
+    if (distance < maxDistance) {
+        const angle = Math.atan2(dy, dx);
+        const strength = (1 - distance / maxDistance) * offset;
+        const targetX = dot.originalX + Math.cos(angle) * strength;
+        const targetY = dot.originalY + Math.sin(angle) * strength; // - dot.speed * (800 / 60);  // Adjust for the upward movement during the ripple
 
-        dot.vx = damping * (dot.vx + fx);
-        dot.vy = damping * (dot.vy + fy);
-
-        dot.x += dot.vx;
-        dot.y += dot.vy;
+        
+        anime({
+            targets: dot,
+            x: [dot.x, targetX],
+            y: [dot.y, targetY],
+            easing: 'easeOutElastic(1, .8)',
+            duration: 20, //1000 + distance * 5,  // Adjust the multiplier for faster/slower ripples
+            delay: distance * 2,  // Adjust the multiplier for faster/slower ripples
+            complete: () => {
+                anime({
+                    targets: dot,
+                    x: dot.originalX,
+                    y: dot.originalY,       //- dot.speed * (1200 / 60),
+                    easing: 'easeOutElastic(1, .8)',
+                    duration: 1000
+                });
+            }
+        });
     }
-
-    for (let i = click_positions.length - 1; i >= 0; i--) {
-        click_positions[i][1] *= click_decay;
-        if (click_positions[i][1] < 0.01) {
-            click_positions.splice(i, 1);
-        }
-    }
-
-    drawDots();
-    requestAnimationFrame(update);
 }
 
 function drawDots() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (const dot of dots) {
         ctx.beginPath();
-        ctx.arc(dot.x, dot.y, 2, 0, Math.PI * 2);
+        const radius = DOT_RADIUS;
+        ctx.arc(dot.x, dot.y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#3a3939';  // Updated color
         ctx.fill();
-
-        const shadowX = dot.originalX - (dot.x - dot.originalX);
-        const shadowY = dot.originalY - (dot.y - dot.originalY);
-        ctx.beginPath();
-        ctx.arc(shadowX, shadowY, 2, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(128, 128, 128, 0.3)';
-        ctx.fill();
-        ctx.fillStyle = 'black';
     }
 }
 
-canvas.addEventListener('click', (e) => {
-    click_positions.push([[e.clientX, e.clientY], click_strength]);
+// Function to reinitialize and redraw dots
+function handleResize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Recalculate scaling factor
+    const scaleFactor = window.innerWidth / window.innerWidth; // REF_WIDTH;
+
+    // Adjust dot radius based on scaling factor
+    const DOT_RADIUS = REF_DOT_RADIUS * scaleFactor;  
+    
+    // Adjust grid size to maintain consistent spacing
+    const spacingX = REF_SPACING * scaleFactor;
+    const spacingY = REF_SPACING * scaleFactor;
+
+    // Reinitialize the dots based on new canvas dimensions
+    dots.length = 0;  // Clear the existing dots
+    for (let x = 0; x < canvas.width; x += spacingX) {
+        for (let y = 0; y < canvas.height; y += spacingY) {
+            dots.push({ x, y, vx: 0, vy: 0, originalX: x, originalY: y, speed: dotSpeed });
+        }
+    }
+
+    // Redraw the dots
+    drawDots();
+}
+
+// Attach the resize event listener
+window.addEventListener('resize', handleResize);
+
+
+canvas.addEventListener('mousedown', (e) => {
+    for (const dot of dots) {
+        applyRippleEffect(dot, e.clientX, e.clientY);
+    }
 });
 
-update();
+function animate() { 
+    
+    /*
+    // Move dots to the right
+    for (const dot of dots) {
+        dot.x += dot.speed;
+        dot.originalX += dot.speed;
+
+        // Wrap around when out of canvas
+        if (dot.x > canvas.width) {
+            dot.x -= canvas.width;
+            dot.originalX -= canvas.width;
+        }
+    } */
+
+    // Move dots upwards
+    for (const dot of dots) {
+        dot.y -= dot.speed;
+        // Update the original position
+        //dot.originalY = dot.y;        
+        dot.originalY -= dot.speed;
+
+        // Wrap around when out of canvas
+        if (dot.y < 0) {
+            dot.y += canvas.height;
+            dot.originalY += canvas.height;
+            //dot.originalY = dot.y;
+        }
+    }
+    
+
+    drawDots();
+    requestAnimationFrame(animate);
+}
+animate();

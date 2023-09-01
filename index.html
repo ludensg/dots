@@ -7,12 +7,23 @@
     <style>
         canvas {
             display: block;
-            background-color: #f0f0f0;
+            background-color: #292929;
+            width: 100%;  /* Ensure canvas takes full width */
+            height: 100%;  /* Ensure canvas takes full height */
         }
+
+        body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;  /* Ensure full height */
+        overflow: hidden;  /* Make page unscrollable */
+    }
+        
     </style>
 </head>
 <body>
     <canvas id="canvas"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
