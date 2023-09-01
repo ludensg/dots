@@ -51,12 +51,12 @@ function update() {
         dot.y += dot.vy;
     }
 
-    click_positions.forEach((item, index) => {
-        item[1] *= click_decay;
-        if (item[1] < 0.01) {
-            click_positions.splice(index, 1);
+    for (let i = click_positions.length - 1; i >= 0; i--) {
+        click_positions[i][1] *= click_decay;
+        if (click_positions[i][1] < 0.01) {
+            click_positions.splice(i, 1);
         }
-    });
+    }
 
     drawDots();
     requestAnimationFrame(update);
