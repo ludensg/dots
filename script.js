@@ -92,7 +92,7 @@ const images = [
 if (isMobile) {
     for (const img of images) {
         img.ellipseWidth *= 0.5;  // Reduce ellipse width by 20%
-        img.ellipseHeight *= 0.5; // Reduce ellipse height by 20%
+        img.ellipseHeight *= 0.7; // Reduce ellipse height by 20%
     }
 }
 
