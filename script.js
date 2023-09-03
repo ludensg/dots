@@ -40,6 +40,9 @@ let initialClickY = null;
 
 let isAnyImageHovering = false;
 
+let matrixEffectActive = false;
+
+
 
 const dots = [];
 const dotSpeed = .8;  // Adjust this for faster/slower movement
@@ -485,6 +488,7 @@ canvas.addEventListener('click', (e) => {
             })
             .catch(error => {
                 console.error('Error fetching content:', error);
+                matrixEffectActive = true;
                 generateMatrixEffect();
             });
             clickedOnImage = true;
@@ -721,6 +725,14 @@ canvas.addEventListener('mouseup', (e) => {
 // ANIMATE FUNCTION
 //
 
+
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
 document.getElementById('returnText').addEventListener('click', function() {
     if (selectedImage) {
         selectedImage.x = selectedImage.initialX;
@@ -728,6 +740,8 @@ document.getElementById('returnText').addEventListener('click', function() {
         selectedImage.angle = selectedImage.initialAngle;
         selectedImage = null;  // Deselect the image
     }
+
+    scrollToTop();
 
     // Check if it's a mobile device
     if (isMobile) { 
@@ -754,6 +768,7 @@ document.getElementById('returnText').addEventListener('click', function() {
 
     // Hide the return text
     document.getElementById('returnText').style.display = 'none';
+    matrixEffectActive = false;
 });
 
 // Function to adjust the returnText styling for mobile
@@ -994,18 +1009,20 @@ function generateMatrixEffect() {
 
     function updateMatrix() {
         let matrix = '';
+        if(matrixEffectActive)
+        {
+            // Add blank rows
+            for (let i = 0; i < paddingTop; i++) {
+                matrix += '\n';
+            }
         
-        // Add blank rows
-        for (let i = 0; i < paddingTop; i++) {
-            matrix += '\n';
+            // Generate the matrix rows
+            for (let i = paddingTop; i < rows; i++) {
+                matrix += generateRow() + '\n';
+            }
+            
+            contentContainer.textContent = matrix;
         }
-    
-        // Generate the matrix rows
-        for (let i = paddingTop; i < rows; i++) {
-            matrix += generateRow() + '\n';
-        }
-        
-        contentContainer.textContent = matrix;
     }
 
     setInterval(updateMatrix, 100); // Update every 100ms, adjust as needed
