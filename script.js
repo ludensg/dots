@@ -3,6 +3,7 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 const isMobile = window.innerWidth <= 800;  // You can adjust this value based on your needs
+let selectedImage = null;
 
 // Reference resolution
 const REF_WIDTH = 1920;
@@ -96,12 +97,21 @@ if (isMobile) {
     }
 }
 
+const returnIcon = new Image();
+returnIcon.src = 'img/arrow-left-circle.png';
+
+let isReturnIconLoaded = false;
+
+returnIcon.onload = function() {
+    isReturnIconLoaded = true;
+};
+
+
 const centerImage = new Image(); 
 centerImage.src = 'img/wikibittransparent.png';  // Wikilogo
 let startTime = Date.now();  // To track the elapsed time for the bobbing effect
 const bobbingSpeed = 0.0005;  // Adjust this value to make the bobbing faster or slower
 const bobbingAmplitude = 10;  // Adjust this value to make the bobbing more or less pronounced
-
 
 function getRandomInRange(min, max) {
     return Math.random() * (max - min) + min;
@@ -113,6 +123,10 @@ function getRandomAngle() {
 
 
 for (const img of images) {
+    img.initialX = img.x;
+    img.initialY = img.y;
+    img.initialAngle = img.angle;
+    
     const imageElement = new Image();
     imageElement.src = img.src;
     imageElement.onload = function() {
@@ -272,17 +286,31 @@ canvas.addEventListener('click', (e) => {
     const clickedX = e.clientX;
     const clickedY = e.clientY;
 
-
     let clickedOnImage = false;
+    let clickedOnBubble = false;
 
     for (const img of images) {
         if (isPointInsideImage(clickedX, clickedY, img)) {
             clickedOnImage = true;
             break;
         }
+
+        // Check if clicked inside a bubble
+        const bubbleLeft = img.x + img.bubbleX;
+        const textWidth = ctx.measureText(img.bubbleText).width;
+        const padding = 20;  // Adjust for desired padding on each side of the text
+        const bubbleWidth = textWidth + 2 * padding;
+        const bubbleRight = bubbleLeft + bubbleWidth;
+        const bubbleTop = img.y - 30;
+        const bubbleBottom = bubbleTop + 28;
+
+        if (clickedX >= bubbleLeft && clickedX <= bubbleRight && clickedY >= bubbleTop && clickedY <= bubbleBottom) {
+            clickedOnBubble = true;
+            break;
+        }
     }
 
-    if (!clickedOnImage) {
+    if (!clickedOnImage && !clickedOnBubble) {
         for (const img of images) {
             img.isFloating = false;
             img.showBubble = false;  // Hide the bubble if it's shown
@@ -313,37 +341,30 @@ canvas.addEventListener('click', (e) => {
             transitioning = true;
             img.showBubble = false;
 
-            // Animate the clicked image to the left edge
+            // Animate the clicked image to the center of the remaining space
             anime({
                 targets: img,
-                x: 10,  // Adjust as needed
+                x: (canvas.width * 0.25) - (imgWidth / 2),  // Center of the remaining 50% space
+                y: canvas.height / 2 - (imgHeight / 2),  // Vertical center
                 easing: 'easeOutExpo',
                 duration: 1000
             });
 
-            // Animate other images out of the screen
-            for (const otherImg of images) {
-                if (otherImg !== img) {
-                    anime({
-                        targets: otherImg,
-                        x: '-=200',  // Move 200 pixels to the left
-                        opacity: 0,
-                        easing: 'easeOutExpo',
-                        duration: 1000
-                    });
-                }
-            }
-
             // Animate the panel from the right
-            // Assuming you have a panel element defined
+            // Assuming you have a panel element defined     
+
             anime({
                 targets: '#panel',
                 right: '0%',
                 easing: 'easeOutExpo',
                 duration: 1000
             });
+
+                // Show the return text
+            document.getElementById('returnText').style.display = 'block';
         }
     }
+
 });
 
 
@@ -354,6 +375,9 @@ canvas.addEventListener('mousedown', (e) => {
 
     initialClickX = e.clientX;
     initialClickY = e.clientY;
+
+            const mouseX = e.clientX;
+        const mouseY = e.clientY;
 
     for (const dot of dots) {
         applyRippleEffect(dot, clickedX, clickedY);
@@ -491,6 +515,27 @@ canvas.addEventListener('mouseup', (e) => {
 // ANIMATE FUNCTION
 //
 
+document.getElementById('returnText').addEventListener('click', function() {
+    if (selectedImage) {
+        selectedImage.x = selectedImage.initialX;
+        selectedImage.y = selectedImage.initialY;
+        selectedImage.angle = selectedImage.initialAngle;
+        selectedImage = null;  // Deselect the image
+    }
+
+    // Close the panel (this depends on how you've implemented the panel)
+    anime({
+        targets: '#panel',
+        right: '-50%',  // Assuming the panel is 50% of the screen width
+        easing: 'easeOutExpo',
+        duration: 1000
+    });
+
+    // Hide the return text
+    document.getElementById('returnText').style.display = 'none';
+});
+
+
 
 function animate() {
 
@@ -549,7 +594,9 @@ function animate() {
 
         }
 
-        if (img.isFloating) {
+        if (img === selectedImage) {
+            img.floatTime = (img.floatTime + 0.02) % (2 * Math.PI);  // This will keep floatTime always between 0 and 2*PI
+        } else if (img.isFloating) {
             isAnyImageHovering = true;
             if (img.showBubble) {
                 const bubbleMoveSpeed = 1;  // Adjust speed as needed
@@ -619,6 +666,12 @@ function animate() {
             img.angle += BASE_SPEED * SPEED_MULTIPLIER *  speedScaleFactor;
 
         }
+    }
+
+    if (selectedImage) {
+        const aspectRatio = selectedImage.naturalWidth / selectedImage.naturalHeight;
+        const drawWidth = imgHeight * aspectRatio;
+        ctx.drawImage(selectedImage.element, selectedImage.x, selectedImage.y, drawWidth, imgHeight);
     }
 
     requestAnimationFrame(animate);

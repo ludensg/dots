@@ -21,10 +21,55 @@
 
         @font-face {
         font-family: 'PixelOperatorMono';
-        src: url('font/PixelOperatorMono.ttf') format('truetype');
-            /* url('path_to_your_font_file.woff') format('woff'); */
+        src: url('font/PixelOperatorMono.ttf') format('truetype'); 
         font-weight: normal;
         font-style: normal;
+        }
+
+        @font-face {
+        font-family: 'PixelOperatorMonoHB';
+        src: url('font/PixelOperatorMonoHB.ttf') format('truetype'); 
+        font-weight: normal;
+        font-style: normal;
+        }
+
+        @font-face {
+        font-family: 'PixelOperatorMonoHB8';
+        src: url('font/PixelOperatorMonoHB8.ttf') format('truetype'); 
+        font-weight: normal;
+        font-style: normal;
+        }
+
+        #panel {
+            position: relative; /* or absolute/fixed, depending on your layout */
+            z-index: 10; /* this is just an example value */
+        }
+
+        #returnText {
+            position: absolute; /* or absolute/fixed, depending on your layout */
+            z-index: 20; /* make sure this value is higher than the panel's z-index */
+        }
+
+        #panel h2 {
+            font: 'PixelOperatorMonoHB8';
+            color: #cacaca;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #panel p {
+            font: 'PixelOperatorMonoHB';
+            color: #cacaca;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        #panel img {
+            max-width: 100%; /* Ensures images don't overflow the panel */
+            margin-bottom: 20px;
+        }
+        .content-container {
+            margin-left: 20px; /* Adjust the value as needed */
         }
 
         
@@ -32,7 +77,26 @@
 </head>
 <body>
     <canvas id="canvas"></canvas>
+    <div id="returnText" style="display: none; position: absolute; top: 10px; left: 70%; color: grey; font-family: 'PixelOperatorMono'; text-decoration: underline; cursor: pointer;">
+        [ r e t u r n ]
+    </div>    
     <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
     <script src="script.js"></script>
+
+    <div id="panel" style="position: absolute; top: 0; right: -100%; width: 50%; height: 100%; background-color: rgba(0,0,0,0.5); overflow-y: scroll; ">
+        <div class="content-container">
+            <div id="panelContent">
+                <br>
+                <br>
+                <br>
+                <!-- Sample content -->
+                <h2 style="font-family: 'PixelOperatorMono';">Hello!</h2>
+                <p style="font-family: 'PixelOperatorMono';">This is some content inside the panel.</p>
+                <img src="path_to_some_image.jpg" alt="Description of Image">
+                <!-- Add more content as needed -->
+            </div>
+        </div>        
+    </div>
+    
 </body>
 </html>
