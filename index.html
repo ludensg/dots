@@ -45,6 +45,15 @@
             z-index: 10; /* this is just an example value */
         }
 
+        /* Media query for mobile devices */
+        @media (max-width: 768px) {
+            #panel {
+                width: 100%;
+                height: 100vh; /* This makes the panel take up the full height of the viewport */
+                overflow-y: auto;
+            }
+        }
+
         #returnText {
             position: absolute; /* or absolute/fixed, depending on your layout */
             z-index: 20; /* make sure this value is higher than the panel's z-index */
