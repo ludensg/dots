@@ -347,6 +347,151 @@ canvas.addEventListener('click', (e) => {
 });
 
 
+
+canvas.addEventListener('mousedown', (e) => {
+    const clickedX = e.clientX;
+    const clickedY = e.clientY;
+
+    initialClickX = e.clientX;
+    initialClickY = e.clientY;
+
+    for (const dot of dots) {
+        applyRippleEffect(dot, clickedX, clickedY);
+    }
+
+    for (const img of images) {
+        if (clickedX > img.x && clickedX < img.x + imgWidth && clickedY > img.y && clickedY < img.y + imgHeight) {
+            img.isDragging = true;
+            lastX = clickedX;
+            lastY = clickedY;
+
+            // If the image is floating when it's dragged, stop the floating effect
+            if (img.isFloating) {
+                img.isFloating = false;
+                img.baseY = undefined;  // Reset the baseY
+            }
+            break;
+        }
+    }
+
+    lastX = mouseX;
+    lastY = mouseY;
+});
+
+
+canvas.addEventListener('mousemove', (e) => {
+    if (lastX && lastY) {
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+
+        for (const img of images) {
+            if (img.isDragging) {
+                const dx = mouseX - lastX;
+                const dy = mouseY - lastY;
+
+                img.x += dx;
+                img.y += dy;
+
+                img.momentumX = dx * 0.7; // Adjust the multiplier to control momentum strength
+                img.momentumY = dy * 0.7;
+
+                // Check boundaries and adjust position if needed
+                if (img.x < 0) {
+                    img.x = 0;
+                    img.momentumX = 0;  // Stop any momentum
+                }
+                if (img.x + imgWidth > canvas.width) {
+                    img.x = canvas.width - imgWidth;
+                    img.momentumX = 0;  // Stop any momentum
+                }
+                if (img.y < 0) {
+                    img.y = 0;
+                    img.momentumY = 0;  // Stop any momentum
+                }
+                if (img.y + imgHeight > canvas.height) {
+                    img.y = canvas.height - imgHeight;
+                    img.momentumY = 0;  // Stop any momentum
+                }
+
+
+                lastX = mouseX;
+                lastY = mouseY;
+                break;
+            }
+        }
+    }
+});
+
+canvas.addEventListener('mouseup', (e) => {
+    const releaseX = e.clientX;
+    const releaseY = e.clientY;
+    const distanceMoved = Math.sqrt((releaseX - initialClickX) ** 2 + (releaseY - initialClickY) ** 2);
+
+    if (distanceMoved > 5) {  // Adjust this threshold as needed
+        for (const dot of dots) {
+            applyRippleEffect(dot, releaseX, releaseY);
+        }
+    }
+
+    for (const img of images) {
+        if (img.isDragging) {
+            img.isDragging = false;
+            img.isFloating = true;
+            img.showBubble = true;  // Set the flag to show the bubble
+            img.floatTime = 0;  // Reset the float time
+
+            // Reset bubble properties
+            img.showBubble = true;
+            img.bubbleX = 0;
+            img.bubbleOpacity = 0;
+
+            // Cancel any ongoing animations for the image
+            anime.remove(img);
+
+            // Clear any previously scheduled return animations for the image
+            if (img.returnTimeout) {
+                clearTimeout(img.returnTimeout);
+            }
+
+            // Only initiate the return animation if it's not already in progress
+            if (!img.isAnimatingBack) {
+                img.returnTimeout = setTimeout(() => {
+                    img.isFloating = false;
+                    img.isAnimatingBack = true;  // Set the flag
+
+                    // Cancel any ongoing animations for the image
+                    anime.remove(img);
+
+                    const targetX = canvas.width / 2 + 200 * Math.cos(img.angle);  // Original ellipse width
+                    const targetY = canvas.height / 2 + 100 * Math.sin(img.angle);  // Original ellipse height
+
+                    // Smoothly transition the image to the target position
+                    anime({
+                        targets: img,
+                        x: targetX - imgWidth / 2,  // Adjusting for the center of the image
+                        y: targetY - imgHeight / 2,
+                        duration: 1000,
+                        easing: 'easeOutExpo',
+                        complete: () => {
+                            img.isAnimatingBack = false;  // Reset the flag once the animation is complete
+                        }
+                    });
+                }, 10000);  // 10 seconds
+            }
+        }
+    }
+    lastX = null;
+    lastY = null;
+});
+
+
+
+
+//
+// ANIMATE FUNCTION
+//
+
+
 function animate() {
 
     // 1. Move dots upwards
@@ -482,166 +627,3 @@ function animate() {
 
 animate();
 
-
-
-
-
-// Extra functions for Mobile (refactored mousedown, mouseup, mousemove)
-
-function startDrag(e) {
-    const startX = e.clientX || e.touches[0].clientX;
-    const startY = e.clientY || e.touches[0].clientY;
-    // ... rest of mousedown logic
-
-    const clickedX = e.clientX;
-    const clickedY = e.clientY;
-
-    initialClickX = e.clientX;
-    initialClickY = e.clientY;
-
-    for (const dot of dots) {
-        applyRippleEffect(dot, clickedX, clickedY);
-    }
-
-    for (const img of images) {
-        if (clickedX > img.x && clickedX < img.x + imgWidth && clickedY > img.y && clickedY < img.y + imgHeight) {
-            img.isDragging = true;
-            lastX = clickedX;
-            lastY = clickedY;
-
-            // If the image is floating when it's dragged, stop the floating effect
-            if (img.isFloating) {
-                img.isFloating = false;
-                img.baseY = undefined;  // Reset the baseY
-            }
-            break;
-        }
-    }
-
-    lastX = mouseX;
-    lastY = mouseY;
-}
-
-function duringDrag(e) {
-    const moveX = e.clientX || e.touches[0].clientX;
-    const moveY = e.clientY || e.touches[0].clientY;
-
-    e.preventDefault();
-
-    // ... rest of mousemove logic
-    if (lastX && lastY) {
-        const mouseX = e.clientX;
-        const mouseY = e.clientY;
-
-        for (const img of images) {
-            if (img.isDragging) {
-                const dx = mouseX - lastX;
-                const dy = mouseY - lastY;
-
-                img.x += dx;
-                img.y += dy;
-
-                img.momentumX = dx * 0.7; // Adjust the multiplier to control momentum strength
-                img.momentumY = dy * 0.7;
-
-                // Check boundaries and adjust position if needed
-                if (img.x < 0) {
-                    img.x = 0;
-                    img.momentumX = 0;  // Stop any momentum
-                }
-                if (img.x + imgWidth > canvas.width) {
-                    img.x = canvas.width - imgWidth;
-                    img.momentumX = 0;  // Stop any momentum
-                }
-                if (img.y < 0) {
-                    img.y = 0;
-                    img.momentumY = 0;  // Stop any momentum
-                }
-                if (img.y + imgHeight > canvas.height) {
-                    img.y = canvas.height - imgHeight;
-                    img.momentumY = 0;  // Stop any momentum
-                }
-
-
-                lastX = mouseX;
-                lastY = mouseY;
-                break;
-            }
-        }
-    }
-}
-
-function endDrag(e) {
-    const endX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX);
-    const endY = e.clientY || (e.changedTouches && e.changedTouches[0].clientY);
-    // ... rest of mouseup logic
-
-    const releaseX = e.clientX;
-    const releaseY = e.clientY;
-    const distanceMoved = Math.sqrt((releaseX - initialClickX) ** 2 + (releaseY - initialClickY) ** 2);
-
-    if (distanceMoved > 5) {  // Adjust this threshold as needed
-        for (const dot of dots) {
-            applyRippleEffect(dot, releaseX, releaseY);
-        }
-    }
-
-    for (const img of images) {
-        if (img.isDragging) {
-            img.isDragging = false;
-            img.isFloating = true;
-            img.showBubble = true;  // Set the flag to show the bubble
-            img.floatTime = 0;  // Reset the float time
-
-            // Reset bubble properties
-            img.showBubble = true;
-            img.bubbleX = 0;
-            img.bubbleOpacity = 0;
-
-            // Cancel any ongoing animations for the image
-            anime.remove(img);
-
-            // Clear any previously scheduled return animations for the image
-            if (img.returnTimeout) {
-                clearTimeout(img.returnTimeout);
-            }
-
-            // Only initiate the return animation if it's not already in progress
-            if (!img.isAnimatingBack) {
-                img.returnTimeout = setTimeout(() => {
-                    img.isFloating = false;
-                    img.isAnimatingBack = true;  // Set the flag
-
-                    // Cancel any ongoing animations for the image
-                    anime.remove(img);
-
-                    const targetX = canvas.width / 2 + 200 * Math.cos(img.angle);  // Original ellipse width
-                    const targetY = canvas.height / 2 + 100 * Math.sin(img.angle);  // Original ellipse height
-
-                    // Smoothly transition the image to the target position
-                    anime({
-                        targets: img,
-                        x: targetX - imgWidth / 2,  // Adjusting for the center of the image
-                        y: targetY - imgHeight / 2,
-                        duration: 1000,
-                        easing: 'easeOutExpo',
-                        complete: () => {
-                            img.isAnimatingBack = false;  // Reset the flag once the animation is complete
-                        }
-                    });
-                }, 10000);  // 10 seconds
-            }
-        }
-    }
-    lastX = null;
-    lastY = null;
-}
-
-canvas.addEventListener('mousedown', startDrag);
-canvas.addEventListener('touchstart', startDrag);
-
-canvas.addEventListener('mousemove', duringDrag);
-canvas.addEventListener('touchmove', duringDrag);
-
-canvas.addEventListener('mouseup', endDrag);
-canvas.addEventListener('touchend', endDrag);
