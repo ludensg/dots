@@ -91,6 +91,13 @@ const images = [
     // ... add more images
 ];
 
+const centerImage = new Image(); 
+centerImage.src = 'img/wikibittransparent.png';  // Wikilogo
+let startTime = Date.now();  // To track the elapsed time for the bobbing effect
+const bobbingSpeed = 0.0005;  // Adjust this value to make the bobbing faster or slower
+const bobbingAmplitude = 10;  // Adjust this value to make the bobbing more or less pronounced
+
+
 function getRandomInRange(min, max) {
     return Math.random() * (max - min) + min;
 }
@@ -388,9 +395,46 @@ function drawSpeechBubble(x, y, width, height, text) {
 
 let transitioning = false;
 
+function isPointInsideImage(x, y, img) {
+    const aspectRatio = img.naturalWidth / img.naturalHeight;
+    const drawWidth = imgHeight * aspectRatio;
+    return x >= img.x && x <= img.x + drawWidth && y >= img.y && y <= img.y + imgHeight;
+}
+
 canvas.addEventListener('click', (e) => {
     const clickedX = e.clientX;
     const clickedY = e.clientY;
+
+
+    let clickedOnImage = false;
+
+    for (const img of images) {
+        if (isPointInsideImage(clickedX, clickedY, img)) {
+            clickedOnImage = true;
+            break;
+        }
+    }
+
+    if (!clickedOnImage) {
+        for (const img of images) {
+            img.isFloating = false;
+            img.showBubble = false;  // Hide the bubble if it's shown
+            img.bubbleOpacity = 0;  // Reset bubble opacity
+
+            // Calculate target position on the ellipse
+            const targetX = canvas.width / 2 + img.ellipseWidth * Math.cos(img.angle) - imgWidth / 2;
+            const targetY = canvas.height / 2 + img.ellipseHeight * Math.sin(img.angle) - imgHeight / 2;
+
+            // Use anime.js to smoothly transition the image to the target position
+            anime({
+                targets: img,
+                x: targetX,
+                y: targetY,
+                duration: 1000,
+                easing: 'easeOutExpo'
+            });
+        }
+    }
 
     for (const img of images) {
         const bubbleLeft = img.x + img.bubbleX;
@@ -453,6 +497,21 @@ function animate() {
     // 2. Draw the dots
     drawDots();
     drawTopLeftText();
+
+    // 2.5. Center image handling
+    const elapsedTime = Date.now() - startTime;
+    const bobbingOffset = Math.sin(elapsedTime * bobbingSpeed) * bobbingAmplitude;
+
+    const scaledWidth = centerImage.width * 0.2;  // Scale to x% of the original width
+    const scaledHeight = centerImage.height * 0.2;  // Scale to x% of the original height
+
+    const centerX = (canvas.width - scaledWidth) / 2;
+    const centerY = (canvas.height - scaledHeight) / 2 + bobbingOffset;
+
+    ctx.globalAlpha = 0.5;  // Set the opacity to 50% (adjust as needed)
+    ctx.drawImage(centerImage, centerX, centerY, scaledWidth, scaledHeight);
+    ctx.globalAlpha = 1;  // Reset the opacity
+
 
     // 3. Handle the image's behavior
     for (const img of images) {
