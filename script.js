@@ -90,10 +90,14 @@ const images = [
     // ... add more images
 ];
 
+const mobileEllipseWidthCap = window.innerWidth * 0.9; 
 if (isMobile) {
     for (const img of images) {
         img.ellipseWidth *= 0.5;  // Reduce ellipse width by 20%
         img.ellipseHeight *= 0.7; // Reduce ellipse height by 20%
+        if (isMobile && img.ellipseWidth > mobileEllipseWidthCap) {
+            img.ellipseWidth = mobileEllipseWidthCap;
+        }
     }
 }
 
@@ -169,6 +173,65 @@ function drawTopLeftText() {
         }
     
         waveOffset += 0.05;  // Adjust for faster/slower wave speed
+}
+
+function drawTopLeftSubtext() {
+    const text = "A social sculpture by Ludens Gandelman.";  // Replace with your desired text
+    const xPos = 10;  // Adjust for desired x position
+    const yPos = 60;  // Adjust for desired y position (taking into account the font size)
+
+    ctx.font = "14px PixelOperatorMono";  // Adjust for desired font size and font family
+    ctx.fillStyle = "#b4aeae";  // Adjust for desired text color
+    ctx.fillText(text, xPos, yPos);
+}
+
+function drawTopLeftSubtext2() {
+    const textBeforeNumber = "There are currently ";
+    const number = "2";
+    const textAfterNumber = " revealed wikipedia eyes in circulation.";
+
+    const xPos = 10;  // Adjust for desired x position
+    const yPos = 90;  // Adjust for desired y position (taking into account the font size)
+
+    ctx.font = "12px PixelOperatorMono";  // Adjust for desired font size and font family
+
+    // Draw the text before the number
+    ctx.fillStyle = "#b4aeae";  // Adjust for desired text color
+    ctx.fillText(textBeforeNumber, xPos, yPos);
+
+    // Calculate the width of the text before the number to position the number correctly
+    const textBeforeNumberWidth = ctx.measureText(textBeforeNumber).width;
+
+    // Draw the number in red
+    ctx.fillStyle = "red";
+    ctx.fillText(number, xPos + textBeforeNumberWidth, yPos);
+
+    // Calculate the width of the number to position the text after the number correctly
+    const numberWidth = ctx.measureText(number).width;
+
+    // Draw the text after the number
+    ctx.fillStyle = "#b4aeae";  // Adjust for desired text color
+    ctx.fillText(textAfterNumber, xPos + textBeforeNumberWidth + numberWidth, yPos);
+}
+
+function drawTopLeftSubtext3() {
+    const textBefore = "For more info click on ";
+    const coloredText = "eye -> title";
+    const xPos = 10;  // Adjust for desired x position
+    const yPos = 110;  // Adjust for desired y position (taking into account the font size)
+
+    ctx.font = "12px PixelOperatorMono";  // Adjust for desired font size and font family
+
+    // Draw the text before the colored part
+    ctx.fillStyle = "#b4aeae";  // Adjust for desired text color
+    ctx.fillText(textBefore, xPos, yPos);
+
+    // Calculate the width of the text before the colored part to position the colored text correctly
+    const textBeforeWidth = ctx.measureText(textBefore).width;
+
+    // Draw the colored text in a not-too-bright yellow
+    ctx.fillStyle = "#dcd15a";  // This is a muted yellow color, adjust if needed
+    ctx.fillText(coloredText, xPos + textBeforeWidth, yPos);
 }
 
 
@@ -253,6 +316,20 @@ function handleResize() {
 window.addEventListener('resize', handleResize);
 
 function drawSpeechBubble(x, y, width, height, text) {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    const padding = 10;  // Adjust for desired padding from screen edges
+
+    // Adjust x if the bubble goes off the right edge of the screen
+    if (x + width > screenWidth) {
+        x = screenWidth - width - padding;
+    }
+
+    // Adjust y if the bubble goes off the bottom edge of the screen
+    if (y + height > screenHeight) {
+        y = screenHeight - height - padding;
+    }
+
     ctx.fillStyle = 'white';
     ctx.strokeStyle = 'grey';
     ctx.lineWidth = 2;
@@ -274,6 +351,7 @@ function drawSpeechBubble(x, y, width, height, text) {
     ctx.fillText(text, x + (width - ctx.measureText(text).width) / 2, y + height / 2 + 5); // Center the text
 }
 
+
 let transitioning = false;
 
 function isPointInsideImage(x, y, img) {
@@ -291,16 +369,21 @@ canvas.addEventListener('click', (e) => {
 
     for (const img of images) {
         if (isPointInsideImage(clickedX, clickedY, img)) {
-            // Assuming the img object has a property 'id' that matches the content's filename or endpoint
-            const contentURL = 'panels/' + img.id + '.html'; // adjust the URL as needed
+            const contentURL = 'panels/' + img.id + '.html';
             fetch(contentURL)
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Content not found');
+                }
+                return response.text();
+            })
             .then(data => {
                 const contentContainer = document.getElementById('dynamic-content');
                 contentContainer.innerHTML = data;
             })
             .catch(error => {
                 console.error('Error fetching content:', error);
+                generateMatrixEffect();
             });
             clickedOnImage = true;
             break;
@@ -575,11 +658,11 @@ document.getElementById('returnText').addEventListener('click', function() {
 function adjustReturnTextForMobile() {
     const returnTextElement = document.getElementById('returnText');
 
-    if (isMobile) {  // 768px is a common breakpoint for mobile devices
+    if (isMobile) {  
         // Adjust the CSS properties for mobile
         returnTextElement.style.whiteSpace = 'nowrap';  // Prevent wrapping
         returnTextElement.style.left = 'auto';  // Reset the left property
-        returnTextElement.style.right = '10px';  // Align to the top right with 10px padding
+        returnTextElement.style.right = '30px';  // Align to the top right with 10px padding
     } else {
         // Reset the properties for non-mobile devices
         returnTextElement.style.whiteSpace = 'normal';
@@ -606,9 +689,12 @@ function animate() {
         }
     }
 
-    // 2. Draw the dots
+    // 2. Draw the dots and text
     drawDots();
     drawTopLeftText();
+    drawTopLeftSubtext();
+    drawTopLeftSubtext2();
+    drawTopLeftSubtext3();
 
     // 2.5. Center image handling
     const elapsedTime = Date.now() - startTime;
@@ -735,3 +821,67 @@ function animate() {
 
 animate();
 
+
+
+
+
+function generateMatrixEffect() {
+
+    const paddingTop = 3;  // Adjust this value as needed
+
+    const contentContainer = document.getElementById('dynamic-content');
+    contentContainer.style.fontFamily = 'PixelOperatorMono';
+    contentContainer.style.color = 'grey'; 
+    contentContainer.style.fontSize = '16px'; // Adjust as needed
+    contentContainer.style.whiteSpace = 'pre'; // To maintain formatting
+
+    const fontSize = 16; // This should match the font size set above
+    const charWidth = fontSize * 1; // This is an estimate. Adjust based on your font's characteristics
+    const charHeight = fontSize;
+
+    let panelWidth, panelHeight;
+
+    if (isMobile) {  
+        panelWidth = window.outerWidth * 1.5;
+        panelHeight = window.outerHeight;
+    } else {
+        panelWidth = window.innerWidth/1.05;
+        panelHeight = window.innerHeight/1.1;
+    }
+      
+
+    const columns = Math.floor(panelWidth / charWidth);
+    const rows = Math.floor(panelHeight / charHeight);
+
+    function getRandomCharacter() {
+        //const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const characters = '01';
+        return characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+
+    function generateRow() {
+        let row = '';
+        for (let i = 0; i < columns; i++) {
+            row += getRandomCharacter();
+        }
+        return row;
+    }
+
+    function updateMatrix() {
+        let matrix = '';
+        
+        // Add blank rows
+        for (let i = 0; i < paddingTop; i++) {
+            matrix += '\n';
+        }
+    
+        // Generate the matrix rows
+        for (let i = paddingTop; i < rows; i++) {
+            matrix += generateRow() + '\n';
+        }
+        
+        contentContainer.textContent = matrix;
+    }
+
+    setInterval(updateMatrix, 100); // Update every 100ms, adjust as needed
+}
