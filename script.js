@@ -93,8 +93,8 @@ const images = [
 const mobileEllipseWidthCap = window.innerWidth * 0.9; 
 if (isMobile) {
     for (const img of images) {
-        img.ellipseWidth *= 0.5;  // Reduce ellipse width by 20%
-        img.ellipseHeight *= 0.7; // Reduce ellipse height by 20%
+        img.ellipseWidth *= 0.3;  // Reduce ellipse width 
+        img.ellipseHeight *= 0.7; // Reduce ellipse height 
         if (isMobile && img.ellipseWidth > mobileEllipseWidthCap) {
             img.ellipseWidth = mobileEllipseWidthCap;
         }
@@ -185,13 +185,13 @@ function drawTopLeftSubtext() {
     ctx.fillText(text, xPos, yPos);
 }
 
-function drawTopLeftSubtext2() {
+function drawBottomLeftText1() {
     const textBeforeNumber = "There are currently ";
     const number = "2";
     const textAfterNumber = " revealed wikipedia eyes in circulation.";
 
     const xPos = 10;  // Adjust for desired x position
-    const yPos = 90;  // Adjust for desired y position (taking into account the font size)
+    const yPos = canvas.height - 40; // Adjust for desired y position (taking into account the font size)
 
     ctx.font = "12px PixelOperatorMono";  // Adjust for desired font size and font family
 
@@ -214,11 +214,11 @@ function drawTopLeftSubtext2() {
     ctx.fillText(textAfterNumber, xPos + textBeforeNumberWidth + numberWidth, yPos);
 }
 
-function drawTopLeftSubtext3() {
+function drawBottomLeftText2() {
     const textBefore = "For more info click on ";
     const coloredText = "eye -> title";
     const xPos = 10;  // Adjust for desired x position
-    const yPos = 110;  // Adjust for desired y position (taking into account the font size)
+    const yPos = canvas.height - 20;  // Adjust for desired y position (taking into account the font size)
 
     ctx.font = "12px PixelOperatorMono";  // Adjust for desired font size and font family
 
@@ -693,8 +693,8 @@ function animate() {
     drawDots();
     drawTopLeftText();
     drawTopLeftSubtext();
-    drawTopLeftSubtext2();
-    drawTopLeftSubtext3();
+    drawBottomLeftText1();
+    drawBottomLeftText2();
 
     // 2.5. Center image handling
     const elapsedTime = Date.now() - startTime;
@@ -715,7 +715,14 @@ function animate() {
     for (const img of images) {
         if (img.element) {
             const aspectRatio = img.naturalWidth / img.naturalHeight;
-            const drawWidth = imgHeight * aspectRatio;
+                    // Adjust imgHeight for mobile
+            let mobileScaleFactor = 1;
+            if (isMobile) {
+                mobileScaleFactor = window.innerWidth / 1920; // Assuming 1920 is the standard desktop width. Adjust as needed.
+                mobileScaleFactor = Math.max(0.5, mobileScaleFactor); // Ensure it doesn't get too small. Adjust as needed.
+            }
+            const adjustedImgHeight = imgHeight * mobileScaleFactor;
+            const drawWidth = adjustedImgHeight * aspectRatio;
 
             ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
             ctx.shadowBlur = 5;
@@ -726,7 +733,7 @@ function animate() {
             // Before drawing the image, ensure global alpha is 1
             ctx.globalAlpha = 1;
 
-            ctx.drawImage(img.element, img.x, img.y, drawWidth, imgHeight);
+            ctx.drawImage(img.element, img.x, img.y, drawWidth, adjustedImgHeight);
 
             ctx.shadowColor = 'transparent';
             ctx.shadowBlur = 0;
