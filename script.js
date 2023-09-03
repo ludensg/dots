@@ -53,7 +53,7 @@ const BUBBLE_OFFSET = 35;
 
 const images = [
     { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye1/pic1.png', angle: 0, id: 'eye1', bubbleText: 'The Elmyr de Hory Exhibit',
-    isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null,
+    isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null, isGif: false,
 
     floatAmplitude: 10,  // The maximum distance the image will float up or down
     floatSpeed: 0.06,    // The speed of the floating effect
@@ -72,7 +72,7 @@ const images = [
     },
 
     { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye2/pic1.png', angle: 0, id: 'eye2', bubbleText: 'Room 4-308-D',
-    isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null,
+    isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null, isGif: false,
 
     floatAmplitude: 10,  // The maximum distance the image will float up or down
     floatSpeed: 0.06,    // The speed of the floating effect
@@ -90,8 +90,27 @@ const images = [
     reverseDirection: false
     },
 
+    { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eyex.png', angle: 0, id: 'eyex', bubbleText: '???',
+    isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null, isGif: false,
+
+    floatAmplitude: 10,  // The maximum distance the image will float up or down
+    floatSpeed: 0.06,    // The speed of the floating effect
+    floatTime: 0,        // A counter to keep track of the floating time
+    isFloating: false,    // A flag to check if the image is currently floating
+    returnTimeout: null,
+    isAnimatingBack: false,
+    ellipseWidth: 400 + getRandomInRange(-50, 50),  // Random variation between 350 and 450
+    ellipseHeight: 260 + getRandomInRange(-50, 50),  // Random variation
+    angle: getRandomAngle(),
+    bubbleTargetX: BUBBLE_OFFSET,
+    bubbleX: 0,  // Initial position of the bubble
+    bubbleOpacity: 0,  // Initial opacity of the bubble
+    showBubble: false,  // Flag to determine if the bubble should be shown
+    reverseDirection: true
+    },
+
     { x: 100, y: 100, vx: -1, vy: -1, src: 'img/meninas.gif', angle: 0, id: 'meninas', bubbleText: '???',
-    isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null,
+    isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null, isGif: true,
 
     floatAmplitude: 10,  // The maximum distance the image will float up or down
     floatSpeed: 0.06,    // The speed of the floating effect
@@ -108,6 +127,7 @@ const images = [
     showBubble: false,  // Flag to determine if the bubble should be shown
     reverseDirection: true
     },
+
     // ... add more images
 ];
 
@@ -121,6 +141,16 @@ function updateGifPosition() {
         gifElement.style.width = imgWidth + 'px';  // Assuming you have imgWidth defined
         gifElement.style.height = imgHeight + 'px';  // Assuming you have imgHeight defined
         gifElement.style.display = 'block';
+
+        const hitbox = document.createElement('div');
+        hitbox.style.position = 'absolute';
+        hitbox.style.width = `${imgWidth}px`;  // Assuming you have imgWidth defined
+        hitbox.style.height = `${imgHeight}px`;  // Assuming you have imgHeight defined
+        hitbox.style.left = `${img.x}px`;
+        hitbox.style.top = `${img.y}px`;
+        hitbox.style.backgroundColor = 'transparent';
+        hitbox.dataset.id = img.id;  // Store the image ID for reference
+        document.body.appendChild(hitbox); 
     }
 
     gifElement.addEventListener('click', handleGifClick);
@@ -160,6 +190,7 @@ function handleGifClick(e) {
         img.showBubble = true;
     }
 }
+
 
 const mobileEllipseWidthCap = window.innerWidth * 0.9; 
 if (isMobile) {
@@ -979,3 +1010,5 @@ function generateMatrixEffect() {
 
     setInterval(updateMatrix, 100); // Update every 100ms, adjust as needed
 }
+
+
