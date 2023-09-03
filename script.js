@@ -350,16 +350,26 @@ canvas.addEventListener('click', (e) => {
                 duration: 1000
             });
 
-            // Animate the panel from the right
-            // Assuming you have a panel element defined     
-
+        // Check if it's a mobile device
+        if (isMobile) {  
+            // If it's a mobile device, adjust the panel to fill the entire screen
+            document.getElementById('panel').style.display = 'block';
+            anime({
+                targets: '#panel',
+                right: '0%',
+                width: '100%',  // Make the panel's width 100% of the screen width
+                easing: 'easeOutExpo',
+                duration: 1000
+            });
+        } else {
+            // If it's not a mobile device, use the original animation
             anime({
                 targets: '#panel',
                 right: '0%',
                 easing: 'easeOutExpo',
                 duration: 1000
             });
-
+        }
                 // Show the return text
             document.getElementById('returnText').style.display = 'block';
         }
@@ -523,13 +533,28 @@ document.getElementById('returnText').addEventListener('click', function() {
         selectedImage = null;  // Deselect the image
     }
 
-    // Close the panel (this depends on how you've implemented the panel)
-    anime({
-        targets: '#panel',
-        right: '-50%',  // Assuming the panel is 50% of the screen width
-        easing: 'easeOutExpo',
-        duration: 1000
-    });
+    // Check if it's a mobile device
+    if (isMobile) { 
+        // If it's a mobile device, adjust the panel to fully recede
+        anime({
+            targets: '#panel',
+            right: '-100%',  // Make the panel fully recede on mobile
+            easing: 'easeOutExpo',
+            duration: 1000,
+            complete: function() {
+                // Hide the panel completely after the animation
+                document.getElementById('panel').style.display = 'none';
+            }
+        });
+    } else {
+        // If it's not a mobile device, use the original animation
+        anime({
+            targets: '#panel',
+            right: '-50%',  // Assuming the panel is 50% of the screen width
+            easing: 'easeOutExpo',
+            duration: 1000
+        });
+    }
 
     // Hide the return text
     document.getElementById('returnText').style.display = 'none';
