@@ -67,7 +67,8 @@ const images = [
     bubbleTargetX: BUBBLE_OFFSET,
     bubbleX: 0,  // Initial position of the bubble
     bubbleOpacity: 0,  // Initial opacity of the bubble
-    showBubble: false  // Flag to determine if the bubble should be shown
+    showBubble: false,  // Flag to determine if the bubble should be shown
+    reverseDirection: false
     },
 
     { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye2/pic1.png', angle: 0, id: 'eye2', bubbleText: 'Room 4-308-D',
@@ -85,10 +86,80 @@ const images = [
     bubbleTargetX: BUBBLE_OFFSET,
     bubbleX: 0,  // Initial position of the bubble
     bubbleOpacity: 0,  // Initial opacity of the bubble
-    showBubble: false  // Flag to determine if the bubble should be shown
+    showBubble: false,  // Flag to determine if the bubble should be shown
+    reverseDirection: false
+    },
+
+    { x: 100, y: 100, vx: -1, vy: -1, src: 'img/meninas.gif', angle: 0, id: 'meninas', bubbleText: '???',
+    isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null,
+
+    floatAmplitude: 10,  // The maximum distance the image will float up or down
+    floatSpeed: 0.06,    // The speed of the floating effect
+    floatTime: 0,        // A counter to keep track of the floating time
+    isFloating: false,    // A flag to check if the image is currently floating
+    returnTimeout: null,
+    isAnimatingBack: false,
+    ellipseWidth: 250 + getRandomInRange(-50, 50),  // Random variation
+    ellipseHeight: 268 + getRandomInRange(-50, 50),  // Random variation
+    angle: getRandomAngle() * -1,
+    bubbleTargetX: BUBBLE_OFFSET,
+    bubbleX: 0,  // Initial position of the bubble
+    bubbleOpacity: 0,  // Initial opacity of the bubble
+    showBubble: false,  // Flag to determine if the bubble should be shown
+    reverseDirection: true
     },
     // ... add more images
 ];
+
+function updateGifPosition() {
+    const gifElement = document.getElementById('animatedGif');
+    const img = images.find(i => i.src.endsWith('.gif'));
+
+    if (img) {
+        gifElement.style.left = img.x + 'px';
+        gifElement.style.top = img.y + 'px';
+        gifElement.style.width = imgWidth + 'px';  // Assuming you have imgWidth defined
+        gifElement.style.height = imgHeight + 'px';  // Assuming you have imgHeight defined
+        gifElement.style.display = 'block';
+    }
+
+    gifElement.addEventListener('click', handleGifClick);
+}
+
+function handleGifClick(e) {
+    const clickedX = e.clientX;
+    const clickedY = e.clientY;
+
+    const img = images.find(i => i.src.endsWith('.gif'));
+
+    if (img) {
+        // Apply ripple effect
+        for (const dot of dots) {
+            applyRippleEffect(dot, clickedX, clickedY);
+        }
+
+        // Fetch content for the GIF
+        const contentURL = 'panels/' + img.id + '.html';
+        fetch(contentURL)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Content not found');
+            }
+            return response.text();
+        })
+        .then(data => {
+            const contentContainer = document.getElementById('dynamic-content');
+            contentContainer.innerHTML = data;
+        })
+        .catch(error => {
+            console.error('Error fetching content:', error);
+            generateMatrixEffect();
+        });
+
+        // Show the bubble
+        img.showBubble = true;
+    }
+}
 
 const mobileEllipseWidthCap = window.innerWidth * 0.9; 
 if (isMobile) {
@@ -740,6 +811,20 @@ function animate() {
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
 
+
+            // Update the gif position
+            const gifElement = document.getElementById('animatedGif');
+            const gifImage = images.find(i => i.src.endsWith('.gif'));
+        
+            if (img) {
+                gifElement.style.left = img.x + 'px';
+                gifElement.style.top = img.y + 'px';
+                gifElement.style.width = imgWidth + 'px'; 
+                gifElement.style.height = adjustedImgHeight + 'px';  
+                gifElement.style.display = 'block';
+            }
+
+
         }
 
         if (img === selectedImage) {
@@ -795,7 +880,8 @@ function animate() {
             
             if (!img.isReturning) {
                 //img.angle += 0.01;
-                img.angle += BASE_SPEED * SPEED_MULTIPLIER *  speedScaleFactor;
+                const directionMultiplier = img.reverseDirection ? -1 : 1;
+                img.angle += directionMultiplier * BASE_SPEED * SPEED_MULTIPLIER *  speedScaleFactor;
 
             }
             
@@ -811,7 +897,8 @@ function animate() {
             img.y = centerY + img.ellipseHeight * Math.sin(img.angle) - imgHeight / 2; // Adjusting for the center of the image
 
             //img.angle += 0.01;
-            img.angle += BASE_SPEED * SPEED_MULTIPLIER *  speedScaleFactor;
+            const directionMultiplier = img.reverseDirection ? -1 : 1;
+                img.angle += directionMultiplier * BASE_SPEED * SPEED_MULTIPLIER *  speedScaleFactor;
 
         }
     }
