@@ -52,7 +52,7 @@ for (let x = 0; x < canvas.width; x += spacingX) {
 const BUBBLE_OFFSET = 35;
 
 const images = [
-    { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye1/pic1.png', angle: 0, info: 'Wikipedia Eye 1', bubbleText: 'The Elmyr de Hory Exhibit',
+    { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye1/pic1.png', angle: 0, id: 'eye1', bubbleText: 'The Elmyr de Hory Exhibit',
     isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null,
 
     floatAmplitude: 10,  // The maximum distance the image will float up or down
@@ -70,7 +70,7 @@ const images = [
     showBubble: false  // Flag to determine if the bubble should be shown
     },
 
-    { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye2/pic1.png', angle: 0, info: 'Wikipedia Eye 2', bubbleText: 'Student Bedroom',
+    { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye2/pic1.png', angle: 0, id: 'eye2', bubbleText: 'Room 4-308-D',
     isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null,
 
     floatAmplitude: 10,  // The maximum distance the image will float up or down
@@ -291,6 +291,17 @@ canvas.addEventListener('click', (e) => {
 
     for (const img of images) {
         if (isPointInsideImage(clickedX, clickedY, img)) {
+            // Assuming the img object has a property 'id' that matches the content's filename or endpoint
+            const contentURL = 'panels/' + img.id + '.html'; // adjust the URL as needed
+            fetch(contentURL)
+            .then(response => response.text())
+            .then(data => {
+                const contentContainer = document.getElementById('dynamic-content');
+                contentContainer.innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error fetching content:', error);
+            });
             clickedOnImage = true;
             break;
         }
