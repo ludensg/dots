@@ -92,10 +92,9 @@ const images = [
 const isMobile = window.innerWidth <= 800;  // You can adjust this value based on your needs
 
 if (isMobile) {
-    imgHeight = 80;  // Adjust sizes as needed
-    imgWidth = 80;   // Adjust sizes as needed
-
     for (const img of images) {
+        img.height = 80;  // Adjust sizes as needed
+        img.width = 80;   // Adjust sizes as needed
         img.ellipseWidth *= 0.8;  // Reduce ellipse width by 20%
         img.ellipseHeight *= 0.8; // Reduce ellipse height by 20%
     }
