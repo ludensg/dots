@@ -2,7 +2,7 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-
+const isMobile = window.innerWidth <= 800;  // You can adjust this value based on your needs
 
 // Reference resolution
 const REF_WIDTH = 1920;
@@ -89,18 +89,12 @@ const images = [
     // ... add more images
 ];
 
-const isMobile = window.innerWidth <= 800;  // You can adjust this value based on your needs
-
 if (isMobile) {
     for (const img of images) {
-        img.height = 80;  // Adjust sizes as needed
-        img.width = 80;   // Adjust sizes as needed
-        img.ellipseWidth *= 0.8;  // Reduce ellipse width by 20%
-        img.ellipseHeight *= 0.8; // Reduce ellipse height by 20%
+        img.ellipseWidth *= 0.5;  // Reduce ellipse width by 20%
+        img.ellipseHeight *= 0.5; // Reduce ellipse height by 20%
     }
 }
-
-
 
 const centerImage = new Image(); 
 centerImage.src = 'img/wikibittransparent.png';  // Wikilogo
