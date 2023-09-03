@@ -560,6 +560,25 @@ document.getElementById('returnText').addEventListener('click', function() {
     document.getElementById('returnText').style.display = 'none';
 });
 
+// Function to adjust the returnText styling for mobile
+function adjustReturnTextForMobile() {
+    const returnTextElement = document.getElementById('returnText');
+
+    if (isMobile) {  // 768px is a common breakpoint for mobile devices
+        // Adjust the CSS properties for mobile
+        returnTextElement.style.whiteSpace = 'nowrap';  // Prevent wrapping
+        returnTextElement.style.left = 'auto';  // Reset the left property
+        returnTextElement.style.right = '10px';  // Align to the top right with 10px padding
+    } else {
+        // Reset the properties for non-mobile devices
+        returnTextElement.style.whiteSpace = 'normal';
+        returnTextElement.style.left = '70%';
+        returnTextElement.style.right = 'auto';
+    }
+}
+
+// Call the function initially to set the styles
+adjustReturnTextForMobile();
 
 
 function animate() {
