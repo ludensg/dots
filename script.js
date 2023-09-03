@@ -53,7 +53,6 @@ const BUBBLE_OFFSET = 35;
 const images = [
     { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye1/pic1.png', angle: 0, info: 'Wikipedia Eye 1', bubbleText: 'The Elmyr de Hory Exhibit',
     isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null,
-    ellipseWidth: 400, ellipseHeight: 260,
 
     floatAmplitude: 10,  // The maximum distance the image will float up or down
     floatSpeed: 0.06,    // The speed of the floating effect
@@ -72,7 +71,6 @@ const images = [
 
     { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye2/pic1.png', angle: 0, info: 'Wikipedia Eye 2', bubbleText: 'Student Bedroom',
     isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null,
-    ellipseWidth: 400, ellipseHeight: 260,
 
     floatAmplitude: 10,  // The maximum distance the image will float up or down
     floatSpeed: 0.06,    // The speed of the floating effect
@@ -90,6 +88,20 @@ const images = [
     },
     // ... add more images
 ];
+
+const isMobile = window.innerWidth <= 800;  // You can adjust this value based on your needs
+
+if (isMobile) {
+    imgHeight = 80;  // Adjust sizes as needed
+    imgWidth = 80;   // Adjust sizes as needed
+
+    for (const img of images) {
+        img.ellipseWidth *= 0.8;  // Reduce ellipse width by 20%
+        img.ellipseHeight *= 0.8; // Reduce ellipse height by 20%
+    }
+}
+
+
 
 const centerImage = new Image(); 
 centerImage.src = 'img/wikibittransparent.png';  // Wikilogo
@@ -481,7 +493,7 @@ animate();
 
 
 
-// Extra functions for Mobile
+// Extra functions for Mobile (refactored mousedown, mouseup, mousemove)
 
 function startDrag(e) {
     const startX = e.clientX || e.touches[0].clientX;
@@ -520,6 +532,9 @@ function startDrag(e) {
 function duringDrag(e) {
     const moveX = e.clientX || e.touches[0].clientX;
     const moveY = e.clientY || e.touches[0].clientY;
+
+    e.preventDefault();
+
     // ... rest of mousemove logic
     if (lastX && lastY) {
         const mouseX = e.clientX;
