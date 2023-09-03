@@ -765,10 +765,9 @@ document.getElementById('returnText').addEventListener('click', function() {
             duration: 1000
         });
     }
-
+    matrixEffectActive = false;
     // Hide the return text
     document.getElementById('returnText').style.display = 'none';
-    matrixEffectActive = false;
 });
 
 // Function to adjust the returnText styling for mobile
