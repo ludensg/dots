@@ -343,33 +343,33 @@ function drawBottomLeftText2() {
 
 
 function applyRippleEffect(dot, clickX, clickY) {
-    const dx = clickX - dot.originalX;
-    const dy = clickY - dot.originalY;
-    const distance = Math.sqrt(dx * dx + dy * dy);
+    // Calculate the angle (radian) and distance (radius) from the dot to the click point
+    const angle = Math.atan2(clickY - dot.originalY, clickX - dot.originalX);
+    const distance = Math.sqrt((clickX - dot.originalX) ** 2 + (clickY - dot.originalY) ** 2);
+    
     const maxDistance = 350;  // Adjust for larger/smaller ripple effect
     const offset = 25;  // Adjust for more/less pronounced effect
-    //const movementDuringRipple = dot.speed * (800 / 60);  // Assuming 60fps and 800ms duration
-
 
     if (distance < maxDistance) {
-        const angle = Math.atan2(dy, dx);
+        // Calculate the strength of the ripple effect based on the distance
         const strength = (1 - distance / maxDistance) * offset;
-        const targetX = dot.originalX + Math.cos(angle) * strength;
-        const targetY = dot.originalY + Math.sin(angle) * strength; // - dot.speed * (800 / 60);  // Adjust for the upward movement during the ripple
-
         
+        // Calculate the target X and Y using the angle and strength
+        const targetX = dot.originalX + Math.cos(angle) * strength;
+        const targetY = dot.originalY + Math.sin(angle) * strength;
+
         anime({
             targets: dot,
             x: [dot.x, targetX],
             y: [dot.y, targetY],
             easing: 'easeOutElastic(1, .8)',
-            duration: 20, //1000 + distance * 5,  // Adjust the multiplier for faster/slower ripples
-            delay: distance * 2,  // Adjust the multiplier for faster/slower ripples
+            duration: 20,
+            delay: distance * 2,
             complete: () => {
                 anime({
                     targets: dot,
                     x: dot.originalX,
-                    y: dot.originalY,       //- dot.speed * (1200 / 60),
+                    y: dot.originalY,
                     easing: 'easeOutElastic(1, .8)',
                     duration: 1000
                 });
