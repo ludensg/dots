@@ -259,7 +259,7 @@ function calculateAngleFromCenter(x, y) {
 let waveOffset = 0;  // This will be used to animate the wave
 
 function drawTopLeftText() {
-    const text = "www.wikipediaeye.com";  // Replace with your desired text
+    const text = "wikipediaeye.com"; 
     const xPos = 10;  // Adjust for desired x position
     const yPos = 30;  // Adjust for desired y position (taking into account the font size)
 
