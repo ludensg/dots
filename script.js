@@ -37,6 +37,8 @@ const grid_size_y = spacingY;
 
 let initialClickX = null;
 let initialClickY = null;
+let lastX = 0;
+let lastY = 0;
 
 let isAnyImageHovering = false;
 
