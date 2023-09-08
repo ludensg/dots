@@ -343,18 +343,23 @@ function drawBottomLeftText2() {
 
 
 function applyRippleEffect(dot, clickX, clickY) {
-    // Calculate the angle (radian) and distance (radius) from the dot to the click point
-    const angle = Math.atan2(clickY - dot.originalY, clickX - dot.originalX);
-    const distance = Math.sqrt((clickX - dot.originalX) ** 2 + (clickY - dot.originalY) ** 2);
-    
-    const maxDistance = 350;  // Adjust for larger/smaller ripple effect
-    const offset = 25;  // Adjust for more/less pronounced effect
+    const dx = clickX - dot.originalX;
+    const dy = clickY - dot.originalY;
 
-    if (distance < maxDistance) {
-        // Calculate the strength of the ripple effect based on the distance
-        const strength = (1 - distance / maxDistance) * offset;
+    // Use squared distance to avoid square root calculation
+    const distanceSquared = dx * dx + dy * dy;
+    const maxDistanceSquared = 350 * 350;  // Adjust for larger/smaller ripple effect
+
+    if (distanceSquared < maxDistanceSquared) {
+        const offset = 25;  // Adjust for more/less pronounced effect
+
+        // Since atan2 and trig functions are unavoidable for angle calculation, 
+        // we compute them only once here
+        const angle = Math.atan2(dy, dx);
         
-        // Calculate the target X and Y using the angle and strength
+        // Calculate strength directly using squared distance
+        const strength = (1 - Math.sqrt(distanceSquared) / 350) * offset;
+        
         const targetX = dot.originalX + Math.cos(angle) * strength;
         const targetY = dot.originalY + Math.sin(angle) * strength;
 
@@ -364,7 +369,7 @@ function applyRippleEffect(dot, clickX, clickY) {
             y: [dot.y, targetY],
             easing: 'easeOutElastic(1, .8)',
             duration: 20,
-            delay: distance * 2,
+            delay: Math.sqrt(distanceSquared) * 2,
             complete: () => {
                 anime({
                     targets: dot,
