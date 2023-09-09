@@ -774,8 +774,8 @@ document.getElementById('returnText').addEventListener('click', function() {
         });
     }
     matrixEffectActive = false;
-    panelWidth = tempPanelWidth;  // ensure panel dimensions post-matrix effect
-    panelHeight = tempPanelHeight;
+    //panelWidth = tempPanelWidth;  // ensure panel dimensions post-matrix effect
+   // panelHeight = tempPanelHeight;
     
     // Hide the return text
     document.getElementById('returnText').style.display = 'none';
@@ -991,8 +991,8 @@ function generateMatrixEffect() {
 
     let panelWidth, panelHeight;
 
-    tempPanelWidth = window.innerWidth ;
-    tempPanelHeight = window.innerHeight;
+    //tempPanelWidth = window.innerWidth ;
+    //tempPanelHeight = window.innerHeight;
     
     if (isMobile) {  
         panelWidth = window.outerWidth * 1.5;
