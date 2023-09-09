@@ -43,8 +43,6 @@ let lastY = 0;
 let isAnyImageHovering = false;
 
 let matrixEffectActive = false;
-const tempPanelWidth = window.innerWidth ;
-const tempPanelHeight = window.innerHeight;
 
 
 const dots = [];
@@ -774,8 +772,6 @@ document.getElementById('returnText').addEventListener('click', function() {
         });
     }
     matrixEffectActive = false;
-    //panelWidth = tempPanelWidth;  // ensure panel dimensions post-matrix effect
-   // panelHeight = tempPanelHeight;
     
     // Hide the return text
     document.getElementById('returnText').style.display = 'none';
@@ -990,9 +986,6 @@ function generateMatrixEffect() {
     const charHeight = fontSize;
 
     let panelWidth, panelHeight;
-
-    //tempPanelWidth = window.innerWidth ;
-    //tempPanelHeight = window.innerHeight;
     
     if (isMobile) {  
         panelWidth = window.outerWidth * 1.5;
