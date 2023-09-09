@@ -413,32 +413,23 @@ function isPointInsideImage(x, y, img) {
     return x >= img.x && x <= img.x + drawWidth && y >= img.y && y <= img.y + imgHeight;
 }
 
+document.getElementById('manifestoButton').addEventListener('click', function() {
+    // Load content into the text box and show it
+    fetch('manifesto.html')
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('manifestoContent').innerHTML = data;
+        document.getElementById('manifestoContent').style.display = 'block';
+    });
+});
+
+
 canvas.addEventListener('click', (e) => {
     const clickedX = e.clientX;
     const clickedY = e.clientY;
 
     let clickedOnImage = false;
     let clickedOnBubble = false;
-
-    if (clickedX > centerX && clickedX < centerX + scaledWidth && clickedY > centerY && clickedY < centerY + scaledHeight) {
-        // Load content into the text box and show it, if center image is clicked
-        fetch('manifesto.html')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Content not found');
-            }
-            return response.text();
-        })
-        .then(data => {
-            const contentContainer = document.getElementById('manifesto');
-            contentContainer.innerHTML = data;
-        })
-        .catch(error => {
-            console.error('Error fetching content:', error);
-            matrixEffectActive = true;
-            generateMatrixEffect();
-        });
-    }
 
     for (const img of images) {
         if (isPointInsideImage(clickedX, clickedY, img)) {
@@ -584,7 +575,6 @@ let isHoveringOverCenterImage = false;
 
 let mousemoveX, mousemoveY;
 
-
 canvas.addEventListener('mousemove', (e) => {
     if (lastX && lastY) {
 
@@ -594,11 +584,11 @@ canvas.addEventListener('mousemove', (e) => {
         const mouseY = mousemoveY;
 
 
-        if (mouseX > centerX && mouseX < centerX + scaledWidth && mouseY > centerY && mouseY < centerY + scaledHeight) {
+        if (mouseX > hitbox.x && mouseX < hitbox.x + hitbox.width && mouseY > hitbox.y && mouseY < hitbox.y + hitbox.height) {
             isHoveringOverCenterImage = true;
         } else {
             isHoveringOverCenterImage = false;
-        }
+        }        
 
         for (const img of images) {
             if (img.isDragging) {
@@ -772,7 +762,7 @@ function adjustReturnTextForMobile() {
 
 // Call the function initially to set the styles
 adjustReturnTextForMobile();
-
+let hitbox = {};
 
 function animate() {
 
@@ -795,14 +785,10 @@ function animate() {
     drawBottomLeftText1();
     drawBottomLeftText2();
 
+
     // 2.5. Center image handling
     const elapsedTime = Date.now() - startTime;
-    //const bobbingOffset = Math.sin(elapsedTime * bobbingSpeed) * bobbingAmplitude;
-    const bobbingOffset = isHoveringOverCenterImage ? -10 : Math.sin(elapsedTime * bobbingSpeed) * bobbingAmplitude;  // Rise up by 10 pixels when hovering
-
-    //centerX = (canvas.width - scaledWidth) / 2;
-    //centerY = (canvas.height - scaledHeight) / 2 + bobbingOffset;
-
+    const bobbingOffset = Math.sin(elapsedTime * bobbingSpeed) * bobbingAmplitude;
 
     scaledWidth = centerImage.width * 0.2;  // Scale to x% of the original width
     scaledHeight = centerImage.height * 0.2;  // Scale to x% of the original height
@@ -812,6 +798,13 @@ function animate() {
 
     //ctx.globalAlpha = 0.5;  // Set the opacity to 50% (adjust as needed)
     //ctx.drawImage(centerImage, centerX, centerY, scaledWidth, scaledHeight);
+
+    hitbox = {
+        x: centerX,
+        y: centerY,
+        width: scaledWidth,
+        height: scaledHeight
+    };
 
     if (isHoveringOverCenterImage) {
         ctx.globalAlpha = 0.7;  // Increase opacity when mouse is over
