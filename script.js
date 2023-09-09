@@ -995,11 +995,11 @@ function generateMatrixEffect() {
     tempPanelHeight = window.innerHeight;
     
     if (isMobile) {  
-        panelWidth = window.outerWidth * 0.8;
+        panelWidth = window.outerWidth * 1.5;
         panelHeight = window.outerHeight;
     } else {
-        panelWidth = window.innerWidth * 0.9;
-        panelHeight = window.innerHeight * 0.9;
+        panelWidth = window.innerWidth/1.05;
+        panelHeight = window.innerHeight/1.1;
     }
       
 
