@@ -137,66 +137,6 @@ const images = [
     // ... add more images
 ];
 
-function updateGifPosition() {
-    const gifElement = document.getElementById('animatedGif');
-    const img = images.find(i => i.src.endsWith('.gif'));
-
-    if (img) {
-        gifElement.style.left = img.x + 'px';
-        gifElement.style.top = img.y + 'px';
-        gifElement.style.width = imgWidth + 'px';  // Assuming you have imgWidth defined
-        gifElement.style.height = imgHeight + 'px';  // Assuming you have imgHeight defined
-        gifElement.style.display = 'block';
-
-        const hitbox = document.createElement('div');
-        hitbox.style.position = 'absolute';
-        hitbox.style.width = `${imgWidth}px`;  // Assuming you have imgWidth defined
-        hitbox.style.height = `${imgHeight}px`;  // Assuming you have imgHeight defined
-        hitbox.style.left = `${img.x}px`;
-        hitbox.style.top = `${img.y}px`;
-        hitbox.style.backgroundColor = 'transparent';
-        hitbox.dataset.id = img.id;  // Store the image ID for reference
-        document.body.appendChild(hitbox); 
-    }
-
-    gifElement.addEventListener('click', handleGifClick);
-}
-
-function handleGifClick(e) {
-    const clickedX = e.clientX;
-    const clickedY = e.clientY;
-
-    const img = images.find(i => i.src.endsWith('.gif'));
-
-    if (img) {
-        // Apply ripple effect
-        for (const dot of dots) {
-            applyRippleEffect(dot, clickedX, clickedY);
-        }
-
-        // Fetch content for the GIF
-        const contentURL = 'panels/' + img.id + '.html';
-        fetch(contentURL)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Content not found');
-            }
-            return response.text();
-        })
-        .then(data => {
-            const contentContainer = document.getElementById('dynamic-content');
-            contentContainer.innerHTML = data;
-        })
-        .catch(error => {
-            console.error('Error fetching content:', error);
-            generateMatrixEffect();
-        });
-
-        // Show the bubble
-        img.showBubble = true;
-    }
-}
-
 
 const mobileEllipseWidthCap = window.innerWidth * 0.9; 
 if (isMobile) {
