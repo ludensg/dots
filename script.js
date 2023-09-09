@@ -483,10 +483,20 @@ canvas.addEventListener('click', (e) => {
     if (clickedX > centerX && clickedX < centerX + scaledWidth && clickedY > centerY && clickedY < centerY + scaledHeight) {
         // Load content into the text box and show it, if center image is clicked
         fetch('manifesto.html')
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Content not found');
+            }
+            return response.text();
+        })
         .then(data => {
-            document.getElementById('manifesto').innerHTML = data; // Update this line
-            document.getElementById('manifesto').style.display = 'block';
+            const contentContainer = document.getElementById('manifesto');
+            contentContainer.innerHTML = data;
+        })
+        .catch(error => {
+            console.error('Error fetching content:', error);
+            matrixEffectActive = true;
+            generateMatrixEffect();
         });
     }
 
