@@ -632,10 +632,16 @@ canvas.addEventListener('mousedown', (e) => {
 
 let isHoveringOverCenterImage = false;
 
+let mousemoveX, mousemoveY;
+
+
 canvas.addEventListener('mousemove', (e) => {
     if (lastX && lastY) {
-        const mouseX = e.clientX;
-        const mouseY = e.clientY;
+
+        mousemoveX = e.clientX;
+        const mouseX = mousemoveX;
+        mousemoveY = e.clientY;
+        const mouseY = mousemoveY;
 
 
         if (mouseX > centerX && mouseX < centerX + scaledWidth && mouseY > centerY && mouseY < centerY + scaledHeight) {
@@ -844,8 +850,8 @@ function animate() {
     //const bobbingOffset = Math.sin(elapsedTime * bobbingSpeed) * bobbingAmplitude;
     const bobbingOffset = isHoveringOverCenterImage ? -10 : Math.sin(elapsedTime * bobbingSpeed) * bobbingAmplitude;  // Rise up by 10 pixels when hovering
 
-    centerX = (canvas.width - scaledWidth) / 2;
-    centerY = (canvas.height - scaledHeight) / 2 + bobbingOffset;
+    //centerX = (canvas.width - scaledWidth) / 2;
+    //centerY = (canvas.height - scaledHeight) / 2 + bobbingOffset;
 
 
     scaledWidth = centerImage.width * 0.2;  // Scale to x% of the original width
@@ -859,7 +865,11 @@ function animate() {
 
     if (isHoveringOverCenterImage) {
         ctx.globalAlpha = 0.7;  // Increase opacity when mouse is over
+        ctx.shadowBlur = 15; // Adjust to your liking
+        ctx.shadowColor = "white"; // Adjust to your desired glow color
         ctx.drawImage(centerImage, centerX, centerY - 10, scaledWidth, scaledHeight);  // Raise the image a bit
+            // Reset shadow properties after drawing
+        ctx.shadowBlur = 0;
     } else {
         ctx.globalAlpha = 0.5;
         ctx.drawImage(centerImage, centerX, centerY, scaledWidth, scaledHeight);
