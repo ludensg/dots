@@ -414,12 +414,18 @@ function isPointInsideImage(x, y, img) {
 }
 
 document.getElementById('manifestoButton').addEventListener('click', function() {
-    // Load content into the text box and show it
     fetch('manifesto.html')
-    .then(response => response.text())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text();
+    })
     .then(data => {
-        document.getElementById('manifestoContent').innerHTML = data;
-        document.getElementById('manifestoContent').style.display = 'block';
+        document.getElementById('manifesto-content').innerHTML = data;
+    })
+    .catch(error => {
+        console.log('There was a problem with the fetch operation:', error.message);
     });
 });
 
