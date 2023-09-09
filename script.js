@@ -642,9 +642,9 @@ canvas.addEventListener('mousemove', (e) => {
         const mouseX = mousemoveX;
         mousemoveY = e.clientY;
         const mouseY = mousemoveY;
+        const originalCenterY = (canvas.height - scaledHeight) / 2;
 
-
-        if (mouseX > centerX && mouseX < centerX + scaledWidth && mouseY > centerY && mouseY < centerY + scaledHeight) {
+        if (mouseX > centerX && mouseX < centerX + scaledWidth && mouseY > originalCenterY && mouseY < originalCenterY + scaledHeight) {
             isHoveringOverCenterImage = true;
         } else {
             isHoveringOverCenterImage = false;
