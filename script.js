@@ -485,8 +485,8 @@ canvas.addEventListener('click', (e) => {
         fetch('manifesto.html')
         .then(response => response.text())
         .then(data => {
-            document.getElementById('manifesto-content').innerHTML = data; // Update this line
-            document.getElementById('manifesto-content').style.display = 'block';
+            document.getElementById('manifesto').innerHTML = data; // Update this line
+            document.getElementById('manifesto').style.display = 'block';
         });
     }
 
