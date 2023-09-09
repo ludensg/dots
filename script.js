@@ -40,6 +40,8 @@ let initialClickY = null;
 let lastX = 0;
 let lastY = 0;
 
+let centerX, centerY, mouseX, mouseY, scaledWidth, scaledHeight;
+
 let isAnyImageHovering = false;
 
 let matrixEffectActive = false;
@@ -478,6 +480,16 @@ canvas.addEventListener('click', (e) => {
     let clickedOnImage = false;
     let clickedOnBubble = false;
 
+    if (clickedX > centerX && clickedX < centerX + scaledWidth && clickedY > centerY && clickedY < centerY + scaledHeight) {
+        // Load content into the text box and show it, if center image is clicked
+        fetch('manifesto.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('manifesto.html').innerHTML = data;
+            document.getElementById('manifesto.html').style.display = 'block';
+        });
+    }
+
     for (const img of images) {
         if (isPointInsideImage(clickedX, clickedY, img)) {
             const contentURL = 'panels/' + img.id + '.html';
@@ -618,11 +630,19 @@ canvas.addEventListener('mousedown', (e) => {
     lastY = mouseY;
 });
 
+let isHoveringOverCenterImage = false;
 
 canvas.addEventListener('mousemove', (e) => {
     if (lastX && lastY) {
         const mouseX = e.clientX;
         const mouseY = e.clientY;
+
+
+        if (mouseX > centerX && mouseX < centerX + scaledWidth && mouseY > centerY && mouseY < centerY + scaledHeight) {
+            isHoveringOverCenterImage = true;
+        } else {
+            isHoveringOverCenterImage = false;
+        }
 
         for (const img of images) {
             if (img.isDragging) {
@@ -821,20 +841,34 @@ function animate() {
 
     // 2.5. Center image handling
     const elapsedTime = Date.now() - startTime;
-    const bobbingOffset = Math.sin(elapsedTime * bobbingSpeed) * bobbingAmplitude;
+    //const bobbingOffset = Math.sin(elapsedTime * bobbingSpeed) * bobbingAmplitude;
+    const bobbingOffset = isHoveringOverCenterImage ? -10 : Math.sin(elapsedTime * bobbingSpeed) * bobbingAmplitude;  // Rise up by 10 pixels when hovering
 
-    const scaledWidth = centerImage.width * 0.2;  // Scale to x% of the original width
-    const scaledHeight = centerImage.height * 0.2;  // Scale to x% of the original height
+    centerX = (canvas.width - scaledWidth) / 2;
+    centerY = (canvas.height - scaledHeight) / 2 + bobbingOffset;
 
-    const centerX = (canvas.width - scaledWidth) / 2;
-    const centerY = (canvas.height - scaledHeight) / 2 + bobbingOffset;
 
-    ctx.globalAlpha = 0.5;  // Set the opacity to 50% (adjust as needed)
-    ctx.drawImage(centerImage, centerX, centerY, scaledWidth, scaledHeight);
+    scaledWidth = centerImage.width * 0.2;  // Scale to x% of the original width
+    scaledHeight = centerImage.height * 0.2;  // Scale to x% of the original height
+
+    centerX = (canvas.width - scaledWidth) / 2;
+    centerY = (canvas.height - scaledHeight) / 2 + bobbingOffset;
+
+    //ctx.globalAlpha = 0.5;  // Set the opacity to 50% (adjust as needed)
+    //ctx.drawImage(centerImage, centerX, centerY, scaledWidth, scaledHeight);
+
+    if (isHoveringOverCenterImage) {
+        ctx.globalAlpha = 0.7;  // Increase opacity when mouse is over
+        ctx.drawImage(centerImage, centerX, centerY - 10, scaledWidth, scaledHeight);  // Raise the image a bit
+    } else {
+        ctx.globalAlpha = 0.5;
+        ctx.drawImage(centerImage, centerX, centerY, scaledWidth, scaledHeight);
+    }
+    
     ctx.globalAlpha = 1;  // Reset the opacity
 
 
-    // 3. Handle the image's behavior
+    // 3. Handle the images' behavior
     for (const img of images) {
         if (img.element) {
             const aspectRatio = img.naturalWidth / img.naturalHeight;

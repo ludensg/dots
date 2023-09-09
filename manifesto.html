@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manifesto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7); /* 70% opacity white background */
+        }
+
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        /* Grey scanlines effect */
+        body::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 1.99px, #888 1.99px, #888 2px);
+            opacity: 0.1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Our Manifesto</h1>
+    <p>
+        We believe in a world where every individual has the right to freedom, equality, and opportunity. A world where we can all thrive, learn, and grow without any barriers.
+    </p>
+    <p>
+        Our mission is to create a platform that empowers everyone, regardless of their background, to reach their full potential. We are committed to building a community that supports, uplifts, and believes in the power of unity and collaboration.
+    </p>
+    <p>
+        Together, we can shape the future and make the world a better place for all.
+    </p>
+</body>
+</html>
