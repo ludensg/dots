@@ -413,22 +413,24 @@ function isPointInsideImage(x, y, img) {
     return x >= img.x && x <= img.x + drawWidth && y >= img.y && y <= img.y + imgHeight;
 }
 
-document.getElementById('manifestoButton').addEventListener('click', function() {
-    fetch('manifesto.html')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.text();
-    })
-    .then(data => {
-        document.getElementById('manifesto-content').innerHTML = data;
-    })
-    .catch(error => {
-        console.log('There was a problem with the fetch operation:', error.message);
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('manifestoButton').addEventListener('click', function() {
+        fetch('manifesto.html')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById('manifesto-content').innerHTML = data;
+        })
+        .catch(error => {
+            console.log('There was a problem with the fetch operation:', error.message);
+        });
     });
 });
-
 
 canvas.addEventListener('click', (e) => {
     const clickedX = e.clientX;
