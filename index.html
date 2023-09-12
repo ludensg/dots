@@ -103,7 +103,7 @@
 
         #closeMAnifesto {
             position: absolute; /* or absolute/fixed, depending on your layout */
-            z-index: 102; /* make sure this value is higher than the panel's z-index */
+            z-index: 102; /* make sure this value is higher than the panel's z-index */ 
         }
      
     </style>
@@ -124,10 +124,9 @@
     background-image:
     repeating-linear-gradient(rgba(207, 207, 207, 0.5), rgba(255,255,255,0.5) 15px, rgba(104, 103, 103, 0.747) 15px, rgba(78, 78, 78, 0.938) 25px); 
     overflow-y: auto; z-index: 101;">
-
-        <div id="closeManifesto" style="display: none; position: absolute; top: 10px; left: 10px; color: white; background-color: grey; font-family: 'PixelOperatorMono'; text-decoration: underline; cursor: pointer;">
-            [ r e t u r n ]
-        </div>
+    </div>
+    <div id="closeManifesto" style="display: none; position: absolute; top: 10px; left: 10px; color: white; background-color: grey; font-family: 'PixelOperatorMono'; text-decoration: underline; cursor: pointer;">
+        [ r e t u r n ]
     </div>
     <div id="panel" style="position: absolute; top: 0; right: -100%; width: 50%; height: 100%; background-color: rgba(0,0,0,0.5); overflow-y: scroll; ">
         <div class="content-container">
