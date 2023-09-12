@@ -883,12 +883,17 @@ function animate() {
             const aspectRatio = img.naturalWidth / img.naturalHeight;
                     // Adjust imgHeight for mobile
             let mobileScaleFactor = 1;
+            let mobileScaleFactorH = 1;
             if (isMobile) {
-                mobileScaleFactor = window.innerWidth / 1920; // Assuming 1920 is the standard desktop width. Adjust as needed.
+                mobileScaleFactor = window.innerWidth / REF_WIDTH; 
                 mobileScaleFactor = Math.max(0.5, mobileScaleFactor); // Ensure it doesn't get too small. Adjust as needed.
+
+                mobileScaleFactorH = window.innerHeight / REF_HEIGHT; 
+                mobileScaleFactorH = Math.max(0.5, mobileScaleFactor); // Ensure it doesn't get too small. Adjust as needed.
             }
-            const adjustedImgHeight = imgHeight * mobileScaleFactor;
-            const drawWidth = adjustedImgHeight * aspectRatio;
+            const adjustedImgHeight = imgHeight * mobileScaleFactorH;
+            
+            const drawWidth = imgWidth * mobileScaleFactor;
 
             ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
             ctx.shadowBlur = 5;
@@ -914,7 +919,7 @@ function animate() {
             if (img) {
                 gifElement.style.left = img.x + 'px';
                 gifElement.style.top = img.y + 'px';
-                gifElement.style.width = imgWidth + 'px'; 
+                gifElement.style.width = drawWidth + 'px'; 
                 gifElement.style.height = adjustedImgHeight + 'px';  
                 gifElement.style.display = 'block';
             }
