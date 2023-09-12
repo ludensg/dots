@@ -802,7 +802,7 @@ function adjustManifestoForMobile() {
         closeManifestoElement.style.right = 'auto';  // Reset the right property
 
         manifestoElement.style.bottom = '-150%';
-        manifestoButtonElement.style.bottom = '20%';
+        manifestoButtonElement.style.bottom = '7%';
     } else {
         // Reset the properties for non-mobile devices
         closeManifestoElement.style.whiteSpace = 'normal';
