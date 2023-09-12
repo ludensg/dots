@@ -425,11 +425,19 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             document.getElementById('manifesto-content').innerHTML = data;
+
+            // Bring the manifesto-content div into view
+            document.getElementById('manifesto-content').style.bottom = '0';
         })
         .catch(error => {
             console.log('There was a problem with the fetch operation:', error.message);
         });
     });
+
+    document.getElementById('closeManifesto').addEventListener('click', function() {
+        document.getElementById('manifesto-content').style.bottom = '-100%';
+    });    
+    
 });
 
 canvas.addEventListener('click', (e) => {
@@ -983,7 +991,7 @@ function generateMatrixEffect() {
     let panelWidth, panelHeight;
     
     if (isMobile) {  
-        panelWidth = window.outerWidth * 1.5;
+        panelWidth = window.outerWidth * .6;
         panelHeight = window.outerHeight;
     } else {
         panelWidth = window.innerWidth/1.05;
