@@ -9,6 +9,8 @@ let selectedImage = null;
 const REF_WIDTH = 1920;
 const REF_HEIGHT = 1080;
 
+const isLargeScreen = window.innerWidth > 1200;
+
 const BASE_SPEED = 0.01;
 const SPEED_MULTIPLIER = .6;
 
@@ -17,8 +19,8 @@ let speedScaleFactor = 1;  // Initial value
 speedScaleFactor = SPEED_MULTIPLIER * Math.sqrt((window.innerWidth * window.innerHeight) / (REF_WIDTH * REF_HEIGHT));
 
 
-const REF_DOT_RADIUS = 2;  // Dot radius at reference resolution
-const REF_SPACING = 11;   // Spacing between dots at reference resolution
+const REF_DOT_RADIUS = isLargeScreen ? 2 : 2;  // Dot radius at reference resolution
+const REF_SPACING = isLargeScreen ? 19: 11;   // Spacing between dots at reference resolution
 
 // Calculate scaling factor
 const scaleFactor = 1; // window.innerWidth / REF_WIDTH;
@@ -414,31 +416,32 @@ function isPointInsideImage(x, y, img) {
 }
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('manifestoButton').addEventListener('click', function() {
-        fetch('manifesto.html')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById('manifesto-content').innerHTML = data;
-
-            // Bring the manifesto-content div into view
-            document.getElementById('manifesto-content').style.bottom = '0';
-        })
-        .catch(error => {
-            console.log('There was a problem with the fetch operation:', error.message);
+document.getElementById('manifestoButton').addEventListener('click', function() {
+    fetch('manifesto.html')
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('manifesto-content').innerHTML = data;
+        
+        // Use anime.js to slide the manifesto-content div up
+        anime({
+            targets: '#manifesto-content',
+            bottom: '0%',
+            duration: 1000,
+            easing: 'easeOutExpo'
         });
     });
-
-    document.getElementById('closeManifesto').addEventListener('click', function() {
-        document.getElementById('manifesto-content').style.bottom = '-100%';
-    });    
-    
 });
+
+document.getElementById('closeManifesto').addEventListener('click', function() {
+    // Use anime.js to slide the manifesto-content div down
+    anime({
+        targets: '#manifesto-content',
+        bottom: '-80vh',
+        duration: 1000,
+        easing: 'easeOutExpo'
+    });
+});
+
 
 canvas.addEventListener('click', (e) => {
     const clickedX = e.clientX;
@@ -1041,7 +1044,7 @@ function generateMatrixEffect() {
         }
     }
 
-    setInterval(updateMatrix, 100); // Update every 100ms, adjust as needed
+    setInterval(updateMatrix, 300); // Update every Xms, adjust as needed
 }
 
 
