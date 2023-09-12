@@ -332,7 +332,7 @@ function drawDots() {
         ctx.beginPath();
         const radius = DOT_RADIUS;
         ctx.arc(dot.x, dot.y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = '#3a3939';  // Updated color
+        ctx.fillStyle = '#4a4848';  // Updated color (original: #3a3939)
         ctx.fill();
     }
 }
