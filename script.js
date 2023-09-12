@@ -429,10 +429,9 @@ document.getElementById('manifestoButton').addEventListener('click', function() 
             duration: 1000,
             easing: 'easeOutExpo'
         });
+           // Show the return text
+        document.getElementById('closeManifesto').style.display = 'block';
     });
-
-    // Show the return text
-    document.getElementById('closeManifesto').style.display = 'block';
 });
 
 document.getElementById('closeManifesto').addEventListener('click', function() {
