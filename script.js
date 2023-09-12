@@ -469,12 +469,6 @@ canvas.addEventListener('click', (e) => {
                 const contentContainer = document.getElementById('dynamic-content');
                 contentContainer.innerHTML = data;
 
-                anime({
-                    targets: '#manifesto-content',
-                    bottom: '0%',
-                    duration: 1000,
-                    easing: 'easeOutExpo'
-                });
             })
             .catch(error => {
                 console.error('Error fetching content:', error);
