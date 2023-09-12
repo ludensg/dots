@@ -426,7 +426,7 @@ document.getElementById('manifestoButton').addEventListener('click', function() 
         anime({
             targets: '#manifesto-content',
             bottom: '0%',
-            duration: 1000,
+            duration: 2000,
             easing: 'easeOutExpo'
         });
            // Show the return text
@@ -438,8 +438,8 @@ document.getElementById('closeManifesto').addEventListener('click', function() {
     // Use anime.js to slide the manifesto-content div down
     anime({
         targets: '#manifesto-content',
-        bottom: '-80vh',
-        duration: 1000,
+        bottom: '-100%',
+        duration: 1500,
         easing: 'easeOutExpo'
     });
 
