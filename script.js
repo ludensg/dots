@@ -788,8 +788,10 @@ function adjustReturnTextForMobile() {
 // Call the function initially to set the styles
 adjustReturnTextForMobile();
 
-function adjustManifestoReturnTextForMobile() {
+function adjustManifestoForMobile() {
     const closeManifestoElement = document.getElementById('closeManifesto');
+    const manifestoElement = document.getElementById('manifesto-content');
+    const manifestoButtonElement = document.getElementById('manifestoButton');
 
     if (isMobile) {  
         // Adjust the CSS properties for mobile
@@ -798,6 +800,9 @@ function adjustManifestoReturnTextForMobile() {
         closeManifestoElement.style.transform = 'translateX(-50%)';  // Adjust for true centering
         closeManifestoElement.style.top = '85%';  // Position at the top with 10px padding
         closeManifestoElement.style.right = 'auto';  // Reset the right property
+
+        manifestoElement.style.bottom = '-150%';
+        manifestoButtonElement.style.bottom = '20%';
     } else {
         // Reset the properties for non-mobile devices
         closeManifestoElement.style.whiteSpace = 'normal';
@@ -805,10 +810,13 @@ function adjustManifestoReturnTextForMobile() {
         closeManifestoElement.style.transform = 'translateX(-50%)';  // Adjust for true centering
         closeManifestoElement.style.top = '85%';  // Position at 85% height
         closeManifestoElement.style.right = 'auto';
+
+        manifestoElement.style.bottom = '-100%';
+        manifestoButtonElement.style.bottom = '60px';
     }
 }
 
-adjustManifestoReturnTextForMobile()
+adjustManifestoForMobile()
 
 let hitbox = {};
 
