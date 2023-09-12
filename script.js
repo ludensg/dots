@@ -430,6 +430,9 @@ document.getElementById('manifestoButton').addEventListener('click', function() 
             easing: 'easeOutExpo'
         });
     });
+
+    // Show the return text
+    document.getElementById('closeManifesto').style.display = 'block';
 });
 
 document.getElementById('closeManifesto').addEventListener('click', function() {
@@ -440,6 +443,9 @@ document.getElementById('closeManifesto').addEventListener('click', function() {
         duration: 1000,
         easing: 'easeOutExpo'
     });
+
+    // Hide the return text
+    document.getElementById('closeManifesto').style.display = 'none';
 });
 
 
