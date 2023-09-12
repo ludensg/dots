@@ -793,6 +793,29 @@ function adjustReturnTextForMobile() {
 
 // Call the function initially to set the styles
 adjustReturnTextForMobile();
+
+function adjustManifestoReturnTextForMobile() {
+    const closeManifestoElement = document.getElementById('closeManifesto');
+
+    if (isMobile) {  
+        // Adjust the CSS properties for mobile
+        closeManifestoElement.style.whiteSpace = 'nowrap';  // Prevent wrapping
+        closeManifestoElement.style.left = '50%';  // Center horizontally
+        closeManifestoElement.style.transform = 'translateX(-50%)';  // Adjust for true centering
+        closeManifestoElement.style.top = '10px';  // Position at the top with 10px padding
+        closeManifestoElement.style.right = 'auto';  // Reset the right property
+    } else {
+        // Reset the properties for non-mobile devices
+        closeManifestoElement.style.whiteSpace = 'normal';
+        closeManifestoElement.style.left = '50%';  // Center horizontally
+        closeManifestoElement.style.transform = 'translateX(-50%)';  // Adjust for true centering
+        closeManifestoElement.style.top = '85%';  // Position at 85% height
+        closeManifestoElement.style.right = 'auto';
+    }
+}
+
+adjustManifestoReturnTextForMobile()
+
 let hitbox = {};
 
 function animate() {
