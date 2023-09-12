@@ -796,7 +796,7 @@ function adjustManifestoReturnTextForMobile() {
         closeManifestoElement.style.whiteSpace = 'nowrap';  // Prevent wrapping
         closeManifestoElement.style.left = '50%';  // Center horizontally
         closeManifestoElement.style.transform = 'translateX(-50%)';  // Adjust for true centering
-        closeManifestoElement.style.top = '10px';  // Position at the top with 10px padding
+        closeManifestoElement.style.top = '85%';  // Position at the top with 10px padding
         closeManifestoElement.style.right = 'auto';  // Reset the right property
     } else {
         // Reset the properties for non-mobile devices
