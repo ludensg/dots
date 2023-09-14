@@ -5,6 +5,9 @@ canvas.height = window.innerHeight;
 const isMobile = window.innerWidth <= 800;  // You can adjust this value based on your needs
 let selectedImage = null;
 
+let vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty('--vh', `${vh}px`);
+
 // Reference resolution
 const REF_WIDTH = 1920;
 const REF_HEIGHT = 1080;
