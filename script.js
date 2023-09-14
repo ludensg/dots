@@ -803,6 +803,7 @@ function adjustManifestoForMobile() {
         closeManifestoElement.style.right = 'auto';  // Reset the right property
 
         manifestoElement.style.bottom = '-150%';
+        manifestoElement.style.width = '100%';
         manifestoButtonElement.style.bottom = '7%';
     } else {
         // Reset the properties for non-mobile devices
@@ -813,6 +814,7 @@ function adjustManifestoForMobile() {
         closeManifestoElement.style.right = 'auto';
 
         manifestoElement.style.bottom = '-100%';
+        manifestoElement.style.width = '70%';
         manifestoButtonElement.style.bottom = '60px';
     }
 }
