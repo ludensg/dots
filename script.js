@@ -49,11 +49,26 @@ let isAnyImageHovering = false;
 let matrixEffectActive = false;
 
 
+//DOT GENERATION lOGIC
+const REF_DOT_COUNT_X = Math.ceil(REF_WIDTH / spacingX);
+const REF_DOT_COUNT_Y = Math.ceil(REF_HEIGHT / spacingY);
+const MAX_DOTS = REF_DOT_COUNT_X * REF_DOT_COUNT_Y; // DOT Cap to prevent slowdowns
+
 const dots = [];
 const dotSpeed = .8;  // Adjust this for faster/slower movement
+
+let dotCount = 0;
+
 for (let x = 0; x < canvas.width; x += spacingX) {
     for (let y = 0; y < canvas.height; y += spacingY) {
+        if (dotCount >= MAX_DOTS) {
+            break;
+        }
         dots.push({ x, y, vx: 0, vy: 0, originalX: x, originalY: y, speed: dotSpeed });
+        dotCount++;
+    }
+    if (dotCount >= MAX_DOTS) {
+        break;
     }
 }
 
@@ -325,6 +340,7 @@ function applyRippleEffect(dot, clickX, clickY) {
         });
     }
 }
+
 
 function drawDots() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
