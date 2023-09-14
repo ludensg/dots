@@ -415,6 +415,7 @@ function isPointInsideImage(x, y, img) {
     return x >= img.x && x <= img.x + drawWidth && y >= img.y && y <= img.y + imgHeight;
 }
 
+const manifestoIsUp = false;
 
 document.getElementById('manifestoButton').addEventListener('click', function() {
     fetch('manifesto.html')
@@ -422,15 +423,31 @@ document.getElementById('manifestoButton').addEventListener('click', function() 
     .then(data => {
         document.getElementById('manifesto-content').innerHTML = data;
         
-        // Use anime.js to slide the manifesto-content div up
-        anime({
-            targets: '#manifesto-content',
-            bottom: '0%',
-            duration: 2000,
-            easing: 'easeOutExpo'
-        });
-           // Show the return text
-        document.getElementById('closeManifesto').style.display = 'block';
+        if(!manifestoIsUp)// Use anime.js to slide the manifesto-content div up
+        {
+            anime({
+                targets: '#manifesto-content',
+                bottom: '0%',
+                duration: 2000,
+                easing: 'easeOutExpo'
+            }); 
+            // Show the return text
+            document.getElementById('closeManifesto').style.display = 'block';
+        }
+
+        if(manifestoIsUp)
+        {
+                        // Use anime.js to slide the manifesto-content div down
+            anime({
+                targets: '#manifesto-content',
+                bottom: '-100%',
+                duration: 1500,
+                easing: 'easeOutExpo'
+            });
+
+            // Hide the return text
+            document.getElementById('closeManifesto').style.display = 'none';
+        }
     });
 });
 
