@@ -431,7 +431,7 @@ function isPointInsideImage(x, y, img) {
     return x >= img.x && x <= img.x + drawWidth && y >= img.y && y <= img.y + imgHeight;
 }
 
-const manifestoIsUp = false;
+let manifestoIsUp = false;
 
 document.getElementById('manifestoButton').addEventListener('click', function() {
     fetch('manifesto.html')
