@@ -449,8 +449,6 @@ document.getElementById('manifestoButton').addEventListener('click', function() 
             }); 
             // Show the return text
             document.getElementById('closeManifesto').style.display = 'block';
-                    
-            manifestoIsUp = true;
         }
 
         if(manifestoIsUp)
@@ -465,9 +463,10 @@ document.getElementById('manifestoButton').addEventListener('click', function() 
 
             // Hide the return text
             document.getElementById('closeManifesto').style.display = 'none';
-
-            manifestoIsUp = false;
         }
+
+        // Toggle the value of manifestoIsUp
+        manifestoIsUp = !manifestoIsUp;
     });
 });
 
