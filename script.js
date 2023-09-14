@@ -815,23 +815,25 @@ function adjustManifestoForMobile() {
         // Adjust the CSS properties for mobile
         closeManifestoElement.style.whiteSpace = 'nowrap';  // Prevent wrapping
         closeManifestoElement.style.left = '50%';  // Center horizontally
-        closeManifestoElement.style.transform = 'translateX(-50%)';  // Adjust for true centering
+        //closeManifestoElement.style.transform = 'translateX(-50%)';  // Adjust for true centering
         closeManifestoElement.style.top = '85%';  // Position at the top with 10px padding
         closeManifestoElement.style.right = 'auto';  // Reset the right property
 
         manifestoElement.style.bottom = '-150%';
         manifestoElement.style.width = '100%';
+        manifestoElement.style.height = '89%';
         manifestoButtonElement.style.bottom = '7%';
     } else {
         // Reset the properties for non-mobile devices
         closeManifestoElement.style.whiteSpace = 'normal';
         closeManifestoElement.style.left = '50%';  // Center horizontally
-        closeManifestoElement.style.transform = 'translateX(-50%)';  // Adjust for true centering
+        //closeManifestoElement.style.transform = 'translateX(-50%)';  // Adjust for true centering
         closeManifestoElement.style.top = '85%';  // Position at 85% height
         closeManifestoElement.style.right = 'auto';
 
         manifestoElement.style.bottom = '-100%';
         manifestoElement.style.width = '70%';
+        manifestoElement.style.height = '85%';
         manifestoButtonElement.style.bottom = '60px';
     }
 }
