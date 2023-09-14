@@ -466,6 +466,7 @@ canvas.addEventListener('click', (e) => {
                 return response.text();
             })
             .then(data => {
+                matrixEffectActive = false;
                 const contentContainer = document.getElementById('dynamic-content');
                 contentContainer.innerHTML = data;
 
