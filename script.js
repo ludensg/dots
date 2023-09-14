@@ -59,7 +59,7 @@ const MAX_DOTS = REF_DOT_COUNT_X * REF_DOT_COUNT_Y; // DOT Cap to prevent slowdo
 
 if(isMobile)
 {
-    MAX_DOTS = MAX_DOTS / 2;
+    MAX_DOTS = MAX_DOTS / 1;
 }
 const dots = [];
 const dotSpeed = .8;  // Adjust this for faster/slower movement
@@ -265,7 +265,7 @@ function drawBottomLeftText1() {
     const xPos = 10;  // Adjust for desired x position
     const yPos = canvas.height - 40; // Adjust for desired y position (taking into account the font size)
 
-    ctx.font = "12px PixelOperatorMono";  // Adjust for desired font size and font family
+    ctx.font = "13px PixelOperatorMono";  // Adjust for desired font size and font family
 
     // Draw the text before the number
     ctx.fillStyle = "#b4aeae";  // Adjust for desired text color
@@ -288,11 +288,11 @@ function drawBottomLeftText1() {
 
 function drawBottomLeftText2() {
     const textBefore = "For more info click on ";
-    const coloredText = "eye -> title";
+    const coloredText = "an eye -> pop up title";
     const xPos = 10;  // Adjust for desired x position
     const yPos = canvas.height - 20;  // Adjust for desired y position (taking into account the font size)
 
-    ctx.font = "12px PixelOperatorMono";  // Adjust for desired font size and font family
+    ctx.font = "13px PixelOperatorMono";  // Adjust for desired font size and font family
 
     // Draw the text before the colored part
     ctx.fillStyle = "#b4aeae";  // Adjust for desired text color
