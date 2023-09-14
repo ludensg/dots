@@ -449,6 +449,8 @@ document.getElementById('manifestoButton').addEventListener('click', function() 
             }); 
             // Show the return text
             document.getElementById('closeManifesto').style.display = 'block';
+                    
+            manifestoIsUp = true;
         }
 
         if(manifestoIsUp)
@@ -463,6 +465,8 @@ document.getElementById('manifestoButton').addEventListener('click', function() 
 
             // Hide the return text
             document.getElementById('closeManifesto').style.display = 'none';
+
+            manifestoIsUp = false;
         }
     });
 });
@@ -478,6 +482,8 @@ document.getElementById('closeManifesto').addEventListener('click', function() {
 
     // Hide the return text
     document.getElementById('closeManifesto').style.display = 'none';
+
+    manifestoIsUp = false;
 });
 
 
