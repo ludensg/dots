@@ -57,6 +57,10 @@ const REF_DOT_COUNT_X = Math.ceil(REF_WIDTH / spacingX);
 const REF_DOT_COUNT_Y = Math.ceil(REF_HEIGHT / spacingY);
 const MAX_DOTS = REF_DOT_COUNT_X * REF_DOT_COUNT_Y; // DOT Cap to prevent slowdowns
 
+if(isMobile)
+{
+    MAX_DOTS = MAX_DOTS / 2;
+}
 const dots = [];
 const dotSpeed = .8;  // Adjust this for faster/slower movement
 
