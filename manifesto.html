@@ -65,15 +65,120 @@
             text-decoration: underline;
         }
 
+        .toc {
+            border: 1px solid #a2a9b1;
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin-bottom: 20px;
+            width: max-content;
+            font-size: 0.9em;
+        }
+
+        .toc ol {
+            padding-left: 0;
+        }
+
+        .toc li {
+            margin-bottom: 5px;
+        }
+
+        .toc a {
+            text-decoration: none;
+            color: #0645ad;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        .intro-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap; /* This ensures content wraps to the next line if space is limited */
+        }
+
+        .intro-text {
+            flex: 1;
+            margin-left: 20px; /* Updated to 'margin-left' from 'margin-right' */
+        }
+
+        .toc-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+
+        .toc {
+            flex-basis: 220px; /* Adjust based on your preference for the width of the table of contents */
+            list-style-type: decimal;
+            padding-left: 2em;
+        }
+
+        .toggle-link {
+            color: #0645ad; /* Wikipedia link color */
+            cursor: pointer;
+            text-decoration: underline;
+            user-select: none; /* This prevents the text from being selected when clicked */
+            justify-content: right;
+        }
+
+        .wiki-quote {
+            border-left: 2px solid #a2a9b1; /* Typical Wikipedia border color for blockquotes */
+            margin: 1.5em 2em;
+            padding: 0.5em 2em;
+            font-style: italic;
+        }
+
+        .quote-author {
+            display: block;
+            margin-top: 0.5em;
+            font-weight: bold;
+            font-style: normal;
+        }
+
+
     </style>
 </head>
 <body>
     <h1>What is The Wikipedia Eye?</h1>
-    <p>
-        In order to understand what this art piece really is, both as an intervention and as a social sculpture,
-        it is important to first understand what the Wikipedia Eye is <i>not</i>.
-    </p>
-    <h2>The Wikipedia Eye is Not</h2>
+    <div class="intro-container">
+        <div class="toc">
+            <div class="toc-header">
+                <span><b>Contents</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span class="toggle-link" id="toggleTOC">[hide]</span>
+            </div>
+            <ol>
+                <li><a href="#not">The Wikipedia Eye is Not</a></li>
+                <li><a href="#is">The Wikipedia Eye Is</a></li>
+                <li><a href="#principles">Core Principles</a></li>
+                <li><a href="#authenticity">Verification of Authenticity</a></li>
+            </ol>
+        </div> 
+
+        <div class="intro-text">            
+            <p style="line-height: 2">
+                Humanity is progressively migrating into a digital world. Content and context are now one and the same.
+                In a world where all information, be it true or false, rumour or fact, trivial or relevant, is perfectly preserved 
+                and mostly unfiltered, and in absence of a true reality, it is now up to <i>us</i> to seek something to believe in, 
+                take responsibility of our place in the information age, find the power in knowledge, and choose what to pass on to the future.
+            </p>
+
+            <blockquote class="wiki-quote" style="line-height: 1.5">
+                "Earth may not be forever, but we still have the responsibility to leave what traces of life we can. 
+                Building the future and keeping the past alive are one and the same thing."
+                <span class="quote-author">- David</span>
+            </blockquote>
+
+            <p style="line-height: 2">
+                In order to understand what this art piece really is, both as an intervention and as a social sculpture,
+                it is important to first understand what the Wikipedia Eye is <i>not</i>.
+            </p>
+        </div>
+    </div>
+    <h2 id="not">The Wikipedia Eye is Not</h2>
     <p>
         <ol style="line-height: 3">
             <li> <b>This Website</b></li>
@@ -97,13 +202,13 @@
         </ol>
     </p>
 
-    <h2>The Wikipedia Eye Is</h2>
+    <h2 id="is">The Wikipedia Eye Is</h2>
     <p>
         An invitation to explore your relationship to the consumption, generation, understanding, and witnessing of information, knowledge, and art,
         based upon a set of core principles to delimit its purpose and approach.
     </p>
 
-    <h3 style="text-align: center; font-size:x-large;">Core Principles</h3>
+    <h2 id="principles">Core Principles</h2>
     <p>
         <ol style="line-height: 3">
             <li><b>Impermanence:</b> The Wikipedia Eye is a <b>transient marker</b>.
@@ -125,7 +230,7 @@
         </ol>
     </p>
 
-    <h2>Verification of Authenticity</h2>
+    <h2 id="authenticity">Verification of Authenticity</h2>
     <p>
         This website is being hosted on GitHub, where the source-code and commit history is freely and publicly available. Should the domain linking to this website ever change, 
         it will always remain accessible at <a href="https://ludensg.github.io/dots">https://ludensg.github.io/dots</a>.<br> <br>
@@ -140,5 +245,18 @@
         </ol></smaller></small>
 
     </p>
+
+    <script>
+        document.getElementById('toggleTOC').addEventListener('click', function() {
+            const tocList = document.querySelector('.toc ol');
+            if (tocList.style.display === 'none') {
+                tocList.style.display = 'block';
+                this.textContent = '[hide]';
+            } else {
+                tocList.style.display = 'none';
+                this.textContent = '[show]';
+            }
+        });
+    </script>
 </body>
 </html>
