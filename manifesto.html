@@ -72,7 +72,15 @@
             margin-bottom: 20px;
             width: max-content;
             font-size: 0.9em;
+            float: left;
         }
+
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
 
         .toc ol {
             padding-left: 0;
@@ -115,8 +123,7 @@
             flex-basis: 220px; /* Adjust based on your preference for the width of the table of contents */
             list-style-type: decimal;
             padding-left: 2em;
-            background-color: #868686;
-            background-blend-mode: color-burn;
+            background-color: #000000;
         }
 
         .toggle-link {
@@ -167,18 +174,18 @@
                 and mostly unfiltered, and in absence of a true reality, it is now up to <i>us</i> to seek something to believe in, 
                 take responsibility of our place in the information age, find the power in knowledge, and choose what to pass on to the future.
             </p>
+        </div>
 
-            <blockquote class="wiki-quote" style="line-height: 1.5">
+            <blockquote class="wiki-quote" style="line-height: 1.5" style="justify-content: center;">
                 "Earth may not be forever, but we still have the responsibility to leave what traces of life we can. 
                 Building the future and keeping the past alive are one and the same thing."
                 <span class="quote-author">- David</span>
             </blockquote>
 
-            <p style="line-height: 2">
+            <p style="line-height: .9">
                 In order to understand what this art piece really is, both as an intervention and as a social sculpture,
                 it is important to first understand what the Wikipedia Eye is <i>not</i>.
             </p>
-        </div>
     </div>
     <h2 id="not">The Wikipedia Eye is Not</h2>
     <p>
@@ -247,6 +254,8 @@
         </ol></smaller></small>
 
     </p>
+
+    <div class="clearfix"></div>
 
     <script>
         document.getElementById('toggleTOC').addEventListener('click', function() {
