@@ -34,6 +34,15 @@
         .gallery img:hover {
             transform: scale(1.1);
         }
+
+        .grid-container-element { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            grid-gap: 10px; 
+        } 
+        .grid-child-element { 
+            margin: 10px; 
+        }
     </style>
 </head>
 
@@ -42,8 +51,14 @@
     <!-- Section 1 with placeholder image -->
     <div class="section">
         <h2>The Elmyr de Hory Exhibit</h2>
-        <img src="img\eye1\pic1.png" alt="Eye 1">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum.</p>
+            <div class="grid-container-element">
+                <div class="grid-child-element"><img src="img\eye1\pic1.png" alt="Eye 1"></div>
+                <div class="grid-child-element">
+                    
+                    <p>This Wikipedia Eye records the Elmyr de Hory Exhibit, present for a limited time at the Museum of Fine Arts at
+                        Florida State University.</p>
+                </div>
+            </div>
     </div>
 
     <!-- Section 2 with placeholder image -->
