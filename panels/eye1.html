@@ -11,10 +11,18 @@
             padding: 20px;
             margin-bottom: 20px;
             border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+        }
+
+        .section p {
+            margin-left: 10%;
+            margin-right: 10%;
         }
 
         .section img {
-            max-width: 100%;
+            width: 50%;
+            /*max-width: 100%; */
             height: auto;
         }
 
@@ -35,37 +43,90 @@
             transform: scale(1.1);
         }
 
-        .grid-container-element { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            grid-gap: 10px; 
-        } 
-        .grid-child-element { 
-            margin: 10px; 
+        h2 {
+            text-align: left;
+            font: 'PixelOperatorMonoHB';
+            border-bottom: 2px solid #868686;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            margin: 25px;
         }
+
+        .subtitle {
+            font-size: smaller;
+            color: #666;
+            text-align: center;
+        }
+
+        a:link {
+            font: 'PixelOperatorMonoHB8';
+            color: blue;
+            background-color: grey;
+            text-decoration: underline;
+        }
+
+        .wiki-quote {
+            border-left: 2px solid #a2a9b1; /* Typical Wikipedia border color for blockquotes */
+            margin: 1.5em 2em;
+            padding: 0.5em 2em;
+            font-style: italic;
+        }
+
+        smallest {
+            font-size: 10px;
+            opacity: .4;
+        }
+
+
     </style>
 </head>
 
 <body>
 
-    <!-- Section 1 with placeholder image -->
+    <h2>The Elmyr de Hory Exhibit </h2>
+    <p class="subtitle">Eye 1 - Acrylic on Canvas, 3 x 3 inches. July, 2023. </p>
     <div class="section">
-        <h2>The Elmyr de Hory Exhibit</h2>
-            <div class="grid-container-element">
-                <div class="grid-child-element"><img src="img\eye1\pic1.png" alt="Eye 1"></div>
-                <div class="grid-child-element">
-                    
-                    <p>This Wikipedia Eye records the Elmyr de Hory Exhibit, present for a limited time at the Museum of Fine Arts at
-                        Florida State University.</p>
-                </div>
-            </div>
+        <img src="img\eye1\pic1.png" alt="Eye 1" style="float: left; width: 50%;">
+        <p style="margin-left: 5%;">This Wikipedia Eye records the <b>Elmyr de Hory Exhibit</b>, 
+            on display for a limited time at the Museum of Fine Arts at Florida State University, starting July 12th,
+            along with peripheral elements spread around the FSU campus, and surrounding areas. <br><br>
+            This exhibit is <a href="https://en.wikipedia.org/wiki/Pseudepigrapha">pseudepigraphically</a> attributed 
+            (and in tribute to) Hungarian-born painter and performance artist 
+            <a href="https://en.wikipedia.org/wiki/Elmyr_de_Hory">Elmyr de Hory</a>. It consists of a set of mixed media pieces, 
+            as described below, and has received public media coverage at the 
+            <a href="https://www.fsunews.com/story/entertainment/arts/2023/08/27/the-reverse-heist-fsu-student-sneaks-art-into-mofa/70692888007/">FSView & Florida Flambeau Newspaper</a> (online and in print), 
+            as well as in the  <a href="https://www.instagram.com/p/CvpUaavOyAp/?img_index=4">barstoolfsu</a> instagram account, a direct affiliate of sports and pop culture blog Barstool Sports.
+        </p>
     </div>
+
+    <h2>Exhibition Introduction</h2>
+    <p style="margin-right: 5%; margin-left: 5%;">As seen in the picture, a text written by a Dr. Ludens O'Possum, introduces us to the exhibition,
+        at the entrance of the gallery floor:</p>
+    <div class="section">
+        <img src="img\eye1\blurb.jpg" alt="Exhibition Introduction" style="float: right; width: 50%;">      
+        <blockquote class="wiki-quote" style="line-height: 1.5; display: block; margin-top: 10px; ">
+          "As we look towards the future in our neighbouring exhibit, Southern Futurism, we must also collectively understand the present.
+          I have assembled and curated this little exhibit out of items from my own personal collection. I have long been an admirer of Elmyr, whom I have personally
+          met and remember quite dearly. But, I believe that these pieces have spent enough time in the dar. These pieces are facing, just as the artist (and others) did before them,
+          the possibility of the greatest danger and disservice known to humanity: Domicide. <br><br>
+          
+          I hope then that, within these museum's walls, and within the walls of your mind, these five pieces may not only
+          find a place to be understood, but most importantly, a place to be. <br><br>
+          
+          In line with the artist's instructions, the titles of the showcased artworks are presented independently and not exhibited alongside their respective pieces. <br><br>
+          
+          Here they are, in no particular order:
+          
+          Infinity Goes Up On Trial, I Countain Multitudes, Cinéma Vérité, Everybody Must Get Stoned, and You Can't Wake Up If You Don't Fall Asleep." <br>
+          <smallest style="text-align: right;">Got something to say? opossumludens@gmail.com</smallest><br>
+          <span class="quote-author">- Dr. Ludens O'Possum</span>
+        </blockquote>
+      </div>
 
     <!-- Section 2 with placeholder image -->
     <div class="section">
-        <h2>Section 2</h2>
-        <img src="https://via.placeholder.com/500x300" alt="Placeholder Image 2">
         <p>Donec sit amet felis orci. Fuscus suscipit libero efficitur sinkvamus alomat a nisl.</p>
+        <img src="https://via.placeholder.com/500x300" alt="Placeholder Image 2">
     </div>
 
     <!-- Gallery at the bottom -->
