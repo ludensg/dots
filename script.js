@@ -1062,18 +1062,17 @@ animate();
 
 
 function generateMatrixEffect() {
+    const paddingTop = 3;
 
-    const paddingTop = 3;  // Adjust this value as needed
+    const matrixContainer = document.getElementById('matrixContainer');
 
-    const contentContainer = document.getElementById('matrixContainer');
+    matrixContainer.style.fontFamily = 'PixelOperatorMono';
+    matrixContainer.style.color = 'grey'; 
+    matrixContainer.style.fontSize = '16px';
+    matrixContainer.style.whiteSpace = 'pre';
 
-    contentContainer.style.fontFamily = 'PixelOperatorMono';
-    contentContainer.style.color = 'grey'; 
-    contentContainer.style.fontSize = '16px'; // Adjust as needed
-    contentContainer.style.whiteSpace = 'pre'; // To maintain formatting
-
-    const fontSize = 16; // This should match the font size set above 
-    const charWidth = fontSize * 1; // This is an estimate. Adjust based on your font's characteristics
+    const fontSize = 16;
+    const charWidth = fontSize * 1;
     const charHeight = fontSize;
 
     let panelWidth, panelHeight;
@@ -1085,13 +1084,11 @@ function generateMatrixEffect() {
         panelWidth = window.innerWidth/1.05;
         panelHeight = window.innerHeight/1.1;
     }
-      
 
     const columns = Math.floor(panelWidth / charWidth);
     const rows = Math.floor(panelHeight / charHeight);
 
     function getRandomCharacter() {
-        //const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         const characters = '01';
         return characters.charAt(Math.floor(Math.random() * characters.length));
     }
@@ -1106,22 +1103,21 @@ function generateMatrixEffect() {
 
     function updateMatrix() {
         let matrix = '';
-        if(matrixEffectActive)
-        {
-            // Add blank rows
+        if(matrixEffectActive) {
             for (let i = 0; i < paddingTop; i++) {
                 matrix += '\n';
             }
         
-            // Generate the matrix rows
             for (let i = paddingTop; i < rows; i++) {
                 matrix += generateRow() + '\n';
             }
             
-            contentContainer.textContent = matrix;
+            matrixContainer.textContent = matrix;
+            matrixContainer.style.display = 'block'; // Show the matrix container
+        } else {
+            matrixContainer.style.display = 'none'; // Hide the matrix container
         }
     }
 
-    setInterval(updateMatrix, 300); // Update every Xms, adjust as needed
+    setInterval(updateMatrix, 300);
 }
-
