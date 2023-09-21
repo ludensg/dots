@@ -1065,14 +1065,14 @@ function generateMatrixEffect() {
 
     const paddingTop = 3;  // Adjust this value as needed
 
-    const contentContainer = document.getElementById('dynamic-content');
-    /*
+    const contentContainer = document.getElementById('matrixContainer');
+
     contentContainer.style.fontFamily = 'PixelOperatorMono';
     contentContainer.style.color = 'grey'; 
     contentContainer.style.fontSize = '16px'; // Adjust as needed
     contentContainer.style.whiteSpace = 'pre'; // To maintain formatting
 
-    const fontSize = 16; // This should match the font size set above */
+    const fontSize = 16; // This should match the font size set above 
     const charWidth = fontSize * 1; // This is an estimate. Adjust based on your font's characteristics
     const charHeight = fontSize;
 
