@@ -804,6 +804,12 @@ document.getElementById('returnText').addEventListener('click', function() {
         });
     }
     matrixEffectActive = false;
+
+        // Reset the styles
+        contentContainer.style.fontFamily = '';
+        contentContainer.style.color = ''; 
+        contentContainer.style.fontSize = ''; 
+        contentContainer.style.whiteSpace = '';
     
     // Hide the return text
     document.getElementById('returnText').style.display = 'none';
@@ -1062,23 +1068,14 @@ animate();
 
 
 
-const originalStyles
+
 
 function generateMatrixEffect() {
 
     const paddingTop = 3;  // Adjust this value as needed
 
     const contentContainer = document.getElementById('dynamic-content');
-
-    // Store the original styles
-    const originalStyles = {
-        fontFamily: contentContainer.style.fontFamily,
-        color: contentContainer.style.color,
-        fontSize: contentContainer.style.fontSize,
-        whiteSpace: contentContainer.style.whiteSpace
-    };
-
-
+    
     contentContainer.style.fontFamily = 'PixelOperatorMono';
     contentContainer.style.color = 'grey'; 
     contentContainer.style.fontSize = '16px'; // Adjust as needed
@@ -1131,12 +1128,6 @@ function generateMatrixEffect() {
             }
             
             contentContainer.textContent = matrix;
-        } else {
-            // Revert back to the original styles
-            contentContainer.style.fontFamily = originalStyles.fontFamily;
-            contentContainer.style.color = originalStyles.color;
-            contentContainer.style.fontSize = originalStyles.fontSize;
-            contentContainer.style.whiteSpace = originalStyles.whiteSpace;
         }
     }
 
