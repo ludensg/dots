@@ -1067,9 +1067,6 @@ function animate() {
 animate();
 
 
-
-
-
 function generateMatrixEffect() {
 
     const paddingTop = 3;  // Adjust this value as needed
