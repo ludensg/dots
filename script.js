@@ -779,6 +779,9 @@ document.getElementById('returnText').addEventListener('click', function() {
         selectedImage = null;  // Deselect the image
     }
 
+    // Hide the return text
+    document.getElementById('returnText').style.display = 'none';
+
     scrollToTop();
 
     // Check if it's a mobile device
@@ -804,15 +807,6 @@ document.getElementById('returnText').addEventListener('click', function() {
         });
     }
     matrixEffectActive = false;
-
-        // Reset the styles
-        contentContainer.style.fontFamily = '';
-        contentContainer.style.color = ''; 
-        contentContainer.style.fontSize = ''; 
-        contentContainer.style.whiteSpace = '';
-    
-    // Hide the return text
-    document.getElementById('returnText').style.display = 'none';
 });
 
 // Function to adjust the returnText styling for mobile
@@ -1072,13 +1066,13 @@ function generateMatrixEffect() {
     const paddingTop = 3;  // Adjust this value as needed
 
     const contentContainer = document.getElementById('dynamic-content');
-    
+    /*
     contentContainer.style.fontFamily = 'PixelOperatorMono';
     contentContainer.style.color = 'grey'; 
     contentContainer.style.fontSize = '16px'; // Adjust as needed
     contentContainer.style.whiteSpace = 'pre'; // To maintain formatting
 
-    const fontSize = 16; // This should match the font size set above
+    const fontSize = 16; // This should match the font size set above */
     const charWidth = fontSize * 1; // This is an estimate. Adjust based on your font's characteristics
     const charHeight = fontSize;
 
@@ -1130,5 +1124,4 @@ function generateMatrixEffect() {
 
     setInterval(updateMatrix, 300); // Update every Xms, adjust as needed
 }
-
 
