@@ -779,9 +779,6 @@ document.getElementById('returnText').addEventListener('click', function() {
         selectedImage = null;  // Deselect the image
     }
 
-    // Hide the return text
-    document.getElementById('returnText').style.display = 'none';
-
     scrollToTop();
 
     // Check if it's a mobile device
@@ -807,6 +804,9 @@ document.getElementById('returnText').addEventListener('click', function() {
         });
     }
     matrixEffectActive = false;
+
+    // Hide the return text
+    document.getElementById('returnText').style.display = 'none';
 });
 
 // Function to adjust the returnText styling for mobile
