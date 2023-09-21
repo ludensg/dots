@@ -798,7 +798,7 @@ document.getElementById('returnText').addEventListener('click', function() {
         // If it's not a mobile device, use the original animation
         anime({
             targets: '#panel',
-            right: '-50%',  // Assuming the panel is 50% of the screen width
+            right: '-70%',  // Assuming the panel is x% of the screen width
             easing: 'easeOutExpo',
             duration: 1000
         });
