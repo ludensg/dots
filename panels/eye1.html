@@ -129,26 +129,26 @@
 
         .flex-container {
             display: flex;
-            align-items: stretch; /* This ensures that the children of the container stretch to fill the container */
+            align-items: stretch;
         }
 
         .flex-container .img-link {
-             flex: 0 0 auto; /* This ensures that the image doesn't shrink or grow */
-        } 
+            flex: 0 0 40%; /* This sets the base width of the image container to 40% */
+            display: flex; /* This makes the anchor tag a flex container */
+            justify-content: center; /* This centers the image horizontally */
+            align-items: center; /* This centers the image vertically */
+        }
 
         .flex-container img {
-            height: 100%; /* This ensures that the image takes the full height of its parent */
-            max-width: 30%; /* This ensures that the image doesn't become too wide */
-            width: auto; /* This ensures that the image width is adjusted proportionally */
+            max-width: 100%; /* This ensures the image doesn't overflow its container */
+            max-height: 100%; /* This ensures the image doesn't become too tall */
         }
 
         .flex-container .wiki-quote {
             flex: 1; /* This ensures that the blockquote takes the remaining space */
-            overflow: hidden; /* This ensures that the content doesn't overflow its container */
+            overflow: hidden;
+            padding: 0 2%; /* Optional: Adds a little spacing between the image and the quote */
         }
-
-
-
 
     </style>
 </head>
