@@ -127,6 +127,26 @@
             display: inline-block;
         }
 
+        .flex-container {
+            display: flex;
+            align-items: stretch; /* This ensures that the children of the container stretch to fill the container */
+        }
+
+        .flex-container .img-link {
+            flex: 0 0 auto; /* This ensures that the image doesn't shrink or grow */
+        }
+
+        .flex-container img {
+            height: 100%; /* This ensures that the image takes the full height of its parent */
+            width: auto; /* This ensures that the image width is adjusted proportionally */
+        }
+
+        .flex-container .wiki-quote {
+            flex: 1; /* This ensures that the blockquote takes the remaining space */
+            overflow: hidden; /* This ensures that the content doesn't overflow its container */
+        }
+
+
 
 
     </style>
@@ -138,7 +158,7 @@
     <p class="subtitle" style="font-size: 70%;">Eye 1 - Acrylic on Canvas, 3 x 3 inches. July, 2023. </p>
     <div class="section">
         <a href="img\eye1\pic1.png" target="_blank" class="img-link">
-            <img src="img\eye1\pic1.png" alt="Eye 1" style="float: left; width: 50%;">
+            <img src="img\eye1\pic1.png" alt="Eye 1" style="float: left; width: 60%;">
         </a>
         <p style="margin-left: 5%;">This Wikipedia Eye records the <b>Elmyr de Hory Exhibit</b>, which was  
             on display for a limited time at the Museum of Fine Arts at Florida State University, starting July 12th,
@@ -157,9 +177,9 @@
     <h2>Exhibition Introduction</h2>
     <p style="margin-right: 5%; margin-left: 5%;">As seen in the picture, a text written by Dr. Ludens O'Possum (alleged exhibition curator), introduces the exhibition,
         and is located at the entrance of the gallery floor:</p>
-    <div class="section">
+    <div class="section flex-container">
         <a href="img\eye1\blurb.jpg" target="_blank" class="img-link">
-            <img src="img\eye1\blurb.jpg" alt="Exhibition Introduction" style="float: right; width: 30%; height:auto;">
+            <img src="img\eye1\blurb.jpg" alt="Exhibition Introduction">
         </a>      
         <blockquote class="wiki-quote" style="line-height: 1.5; display: block; margin-top: 10px; ">
           "As we look towards the future in our neighbouring exhibit, Southern Futurisms, we must also collectively understand the present.
