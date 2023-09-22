@@ -805,6 +805,8 @@ document.getElementById('returnText').addEventListener('click', function() {
     }
     matrixEffectActive = false;
 
+    clearDynamicContent();
+
     // Hide the return text
     document.getElementById('returnText').style.display = 'none';
 });
@@ -824,6 +826,11 @@ function adjustReturnTextForMobile() {
         returnTextElement.style.left = '70%';
         returnTextElement.style.right = 'auto';
     }
+}
+
+function clearDynamicContent() {
+    const contentContainer = document.getElementById('dynamic-content');
+    contentContainer.innerHTML = '';
 }
 
 // Call the function initially to set the styles
