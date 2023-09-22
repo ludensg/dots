@@ -255,7 +255,7 @@ function drawTopLeftSubtext() {
 function drawBottomLeftText1() {
     const textBeforeNumber = "There are currently ";
     const number = "2";
-    const textAfterNumber = " revealed wikipedia eyes in circulation.";
+    const textAfterNumber = " revealed wikipedia eyes.";
 
     const xPos = 10;  // Adjust for desired x position
     const yPos = canvas.height - 40; // Adjust for desired y position (taking into account the font size)
@@ -283,7 +283,7 @@ function drawBottomLeftText1() {
 
 function drawBottomLeftText2() {
     const textBefore = "For more info click on ";
-    const coloredText = "an eye -> pop up title";
+    const coloredText = "an eye -> its' pop up title";
     const xPos = 10;  // Adjust for desired x position
     const yPos = canvas.height - 20;  // Adjust for desired y position (taking into account the font size)
 
