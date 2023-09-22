@@ -24,7 +24,7 @@ const REF_DOT_RADIUS = isLargeScreen ? 2 : 2;  // Dot radius at reference resolu
 const REF_SPACING = isLargeScreen ? 19: 11;   // Spacing between dots at reference resolution
 
 // Calculate scaling factor
-const scaleFactor = 1; // window.innerWidth / REF_WIDTH;
+const scaleFactor = 1.2; // window.innerWidth / REF_WIDTH;
 
 //const spacingX = canvas.width / grid_size;
 //const spacingY = canvas.height / grid_size;
@@ -53,7 +53,7 @@ let matrixEffectActive = false;
 //DOT GENERATION lOGIC
 const REF_DOT_COUNT_X = Math.ceil(REF_WIDTH / spacingX);
 const REF_DOT_COUNT_Y = Math.ceil(REF_HEIGHT / spacingY);
-const MAX_DOTS = (REF_DOT_COUNT_X * REF_DOT_COUNT_Y)/2; // DOT Cap to prevent slowdowns
+const MAX_DOTS = (REF_DOT_COUNT_X * REF_DOT_COUNT_Y); // DOT Cap to prevent slowdowns
 
 
 const dots = [];
@@ -1069,7 +1069,8 @@ animate();
 
 
 function generateMatrixEffect() {
-    const paddingTop = 3;
+    const paddingTop = 5;
+    const paddingLeft = 4;
 
     const matrixContainer = document.getElementById('matrixContainer');
 
@@ -1085,11 +1086,12 @@ function generateMatrixEffect() {
     let panelWidth, panelHeight;
     
     if (isMobile) {  
-        panelWidth = window.outerWidth * .6;
+        panelWidth = window.outerWidth;
         panelHeight = window.outerHeight;
+        //paddingLeft = 7;
     } else {
-        panelWidth = window.innerWidth/1.05;
-        panelHeight = window.innerHeight/1.1;
+        panelWidth = window.innerWidth * 1.1;
+        panelHeight = window.innerHeight * .9;
     }
 
     const columns = Math.floor(panelWidth / charWidth);
@@ -1103,7 +1105,10 @@ function generateMatrixEffect() {
     function generateRow() {
         let row = '';
         for (let i = 0; i < columns; i++) {
-            row += getRandomCharacter();
+            if(i >= paddingLeft){
+                row += getRandomCharacter();
+            }
+            else row += ' ';
         }
         return row;
     }
