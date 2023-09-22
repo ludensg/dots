@@ -53,7 +53,7 @@ let matrixEffectActive = false;
 //DOT GENERATION lOGIC
 const REF_DOT_COUNT_X = Math.ceil(REF_WIDTH / spacingX);
 const REF_DOT_COUNT_Y = Math.ceil(REF_HEIGHT / spacingY);
-const MAX_DOTS = (REF_DOT_COUNT_X * REF_DOT_COUNT_Y) - 20; // DOT Cap to prevent slowdowns
+const MAX_DOTS = (REF_DOT_COUNT_X * REF_DOT_COUNT_Y)/2; // DOT Cap to prevent slowdowns
 
 
 const dots = [];
