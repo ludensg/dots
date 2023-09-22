@@ -113,6 +113,16 @@
             margin:0 auto;
         }
 
+        .img-link img {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .img-link:hover img {
+            transform: scale(1.05); /* Subtle enlargement */
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.6); /* Subtle glow */
+        }
+
+
     </style>
 </head>
 
@@ -121,7 +131,9 @@
     <h2>The Elmyr de Hory Exhibit </h2>
     <p class="subtitle" style="font-size: 70%;">Eye 1 - Acrylic on Canvas, 3 x 3 inches. July, 2023. </p>
     <div class="section">
-        <img src="img\eye1\pic1.png" alt="Eye 1" style="float: left; width: 50%;">
+        <a href="img\eye1\pic1.png" target="_blank" class="img-link"></a>
+            <img src="img\eye1\pic1.png" alt="Eye 1" style="float: left; width: 50%;">
+        </a>
         <p style="margin-left: 5%;">This Wikipedia Eye records the <b>Elmyr de Hory Exhibit</b>, which was  
             on display for a limited time at the Museum of Fine Arts at Florida State University, starting July 12th,
             along with peripheral elements spread around the FSU campus and surrounding areas. <br><br>
@@ -132,7 +144,7 @@
             <a href="https://www.fsunews.com/story/entertainment/arts/2023/08/27/the-reverse-heist-fsu-student-sneaks-art-into-mofa/70692888007/">FSView & Florida Flambeau Newspaper</a> (both online and in print), 
             as well as in the  <a href="https://www.instagram.com/p/CvpUaavOyAp/?img_index=4">barstoolfsu</a> Instagram account (a direct affiliate of sports and pop culture blog Barstool Sports).
             Further details on this can be found in the Media Coverage section below. The whereabouts of the mentioned pieces are currently unknown, with exception of the painting of Piece D.
-            <br> <br> To view any image in full size, right click and open it in a new tab.
+            <br> <br> Click on any image to see it in full size.
         </p>
     </div>
 
@@ -140,11 +152,13 @@
     <p style="margin-right: 5%; margin-left: 5%;">As seen in the picture, a text written by Dr. Ludens O'Possum (alleged exhibition curator), introduces the exhibition,
         and is located at the entrance of the gallery floor:</p>
     <div class="section">
-        <img src="img\eye1\blurb.jpg" alt="Exhibition Introduction" style="float: right; width: 30%; height:auto;">      
+        <a href="img\eye1\blurb.jpg" target="_blank" class="img-link">
+            <img src="img\eye1\blurb.jpg" alt="Exhibition Introduction" style="float: right; width: 30%; height:auto;">
+        </a>      
         <blockquote class="wiki-quote" style="line-height: 1.5; display: block; margin-top: 10px; ">
           "As we look towards the future in our neighbouring exhibit, Southern Futurisms, we must also collectively understand the present.
           I have assembled and curated this little exhibit out of items from my own personal collection. I have long been an admirer of Elmyr, whom I have personally
-          met and remember quite dearly. But, I believe that these pieces have spent enough time in the dar. These pieces are facing, just as the artist (and others) did before them,
+          met and remember quite dearly. But, I believe that these pieces have spent enough time in the dark. These pieces are facing, just as the artist (and others) did before them,
           the possibility of the greatest danger and disservice known to humanity: Domicide. <br><br>
           
           I hope then that, within these museum's walls, and within the walls of your mind, these five pieces may not only
@@ -161,7 +175,9 @@
       </div>
 
     <div class="section">
-        <img src="img/eye1/inprogress.jpg" alt="Eye 1 in Progress" style="display: block; margin-left: auto; margin-right: auto;">
+        <a href="img/eye1/inprogress.jpg" target="_blank" class="img-link">
+            <img src="img/eye1/inprogress.jpg" alt="Eye 1 in Progress" style="display: block; margin-left: auto; margin-right: auto;">
+        </a>
     </div>
 
     <h2>The Pieces</h2>
@@ -172,7 +188,9 @@
             Each piece is presented along with the same information as displayed in their corresponding museum placques. Any additional information 
             is presented in brackets, and any piece from a neighbouring exhibit has been blurred for privacy's sake.
         </p>
-        <img src="img\eye1\location.png" alt="Map Illustration" style="float: left; width: 50%;">
+        <a href="img\eye1\location.png" target="_blank" class="img-link">   
+            <img src="img\eye1\location.png" alt="Map Illustration" style="float: left; width: 50%;">
+        </a>
     </div>
 
     <div class="line"></div>
@@ -184,9 +202,15 @@
 
     <div class="flexbox-container" style="margin-left: 5%; justify-content: space-evenly;">
         <div class="container">
-            <img src="img/eye1/plates.jpg" alt="The Plates" style="display: block; margin-left: auto; margin-right: auto; width: 70%; height: auto;">
-            <img src="img/eye1/shoes.jpg" alt="The Shoes" style="display: block; margin-left: auto; margin-right: auto; width: 70%; height: auto;">
-            <img src="img/eye1/platesnshoes.jpg" alt="Plates and Shoes at the Entrance" style="display: block; margin-left: auto; margin-right: auto; width: 70%; height: auto;">
+            <a href="img/eye1/plates.jpg" target="_blank" class="img-link">   
+                <img src="img/eye1/plates.jpg" alt="The Plates" style="display: block; margin-left: auto; margin-right: auto; width: 70%; height: auto;">
+            </a>
+            <a href="img/eye1/shoes.jpg" target="_blank" class="img-link">  
+                <img src="img/eye1/shoes.jpg" alt="The Shoes" style="display: block; margin-left: auto; margin-right: auto; width: 70%; height: auto;">
+            </a>
+            <a href="img/eye1/platesnshoes.jpg"" target="_blank" class="img-link">      
+                <img src="img/eye1/platesnshoes.jpg" alt="Plates and Shoes at the Entrance" style="display: block; margin-left: auto; margin-right: auto; width: 70%; height: auto;">
+            </a>
         </div>
 
         <div class="col-3" style="margin-right: 5%;">
@@ -202,18 +226,26 @@
     </div>
 
     <div class="section">
-        <img src="img/eye1/blurredex.png" alt="The Three Urinals" style="display: block; margin-left: auto; margin-right: auto; height: 110%; width: auto; ">
+        <a href="img/eye1/blurredex.png" target="_blank" class="img-link"> 
+            <img src="img/eye1/blurredex.png" alt="The Three Urinals" style="display: block; margin-left: auto; margin-right: auto; height: 110%; width: auto; ">
+        </a>
     </div>
 
     <div class="flexbox-container" style="margin-left: 5%;">        
         <div class="col-3" style="margin-right: 5%;">
-            <img src="img/eye1/urinalleft.jpg" alt="Urinal Left" style="display: block; margin-left: auto; margin-right: auto;">
+            <a href="img/eye1/urinalleft.jpg" target="_blank" class="img-link"> 
+                <img src="img/eye1/urinalleft.jpg" alt="Urinal Left" style="display: block; margin-left: auto; margin-right: auto;">
+            </a>
         </div>
         <div class="col-3" style="margin-right: 5%;">
-            <img src="img/eye1/urinalmiddle.jpg" alt="Urinal Middle" style="display: block; margin-left: auto; margin-right: auto;">
+            <a href="img/eye1/urinalmiddle.jpg" target="_blank" class="img-link"> 
+                <img src="img/eye1/urinalmiddle.jpg" alt="Urinal Middle" style="display: block; margin-left: auto; margin-right: auto;">
+            </a>
         </div>
         <div class="col-3" style="margin-right: 5%;">
-            <img src="img/eye1/urinalright.jpg" alt="Urinal Right" style="display: block; margin-left: auto; margin-right: auto;">
+            <a href="img/eye1/urinalright.jpg" target="_blank" class="img-link"> 
+                <img src="img/eye1/urinalright.jpg" alt="Urinal Right" style="display: block; margin-left: auto; margin-right: auto;">
+            </a>
         </div>
     </div>
 
@@ -227,10 +259,14 @@
     </div>
     <div class="flexbox-container" style="margin-left: 5%;">        
         <div class="col-3" style="margin-right: 5%;">
-            <img src="img/eye1/piecec.png" alt="The Two Drawings and A Painting" style="display: block; margin-left: auto; margin-right: auto; height: 100%; width: auto; ">
+            <a href="img/eye1/piecec.png" target="_blank" class="img-link"> 
+                <img src="img/eye1/piecec.png" alt="The Two Drawings and A Painting" style="display: block; margin-left: auto; margin-right: auto; height: 100%; width: auto; ">
+            </a>
         </div>
         <div class="col-3" style="margin-right: 5%;">
-            <img src="img/eye1/portrait.jpg" alt="Portrait" style="display: block; margin-left: auto; margin-right: auto;">
+            <a href="img/eye1/portrait.jpg" target="_blank" class="img-link"> 
+                <img src="img/eye1/portrait.jpg" alt="Portrait" style="display: block; margin-left: auto; margin-right: auto;">
+            </a>
         </div>
     </div>
 
@@ -251,11 +287,17 @@
     </div>
     <div class="flexbox-container" style="margin-left: 5%;">        
         <div class="col-3" style="margin-right: 5%;">
-            <img src="img/eye1/jimbo.jpg" alt="Portrait" style="display: block; margin-left: auto; margin-right: auto;">
-            <img src="img/eye1/flyer.jpg" alt="The Flyer" style="display: block; margin-left: auto; margin-right: auto; width: auto; height: auto; ">
+            <a href="img/eye1/jimbo.jpg" target="_blank" class="img-link"> 
+                <img src="img/eye1/jimbo.jpg" alt="Portrait" style="display: block; margin-left: auto; margin-right: auto;">
+            </a>
+            <a href="img/eye1/flyer.jpg" target="_blank" class="img-link"> 
+                <img src="img/eye1/flyer.jpg" alt="The Flyer" style="display: block; margin-left: auto; margin-right: auto; width: auto; height: auto; ">
+            </a>
         </div>
         <div class="col-3" style="margin-right: 5%;">
-            <img src="img/eye1/musflyer.jpg" alt="Flyer at the museum" style="display: block; margin-left: auto; margin-right: auto;">
+            <a href="img/eye1/musflyer.jpg" target="_blank" class="img-link"> 
+                <img src="img/eye1/musflyer.jpg" alt="Flyer at the museum" style="display: block; margin-left: auto; margin-right: auto;">
+            </a>
         </div>
     </div>
 
@@ -273,10 +315,16 @@
 
     <div class="flexbox-container" style="margin-left: 5%; justify-content: space-evenly;">
         <div class="container">
-            <img src="img/eye1/paper.jpg" alt="Paper" style="display: block; margin-left: auto; margin-right: auto; width: 70%; height: auto;">
-            <img src="img/eye1/barstool.png" alt="Instagram Post" style="display: block; margin-left: auto; float: left; width: 80%; height: 300%; width: auto;">
-            <img src="img/eye1/paper2.jpg" alt="Paper2" style="display: block; margin-left: auto; margin-right: auto; width: 70%; height: auto;">
-        </div>
+            <a href="img/eye1/paper.jpg" target="_blank" class="img-link"> 
+                <img src="img/eye1/paper.jpg" alt="Paper" style="display: block; margin-left: auto; margin-right: auto; width: 70%; height: auto;">
+            </a>
+            <a href="img/eye1/barstool.png" target="_blank" class="img-link"> 
+                <img src="img/eye1/barstool.png" alt="Instagram Post" style="display: block; margin-left: auto; float: left; width: 80%; height: 300%; width: auto;">
+            </a>
+            <a href="img/eye1/paper2.jpg" target="_blank" class="img-link"> 
+                <img src="img/eye1/paper2.jpg" alt="Paper2" style="display: block; margin-left: auto; margin-right: auto; width: 70%; height: auto;">
+            </a>
+            </div>
     </div>
 
 </body>
