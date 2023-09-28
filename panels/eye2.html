@@ -4,17 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room 4-308-D</title>
+    <title>The Elmyr de Hory Exhibit</title>
     <style>
         /* Basic styling for the template */
         .section {
             padding: 20px;
             margin-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
+            /* border-bottom: 1px solid #e0e0e0; */
+            display: flex;
+            align-items: center;
+        }
+
+        .section p {
+            margin-left: 10%;
+            margin-right: 10%;
+            line-height: 1.5;
         }
 
         .section img {
-            max-width: 100%;
+            width: 50%;
+            /*max-width: 100%; */
             height: auto;
         }
 
@@ -34,34 +43,265 @@
         .gallery img:hover {
             transform: scale(1.1);
         }
+
+        h2 {
+            text-align: left;
+            /* font: 'PixelOperatorMonoHB'; */
+            border-bottom: 2px solid #868686;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            margin: 25px;
+        }
+
+        h3 {
+            text-align: left;
+            /* font: 'PixelOperatorMonoHB'; */
+            padding-right: 5px;
+            white-space: nowrap; 
+            color: #cacaca;
+        }
+
+        .subtitle {
+            font-size: smaller;
+            color: #666;
+            text-align: left;
+            margin-left: 45px;
+        }
+
+        a:link {
+            /* font: 'PixelOperatorMonoHB8'; */
+            color: blue;
+            background-color: grey;
+            text-decoration: underline;
+        }
+
+        .wiki-quote {
+            border-left: 2px solid #a2a9b1; /* Typical Wikipedia border color for blockquotes */
+            margin: 1.5em 2em;
+            padding: 0.5em 2em;
+            font-style: italic;
+            color: #cacaca;
+        }
+
+        smallest {
+            font-size: 10px;
+            opacity: .4;
+        }
+
+        .flexbox-container {
+            display: flex;
+            justify-content: space-between;
+            flex-flow: row nowrap;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+ 
+        .container img {
+            width: 200px;
+            height: 200px;
+            padding: 3px;
+            margin-left: 3px;
+        }
+
+        .line {
+            border-bottom: 2px solid #868686;
+            width: 50%;
+            margin:0 auto;
+        }
+
+        .img-link img {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .img-link:hover img {
+            transform: scale(1.05); /* Subtle enlargement */
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.6); /* Subtle glow */
+        }
+
+        a.img-link {
+            background: none;
+            display: inline-block;
+        }
+
+        .flex-container {
+            display: flex;
+            align-items: stretch;
+        }
+
+        .flex-container .img-link {
+            flex: 0 0 30%; /* This sets the base width of the image container to 40% */
+            display: flex; /* This makes the anchor tag a flex container */
+            justify-content: center; /* This centers the image horizontally */
+            align-items: center; /* This centers the image vertically */
+        }
+
+        .flex-container img {
+            max-width: 100%; /* This ensures the image doesn't overflow its container */
+            max-height: 100%; /* This ensures the image doesn't become too tall */
+        }
+
+        .flex-container .wiki-quote {
+            flex: 1; /* This ensures that the blockquote takes the remaining space */
+            overflow: hidden;
+            padding: 0 2%; /* Optional: Adds a little spacing between the image and the quote */
+        }
+
     </style>
 </head>
 
 <body>
 
-    <!-- Section 1 with placeholder image -->
+    <h2>Room 4-308-D </h2>
+    <p class="subtitle" style="font-size: 70%;">Eye 2 - Graphite on paper, 3 x 3 inches. July, 2023. </p>
+    <div class="section flex-container">
+        <p style="margin-left: 5%;">This Wikipedia Eye records <b>Room 4-308-D</b>, in a certain student living 
+            community in Tallahassee. It documents the birthplace of the concept of the Wikipedia Eye.<br><br>
+            This Eye relies solely on photographic documentation and the primary source that documents its existence (this website).
+            Whether or not this Wikipedia Eye is still in exhibition is currently unknown.
+            <br> <br> Click on any image to see it in full size.
+        </p>
+        <a href="img\eye2\roomfirstday.jpg" target="_blank" class="img-link">
+            <img src="img\eye2\roomfirstday.jpg" alt="Room First Day">
+        </a> 
+    </div>
+
+    <h2>Eye Placement and Commentary</h2>
+    <p style="margin-right: 5%; margin-left: 5%;">This Eye was placed in a secret location inside the room the day prior
+    to move-out day, July 31st, 2023.</p>
     <div class="section">
-        <h2>Section 1</h2>
-        <img src="https://via.placeholder.com/500x300" alt="Placeholder Image 1">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum.</p>
+        <a href="img/eye2/eyeonfurniture.jpg" target="_blank" class="img-link">
+            <img src="img/eye2/eyeonfurniture.jpg" alt="Eye Photo">
+        </a>      
+        <blockquote class="wiki-quote" style="line-height: 1.5; display: block; margin-top: 10px; ">
+          "The thought process here was set in motion by the Buddhist concept of <a href="https://en.wikipedia.org/wiki/Sa%E1%B9%83s%C4%81ra">Samsara</a>. The belief that
+          life is a set of cycles, and as long as we aren't willing or able to transcend them, we are forever
+          forced to wander in mundane existence. <br><br>
+          
+          To me, there is nothing that reflects this more than the cycle
+          of occupancy of a student room in a college town. Every couple of months someone new inhabits this place,
+          and the same things will happen for as long as the appartment exists. Rent will rise, the tenant will do the same
+          mundane tasks as the one before, there will be breakups, there will be sleepless nights, and there will be
+          days where they will sleep through their alarms, always doomed to worry about what comes next.<br><br>
+          With this Eye, I can transcend just a little bit. Even if this Eye is not found, for as long as it inhabits
+          this place, it will be a presence in the lives of the people that come next. <br><br>
+           And even if it's already gone, just by placing this Eye here and recording its existence,  I have already forged a more enduring connection to this room,
+           and the people that will inhabit it next.<br><br>
+           Now, when other people find out about the existence of this Eye (and what it saw), it's as if they are looking through it, back in time.<br><br>
+          <span class="quote-author">- Daniel Gandelman, when asked about the meaning of this particular Wikipedia Eye</span>
+        </blockquote>
     </div>
 
-    <!-- Section 2 with placeholder image -->
     <div class="section">
-        <h2>Section 2</h2>
-        <img src="https://via.placeholder.com/500x300" alt="Placeholder Image 2">
-        <p>Donec sit amet felis orci. Fuscus suscipit libero efficitur sinkvamus alomat a nisl.</p>
+        <a href="img/eye1/inprogress.jpg" target="_blank" class="img-link">
+            <img src="img/eye1/inprogress.jpg" alt="Eye 1 in Progress" style="display: block; margin-left: auto; margin-right: auto;">
+        </a>
     </div>
 
-    <!-- Gallery at the bottom -->
-    <div class="gallery">
-        <img src="https://via.placeholder.com/150" alt="Gallery Image 1">
-        <img src="https://via.placeholder.com/150" alt="Gallery Image 2">
-        <img src="https://via.placeholder.com/150" alt="Gallery Image 3">
-        <img src="https://via.placeholder.com/150" alt="Gallery Image 4">
-        <img src="https://via.placeholder.com/150" alt="Gallery Image 5">
+    <h2>See What the Eye Saw - Paintings on The Wall</h2>
+    <div class="section">
+        <p style="margin-left: 5%;"> The Elmyr de Hory exhibit is made up of three pieces, each a composite of three sub-pieces (a total of three pseudo-tryptichs), 
+            a number of related peripheral objects (including flyers), and a stand-alone painting.
+            An illustration is provided to the right as a map for the placement of the parts of this exhibit that were displayed inside the museum. <br><br>
+            Each piece is presented along with the same information as displayed in their corresponding museum placques. Any additional information 
+            is presented in brackets, and any piece from a neighbouring exhibit has been blurred for privacy's sake.
+        </p>
     </div>
 
-</body>
+    <div class="line"></div>
 
-</html>
+    <div class="section">
+        <h3 style="margin:0 auto;">Piece A</h3>
+        <p class="subtitle" style="font-size: 70%; margin:0 auto;">Elmyr De Hory <br> (Budapest, HU) <br><br> <b>Unknown</b> <br> 2023 <br> Acrylic and ink on three paper plates [and two worn shoes] </p>
+    </div>
+
+    <div class="flexbox-container" style="margin-left: 5%; justify-content: space-evenly;">
+        <div class="container">
+            <a href="img/eye1/plates.jpg" target="_blank" class="img-link">   
+                <img src="img/eye1/plates.jpg" alt="The Plates" style="display: block; margin-left: auto; margin-right: auto; width: 70%; height: auto;">
+            </a>
+            <a href="img/eye1/shoes.jpg" target="_blank" class="img-link">  
+                <img src="img/eye1/shoes.jpg" alt="The Shoes" style="display: block; margin-left: auto; margin-right: auto; width: 70%; height: auto;">
+            </a>
+            <a href="img/eye1/platesnshoes.jpg"" target="_blank" class="img-link">      
+                <img src="img/eye1/platesnshoes.jpg" alt="Plates and Shoes at the Entrance" style="display: block; margin-left: auto; margin-right: auto; width: 70%; height: auto;">
+            </a>
+        </div>
+
+        <div class="col-3" style="margin-right: 5%;">
+            <a href="img/eye1/platesnshoes.jpg"" target="_blank" class="img-link">     
+                <img src="img/eye1/shoe.jpg" alt="Shoe Closeup" style="display: block; margin-left: auto; float: left; width: 90%; height: auto; padding-top: 25%;">
+            </a>
+            </div>
+    </div>
+
+    <div class="line"></div>
+
+    <div class="section">
+        <h3 style="margin:0 auto;">Piece B</h3>
+        <p class="subtitle" style="font-size: 70%; margin:0 auto;">Elmyr De Hory <br> (Budapest, HU) <br><br> <b>Unknown</b> <br> 2023 <br> Acrylic on paper [on canvas] </p>
+    </div>
+
+    <div class="section">
+        <a href="img/eye1/blurredex.png" target="_blank" class="img-link"> 
+            <img src="img/eye1/blurredex.png" alt="The Three Urinals" style="display: block; margin-left: auto; margin-right: auto; height: 110%; width: auto; ">
+        </a>
+    </div>
+
+    <div class="flexbox-container" style="margin-left: 5%;">        
+        <div class="col-3" style="margin-right: 5%;">
+            <a href="img/eye1/urinalleft.jpg" target="_blank" class="img-link"> 
+                <img src="img/eye1/urinalleft.jpg" alt="Urinal Left" style="display: block; margin-left: auto; margin-right: auto;">
+            </a>
+        </div>
+        <div class="col-3" style="margin-right: 5%;">
+            <a href="img/eye1/urinalmiddle.jpg" target="_blank" class="img-link"> 
+                <img src="img/eye1/urinalmiddle.jpg" alt="Urinal Middle" style="display: block; margin-left: auto; margin-right: auto;">
+            </a>
+        </div>
+        <div class="col-3" style="margin-right: 5%;">
+            <a href="img/eye1/urinalright.jpg" target="_blank" class="img-link"> 
+                <img src="img/eye1/urinalright.jpg" alt="Urinal Right" style="display: block; margin-left: auto; margin-right: auto;">
+            </a>
+        </div>
+    </div>
+
+    <br><br>
+
+    <div class="line"></div>
+
+    <div class="section">
+        <h3 style="margin:0 auto;">Piece C</h3>
+        <p class="subtitle" style="font-size: 70%; margin:0 auto;">Elmyr De Hory <br> (Budapest, HU) <br><br> <b>Unknown</b> <br> 2023 <br> Graphite on paper and acrylic on canvas</p>
+    </div>
+    <div class="flexbox-container" style="margin-left: 5%;">        
+        <div class="col-3" style="margin-right: 5%;">
+            <a href="img/eye1/piecec.png" target="_blank" class="img-link"> 
+                <img src="img/eye1/piecec.png" alt="The Two Drawings and A Painting" style="display: block; margin-left: auto; margin-right: auto; height: 100%; width: auto; ">
+            </a>
+        </div>
+        <div class="col-3" style="margin-right: 5%;">
+            <a href="img/eye1/portrait.jpg" target="_blank" class="img-link"> 
+                <img src="img/eye1/portrait.jpg" alt="Portrait" style="display: block; margin-left: auto; margin-right: auto;">
+            </a>
+        </div>
+    </div>
+
+    <br><br>
+
+    
+    <div class="line"></div>
+
+    <div class="section">
+        <h3 style="margin:0 auto;">Piece D: The Meta-Exhibition</h3>
+        <p class="subtitle" style="font-size: 70%; margin:0 auto;">[Daniel Gandelman] <br> [(Caracas, VE)] <br><br> [<b>Jim Morrison in Garnet and Gold</b>] <br> [2023] <br> [Printed flyers and acrylic on canvas]</p>
+    </div>
+    <div class="section">
+    <p style="margin-left: 5%;"> The following works were not displayed inside the museum. The flyer was distributed around the FSU campus,
+        and the stand-alone painting referred in the flyer is currently exhibited, (and is part of the collection of) the Cap City Video Lounge 
+        at Railroad Square in Tallahasse.<br><br>
+    </p>
+    </div>
