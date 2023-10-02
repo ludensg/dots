@@ -6,6 +6,9 @@ const isMobile = window.innerWidth <= 800;  // You can adjust this value based o
 let selectedImage = null;
 
 
+const screenWidth = screen.width;
+const screenHeight = screen.height;
+
 // Reference resolution
 const REF_WIDTH = 1920;
 const REF_HEIGHT = 1080;
@@ -25,15 +28,20 @@ const REF_SPACING = isLargeScreen ? 19: 11;   // Spacing between dots at referen
 
 // Calculate scaling factor
 const scaleFactor = 1.2; // window.innerWidth / REF_WIDTH;
+const windowFactor = screen.innerWidth / REF_WIDTH;
+
 
 //const spacingX = canvas.width / grid_size;
 //const spacingY = canvas.height / grid_size;
 
 const DOT_RADIUS = REF_DOT_RADIUS * scaleFactor;
 
+
+const MIN_SPACING = 15;
+
 // Adjust grid size to maintain consistent spacing
-const spacingX = REF_SPACING * scaleFactor;
-const spacingY = REF_SPACING * scaleFactor;
+const spacingX = Math.max(MIN_SPACING, REF_SPACING * scaleFactor);
+const spacingY = Math.max(MIN_SPACING, REF_SPACING * scaleFactor);
 const grid_size_x = spacingX;
 const grid_size_y = spacingY;
 
@@ -367,8 +375,8 @@ function handleResize() {
     const DOT_RADIUS = REF_DOT_RADIUS * scaleFactor;  
     
     // Adjust grid size to maintain consistent spacing
-    const spacingX = REF_SPACING * scaleFactor;
-    const spacingY = REF_SPACING * scaleFactor;
+    const spacingX = Math.max(MIN_SPACING, REF_SPACING * scaleFactor);
+    const spacingY = Math.max(MIN_SPACING, REF_SPACING * scaleFactor);
 
     // Calculate the speed scale factor based on the current window size
     speedScaleFactor = SPEED_MULTIPLIER * Math.sqrt((window.innerWidth * window.innerHeight) / (REF_WIDTH * REF_HEIGHT));
