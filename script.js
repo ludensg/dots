@@ -96,7 +96,7 @@ const images = [
     reverseDirection: false
     },
 
-    { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye2/pic1.png', angle: 0, id: 'eye2', bubbleText: 'Room 4-308-D',
+    { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye2/eye2editSMALL.png', angle: 0, id: 'eye2', bubbleText: 'Room 4-308-D',
     isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null, isGif: false,
 
     floatAmplitude: 10,  // The maximum distance the image will float up or down
