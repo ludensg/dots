@@ -290,8 +290,8 @@ function drawBottomLeftText1() {
 }
 
 function drawBottomLeftText2() {
-    const textBefore = "For more info click on ";
-    const coloredText = "an eye -> its title";
+    const textBefore = "For more info ";
+    const coloredText = "click on an eye -> its title";
     const xPos = 10;  // Adjust for desired x position
     const yPos = canvas.height - 20;  // Adjust for desired y position (taking into account the font size)
 
@@ -303,6 +303,16 @@ function drawBottomLeftText2() {
 
     // Calculate the width of the text before the colored part to position the colored text correctly
     const textBeforeWidth = ctx.measureText(textBefore).width;
+
+     // Calculate the width and height of the coloredText for the background rectangle
+    const coloredTextWidth = ctx.measureText(coloredText).width;
+    const coloredTextHeight = parseInt(ctx.font, 10);  // Extract font size from font string
+    
+     // Draw the background for the colored text
+    const padding = 2;  // Adjust for desired padding around the text
+    ctx.fillStyle = "#343232";  // Adjust for desired background color
+    ctx.fillRect(xPos + textBeforeWidth - padding, yPos - coloredTextHeight + padding, coloredTextWidth + 2 * padding, coloredTextHeight);
+    
 
     // Draw the colored text in a not-too-bright yellow
     ctx.fillStyle = "#dcd15a";  // This is a muted yellow color, adjust if needed
