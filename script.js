@@ -460,6 +460,7 @@ document.getElementById('manifestoButton').addEventListener('click', function() 
             }); 
             // Show the return text
             document.getElementById('closeManifesto').style.display = 'block';
+            document.getElementById('closeManifesto').style.zIndex = '9999999';
         }
 
         if(manifestoIsUp)
@@ -613,6 +614,7 @@ canvas.addEventListener('click', (e) => {
         }
                 // Show the return text
             document.getElementById('returnText').style.display = 'block';
+            document.getElementById('returnText').style.zIndex = '9999999';
         }
     }
 
