@@ -956,10 +956,10 @@ function animate() {
             let mobileScaleFactorH = 1;
             if (isMobile) {
                 mobileScaleFactor = window.innerWidth / REF_WIDTH; 
-                mobileScaleFactor = Math.max(0.5, mobileScaleFactor); // Ensure it doesn't get too small. Adjust as needed.
+                mobileScaleFactor = Math.max(0.7, mobileScaleFactor); // Ensure it doesn't get too small. Adjust as needed.
 
                 mobileScaleFactorH = window.innerHeight / REF_HEIGHT; 
-                mobileScaleFactorH = Math.max(0.5, mobileScaleFactor); // Ensure it doesn't get too small. Adjust as needed.
+                mobileScaleFactorH = Math.max(0.7, mobileScaleFactor); // Ensure it doesn't get too small. Adjust as needed.
             }
             const adjustedImgHeight = imgHeight * mobileScaleFactorH;
             
