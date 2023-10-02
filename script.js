@@ -448,7 +448,7 @@ document.getElementById('manifestoButton').addEventListener('click', function() 
     .then(response => response.text())
     .then(data => {
         document.getElementById('manifesto-content').innerHTML = data;
-        
+        document.getElementById('manifesto-content').style.display = 'block';
         if(!manifestoIsUp)// Use anime.js to slide the manifesto-content div up
         {
             anime({
@@ -470,7 +470,9 @@ document.getElementById('manifestoButton').addEventListener('click', function() 
                 duration: 1500,
                 easing: 'easeOutExpo'
             });
-
+            
+            //de-render manifestopanel
+            document.getElementById('manifesto-content').style.display = 'none';
             // Hide the return text
             document.getElementById('closeManifesto').style.display = 'none';
         }
@@ -488,6 +490,9 @@ document.getElementById('closeManifesto').addEventListener('click', function() {
         duration: 1500,
         easing: 'easeOutExpo'
     });
+
+    //de-render manifestopanel
+    document.getElementById('manifesto-content').style.display = 'none';
 
     // Hide the return text
     document.getElementById('closeManifesto').style.display = 'none';
@@ -596,6 +601,7 @@ canvas.addEventListener('click', (e) => {
             });
         } else {
             // If it's not a mobile device, use the original animation
+            document.getElementById('panel').style.display = 'block';
             anime({
                 targets: '#panel',
                 right: '0%',
@@ -815,6 +821,8 @@ document.getElementById('returnText').addEventListener('click', function() {
 
     clearDynamicContent();
 
+    //de-render panel
+    document.getElementById('panel').style.display = 'block';
     // Hide the return text
     document.getElementById('returnText').style.display = 'none';
 });
