@@ -449,6 +449,7 @@ document.getElementById('manifestoButton').addEventListener('click', function() 
     .then(data => {
         document.getElementById('manifesto-content').innerHTML = data;
         document.getElementById('manifesto-content').style.display = 'block';
+        document.getElementById('manifesto-content').style.zIndex = '999999';
         if(!manifestoIsUp)// Use anime.js to slide the manifesto-content div up
         {
             anime({
@@ -521,6 +522,7 @@ canvas.addEventListener('click', (e) => {
             .then(data => {
                 matrixEffectActive = false;
                 const contentContainer = document.getElementById('dynamic-content');
+                contentContainer.style.zIndex = '999999';
                 contentContainer.innerHTML = data;
 
             })
@@ -822,7 +824,7 @@ document.getElementById('returnText').addEventListener('click', function() {
     clearDynamicContent();
 
     //de-render panel
-    document.getElementById('panel').style.display = 'block';
+    document.getElementById('panel').style.display = 'none';
     // Hide the return text
     document.getElementById('returnText').style.display = 'none';
 });
