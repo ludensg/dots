@@ -406,10 +406,26 @@ function handleResize() {
 // Attach the resize event listener
 window.addEventListener('resize', handleResize);
 
+let lastPulseTime = Date.now();
+
 function drawSpeechBubble(x, y, width, height, text) {
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
     const padding = 10;  // Adjust for desired padding from screen edges
+
+    const pulseFrequency = 2000; // Pulse every x000 miliseconds
+    const currentTime = Date.now();
+
+    // Make the bubble bigger on mobile
+    if (isMobile) {
+        width += 20;  // Adjust as needed
+        height += 10; // Adjust as needed
+    }
+
+        // Breathing effect
+    const breathSize = Math.sin(currentTime / 300) * 2.5; // Adjust numbers for desired effect
+    width += breathSize;
+    height += breathSize;
 
     // Adjust x if the bubble goes off the right edge of the screen
     if (x + width > screenWidth) {
@@ -421,12 +437,24 @@ function drawSpeechBubble(x, y, width, height, text) {
         y = screenHeight - height - padding;
     }
 
+    
     ctx.fillStyle = 'white';
     ctx.strokeStyle = 'grey';
     ctx.lineWidth = 2;
 
-    const radius = 10;  // Adjust for desired corner roundness
+    // Glow effect on hover
+    ctx.shadowColor = 'rgba(251, 254, 189, 0.8)';
+    ctx.shadowBlur = 10;
 
+    if (currentTime - lastPulseTime < 300) { // Adjust 500 to control the duration of the flickering
+        ctx.shadowColor = 'rgba(248, 254, 136, 0.8)';
+        ctx.shadowBlur = Math.random() * (20 - 8) + 8; // Flickering effect 
+    } else if (currentTime - lastPulseTime > pulseFrequency) {
+        lastPulseTime = currentTime;
+    }
+
+    
+    const radius = 10;  // Adjust for desired corner roundness
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
     ctx.arcTo(x + width, y, x + width, y + height, radius); // top right corner
@@ -437,9 +465,31 @@ function drawSpeechBubble(x, y, width, height, text) {
     ctx.fill();
     ctx.stroke();
 
+    // Reset shadow for other drawings
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+
+        // Quick pulse-glow every 4 seconds
+    if (currentTime - lastPulseTime < 10) { // Adjust 500 to control the duration of the flickering
+        const flicker = Math.random() > 0.5 ? 0 : (Math.random() * 90); // Adjust 20 to control the intensity of the flickering
+        ctx.shadowBlur = flicker;
+        ctx.shadowColor = `rgba(245, 255, 70, 0.8, ${flicker * 20})`; // Sync the color intensity with the blur
+    } else if (currentTime - lastPulseTime > pulseFrequency) {
+        lastPulseTime = currentTime;
+    }
+
+    // Adjust font size for breathing effect
+    let fontSize = 12; // Base font size
+    if (isMobile) {
+        fontSize = 14; // Base font size for mobile
+    }
+
+    fontSize += breathSize/6; // Adjust font size based on breathing effect
+
     ctx.fillStyle = 'black';
-    ctx.font = '12px PixelOperatorMono';
+    ctx.font = `${fontSize}px PixelOperatorMono`; // Set font size dynamically
     ctx.fillText(text, x + (width - ctx.measureText(text).width) / 2, y + height / 2 + 5); // Center the text
+
 }
 
 
