@@ -884,21 +884,26 @@ canvas.addEventListener('mouseup', (e) => {
 
 
 function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
+    const contentContainer = document.getElementById('dynamic-content');
+    const scrollDuration = 1000;
+    const scrollStep = -contentContainer.scrollTop / (scrollDuration / 15),
+          scrollInterval = setInterval(() => {
+              if (contentContainer.scrollTop !== 0) {
+                  contentContainer.scrollBy(0, scrollStep);
+              } else {
+                  clearInterval(scrollInterval);
+              }
+          }, 15);
 }
 
 document.getElementById('returnText').addEventListener('click', function() {
+    scrollToTop();
     if (selectedImage) {
         selectedImage.x = selectedImage.initialX;
         selectedImage.y = selectedImage.initialY;
         selectedImage.angle = selectedImage.initialAngle;
         selectedImage = null;  // Deselect the image
     }
-
-    scrollToTop();
 
     // Check if it's a mobile device
     if (isMobile) { 
