@@ -5,6 +5,7 @@ canvas.height = window.innerHeight;
 const isMobile = window.innerWidth <= 800;  // You can adjust this value based on your needs
 let selectedImage = null;
 
+const generalOpaqueness = .5;
 
 const screenWidth = screen.width;
 const screenHeight = screen.height;
@@ -118,7 +119,11 @@ const images = [
     bubbleX: 0,  // Initial position of the bubble
     bubbleOpacity: 0,  // Initial opacity of the bubble
     showBubble: false,  // Flag to determine if the bubble should be shown
-    reverseDirection: false
+    reverseDirection: false,
+    isOpaque: false,
+    opacity: generalOpaqueness,
+    timeoutId: null,
+    isHovered: false,
     },
 
     { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye2/eye2editSMALL.png', angle: 0, id: 'eye2', bubbleText: 'Room 4-308-D',
@@ -137,7 +142,11 @@ const images = [
     bubbleX: 0,  // Initial position of the bubble
     bubbleOpacity: 0,  // Initial opacity of the bubble
     showBubble: false,  // Flag to determine if the bubble should be shown
-    reverseDirection: false
+    reverseDirection: false,
+    isOpaque: generalOpaqueness,
+    opacity: .5,
+    timeoutId: null,
+    isHovered: false,
     },
 
     { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eyexedit.jpg', angle: 0, id: 'eyex', bubbleText: '???',
@@ -156,7 +165,11 @@ const images = [
     bubbleX: 0,  // Initial position of the bubble
     bubbleOpacity: 0,  // Initial opacity of the bubble
     showBubble: false,  // Flag to determine if the bubble should be shown
-    reverseDirection: true
+    reverseDirection: true,
+    isOpaque: false,
+    opacity: generalOpaqueness,
+    timeoutId: null,
+    isHovered: false,
     },
 
     { x: 100, y: 100, vx: -1, vy: -1, src: 'img/meninas.gif', angle: 0, id: 'meninas', bubbleText: '???',
@@ -175,7 +188,11 @@ const images = [
     bubbleX: 0,  // Initial position of the bubble
     bubbleOpacity: 0,  // Initial opacity of the bubble
     showBubble: false,  // Flag to determine if the bubble should be shown
-    reverseDirection: true
+    reverseDirection: true,
+    isOpaque: false,
+    opacity: 1,
+    timeoutId: null,
+    isHovered: false,
     },
 
     // ... add more images
@@ -720,6 +737,11 @@ canvas.addEventListener('mousedown', (e) => {
             lastX = clickedX;
             lastY = clickedY;
 
+            if(!img.isOpaque)
+            {
+                img.isOpaque = !img.isOpaque; // Toggle the opacity state of the clicked image
+            }
+
             // If the image is floating when it's dragged, stop the floating effect
             if (img.isFloating) {
                 img.isFloating = false;
@@ -753,6 +775,9 @@ canvas.addEventListener('mousemove', (e) => {
         }        
 
         for (const img of images) {
+
+            img.isHovered = mouseX > img.x && mouseX < img.x + imgWidth && mouseY > img.y && mouseY < img.y + imgHeight;
+
             if (img.isDragging) {
                 const dx = mouseX - lastX;
                 const dy = mouseY - lastY;
@@ -826,7 +851,7 @@ canvas.addEventListener('mouseup', (e) => {
                 img.returnTimeout = setTimeout(() => {
                     img.isFloating = false;
                     img.isAnimatingBack = true;  // Set the flag
-
+                    img.isOpaque = true;
                     // Cancel any ongoing animations for the image
                     anime.remove(img);
 
@@ -851,8 +876,6 @@ canvas.addEventListener('mouseup', (e) => {
     lastX = null;
     lastY = null;
 });
-
-
 
 
 //
@@ -1051,9 +1074,19 @@ function animate() {
             ctx.shadowOffsetY = 5;
 
             
-            // Before drawing the image, ensure global alpha is 1
-            ctx.globalAlpha = 1;
+            // Before drawing the image, ensure global alpha is appropriate
+            if (img.isOpaque) {
+                img.opacity += (1 - img.opacity) * 0.1; // Smooth transition to 100% opacity
+            } else {
+                img.opacity += (generalOpaqueness - img.opacity) * 0.1; // Smooth transition to 80% opacity
+            }
 
+
+            ctx.globalAlpha = img.opacity;
+
+
+
+            ctx.globalAlpha = img.opacity;
             ctx.drawImage(img.element, img.x, img.y, drawWidth, adjustedImgHeight);
 
             ctx.shadowColor = 'transparent';
@@ -1074,7 +1107,7 @@ function animate() {
                 gifElement.style.display = 'block';
             }
 
-
+            ctx.globalAlpha = 1; // Reset the opacity to default after drawing
         }
 
         if (img === selectedImage) {
@@ -1132,6 +1165,7 @@ function animate() {
                 //img.angle += 0.01;
                 const directionMultiplier = img.reverseDirection ? -1 : 1;
                 img.angle += directionMultiplier * BASE_SPEED * SPEED_MULTIPLIER *  speedScaleFactor;
+                img.isOpaque = false; // Reset opacity after inactivity
 
             }
             
