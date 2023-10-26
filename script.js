@@ -606,68 +606,6 @@ canvas.addEventListener('click', (e) => {
     let clickedOnBubble = false;
 
     for (const img of images) {
-        if (isPointInsideImage(clickedX, clickedY, img)) {
-            const contentURL = 'panels/' + img.id + '.html';
-            fetch(contentURL)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Content not found');
-                }
-                return response.text();
-            })
-            .then(data => {
-                matrixEffectActive = false;
-                const contentContainer = document.getElementById('dynamic-content');
-                contentContainer.style.zIndex = '999999';
-                contentContainer.innerHTML = data;
-
-            })
-            .catch(error => {
-                console.error('Error fetching content:', error);
-                matrixEffectActive = true;
-                generateMatrixEffect();
-            });
-            clickedOnImage = true;
-            break;
-        }
-
-        // Check if clicked inside a bubble
-        const bubbleLeft = img.x + img.bubbleX;
-        const textWidth = ctx.measureText(img.bubbleText).width;
-        const padding = 20;  // Adjust for desired padding on each side of the text
-        const bubbleWidth = textWidth + 2 * padding;
-        const bubbleRight = bubbleLeft + bubbleWidth;
-        const bubbleTop = img.y - 30;
-        const bubbleBottom = bubbleTop + 28;
-
-        if (clickedX >= bubbleLeft && clickedX <= bubbleRight && clickedY >= bubbleTop && clickedY <= bubbleBottom) {
-            clickedOnBubble = true;
-            break;
-        }
-    }
-
-    if (!clickedOnImage && !clickedOnBubble) {
-        for (const img of images) {
-            img.isFloating = false;
-            img.showBubble = false;  // Hide the bubble if it's shown
-            img.bubbleOpacity = 0;  // Reset bubble opacity
-
-            // Calculate target position on the ellipse
-            const targetX = canvas.width / 2 + img.ellipseWidth * Math.cos(img.angle) - imgWidth / 2;
-            const targetY = canvas.height / 2 + img.ellipseHeight * Math.sin(img.angle) - imgHeight / 2;
-
-            // Use anime.js to smoothly transition the image to the target position
-            anime({
-                targets: img,
-                x: targetX,
-                y: targetY,
-                duration: 1000,
-                easing: 'easeOutExpo'
-            });
-        }
-    }
-
-    for (const img of images) {
         const bubbleLeft = img.x + img.bubbleX;
         const bubbleRight = bubbleLeft + ctx.measureText(img.bubbleText).width + 20;  // 20 is the padding
         const bubbleTop = img.y - 30;
@@ -676,6 +614,7 @@ canvas.addEventListener('click', (e) => {
         if (img.showBubble && clickedX >= bubbleLeft && clickedX <= bubbleRight && clickedY >= bubbleTop && clickedY <= bubbleBottom) {
             transitioning = true;
             img.showBubble = false;
+            clickedOnBubble = true;
 
             // Animate the clicked image to the center of the remaining space
             anime({
@@ -710,6 +649,71 @@ canvas.addEventListener('click', (e) => {
                 // Show the return text
             document.getElementById('returnText').style.display = 'block';
             document.getElementById('returnText').style.zIndex = '9999999';
+        }
+    }
+
+    // If not clicked on a bubble, check if clicked inside an image
+    if (!clickedOnBubble) {
+        for (const img of images) {
+            if (isPointInsideImage(clickedX, clickedY, img)) {
+                const contentURL = 'panels/' + img.id + '.html';
+                fetch(contentURL)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Content not found');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    matrixEffectActive = false;
+                    const contentContainer = document.getElementById('dynamic-content');
+                    contentContainer.style.zIndex = '999999';
+                    contentContainer.innerHTML = data;
+
+                })
+                .catch(error => {
+                    console.error('Error fetching content:', error);
+                    matrixEffectActive = true;
+                    generateMatrixEffect();
+                });
+                clickedOnImage = true;
+                break;
+            }
+
+            // Check if clicked inside a bubble
+            const bubbleLeft = img.x + img.bubbleX;
+            const textWidth = ctx.measureText(img.bubbleText).width;
+            const padding = 20;  // Adjust for desired padding on each side of the text
+            const bubbleWidth = textWidth + 2 * padding;
+            const bubbleRight = bubbleLeft + bubbleWidth;
+            const bubbleTop = img.y - 30;
+            const bubbleBottom = bubbleTop + 28;
+
+            if (clickedX >= bubbleLeft && clickedX <= bubbleRight && clickedY >= bubbleTop && clickedY <= bubbleBottom) {
+                clickedOnBubble = true;
+                break;
+            }
+        }
+    }
+
+    if (!clickedOnImage && !clickedOnBubble) {
+        for (const img of images) {
+            img.isFloating = false;
+            img.showBubble = false;  // Hide the bubble if it's shown
+            img.bubbleOpacity = 0;  // Reset bubble opacity
+
+            // Calculate target position on the ellipse
+            const targetX = canvas.width / 2 + img.ellipseWidth * Math.cos(img.angle) - imgWidth / 2;
+            const targetY = canvas.height / 2 + img.ellipseHeight * Math.sin(img.angle) - imgHeight / 2;
+
+            // Use anime.js to smoothly transition the image to the target position
+            anime({
+                targets: img,
+                x: targetX,
+                y: targetY,
+                duration: 1000,
+                easing: 'easeOutExpo'
+            });
         }
     }
 
