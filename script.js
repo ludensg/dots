@@ -607,7 +607,7 @@ canvas.addEventListener('click', (e) => {
 
     for (const img of images) {
         const bubbleLeft = img.x + img.bubbleX;
-        const bubbleRight = bubbleLeft + ctx.measureText(img.bubbleText).width + 20;  // 20 is the padding
+        const bubbleRight = bubbleLeft + ctx.measureText(img.bubbleText).width + 40;  // 20 is the padding
         const bubbleTop = img.y - 30;
         const bubbleBottom = bubbleTop + 28;
 
