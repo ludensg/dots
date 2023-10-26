@@ -61,7 +61,7 @@ let matrixEffectActive = false;
 //DOT GENERATION lOGIC
 const REF_DOT_COUNT_X = Math.ceil(REF_WIDTH / spacingX);
 const REF_DOT_COUNT_Y = Math.ceil(REF_HEIGHT / spacingY);
-const MAX_DOTS = (REF_DOT_COUNT_X * REF_DOT_COUNT_Y); // DOT Cap to prevent slowdowns
+let MAX_DOTS = (REF_DOT_COUNT_X * REF_DOT_COUNT_Y); // DOT Cap to prevent slowdowns
 
 
 const dots = [];
@@ -79,6 +79,23 @@ for (let x = 0; x < canvas.width; x += spacingX) {
     }
     if (dotCount >= MAX_DOTS) {
         break;
+    }
+}
+
+let lastFrameTime = Date.now();
+const performanceThreshold = 1000 / 60; // 60 FPS
+
+function adjustDotsPerformance() {
+    const currentFrameTime = Date.now();
+    const deltaTime = currentFrameTime - lastFrameTime;
+    lastFrameTime = currentFrameTime;
+
+    if (deltaTime > performanceThreshold) {
+        // Performance is below threshold, reduce the number of dots
+        MAX_DOTS = Math.max(MAX_DOTS - 10, 10); // Adjust the decrement value as needed
+    } else {
+        // Performance is acceptable, we can try adding more dots
+        MAX_DOTS = Math.min(MAX_DOTS + 10, REF_DOT_COUNT_X * REF_DOT_COUNT_Y); // Adjust the increment value as needed
     }
 }
 
@@ -423,7 +440,8 @@ function drawSpeechBubble(x, y, width, height, text) {
     }
 
         // Breathing effect
-    const breathSize = Math.sin(currentTime / 300) * 2.5; // Adjust numbers for desired effect
+    //const breathSize = Math.sin(currentTime / 400) * 1.8; // Adjust numbers for desired effect
+    const breathSize = 0;
     width += breathSize;
     height += breathSize;
 
@@ -443,12 +461,12 @@ function drawSpeechBubble(x, y, width, height, text) {
     ctx.lineWidth = 2;
 
     // Glow effect on hover
-    ctx.shadowColor = 'rgba(251, 254, 189, 0.8)';
+    ctx.shadowColor = 'rgba(206, 255, 254, 0.8)';
     ctx.shadowBlur = 10;
 
     if (currentTime - lastPulseTime < 300) { // Adjust 500 to control the duration of the flickering
-        ctx.shadowColor = 'rgba(248, 254, 136, 0.8)';
-        ctx.shadowBlur = Math.random() * (20 - 8) + 8; // Flickering effect 
+        ctx.shadowColor = 'rgba(206, 255, 254, 0.8)';
+        ctx.shadowBlur = Math.random() * (30 - 15) + 15; // Flickering effect 
     } else if (currentTime - lastPulseTime > pulseFrequency) {
         lastPulseTime = currentTime;
     }
@@ -953,7 +971,7 @@ adjustManifestoForMobile()
 let hitbox = {};
 
 function animate() {
-
+    adjustDotsPerformance();
     // 1. Move dots upwards
     for (const dot of dots) {
         dot.y -= dot.speed;
