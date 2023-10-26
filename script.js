@@ -896,8 +896,15 @@ function scrollToTop() {
           }, 15);
 }
 
+function correctScrollPosition() {
+    if (window.scrollY > 0) {
+        window.scrollTo(0, 0);
+    }
+}
+
 document.getElementById('returnText').addEventListener('click', function() {
     scrollToTop();
+    window.addEventListener('scroll', correctScrollPosition);
     if (selectedImage) {
         selectedImage.x = selectedImage.initialX;
         selectedImage.y = selectedImage.initialY;
@@ -935,6 +942,8 @@ document.getElementById('returnText').addEventListener('click', function() {
     document.getElementById('panel').style.display = 'none';
     // Hide the return text
     document.getElementById('returnText').style.display = 'none';
+    // To remove the event listener when it's not needed
+    window.removeEventListener('scroll', correctScrollPosition);
 });
 
 // Function to adjust the returnText styling for mobile
