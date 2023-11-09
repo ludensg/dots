@@ -819,6 +819,59 @@ canvas.addEventListener('mousemove', (e) => {
     }
 });
 
+
+canvas.addEventListener('dblclick', (e) => { 
+    const clickedX = e.clientX;
+    const clickedY = e.clientY;
+
+    for (const img of images) {
+        // Check if the double-click was within the bounds of an image
+        if (clickedX >= img.x && clickedX <= img.x + imgWidth && clickedY >= img.y && clickedY <= img.y + imgHeight) {
+            // Simulate the actions as if the bubble was clicked
+            img.showBubble = false; // Assuming you want to hide the bubble
+            transitioning = true;
+
+            // Animate the clicked image to the center of the remaining space
+            anime({
+                targets: img,
+                x: (canvas.width * 0.25) - (imgWidth / 2),  // Center of the remaining 50% space
+                y: canvas.height / 2 - (imgHeight / 2),  // Vertical center
+                easing: 'easeOutExpo',
+                duration: 1000
+            });
+
+            // Rest of the logic for showing the panel and return text
+            // Check if it's a mobile device
+            if (isMobile) {  
+                // If it's a mobile device, adjust the panel to fill the entire screen
+                document.getElementById('panel').style.display = 'block';
+                anime({
+                    targets: '#panel',
+                    right: '0%',
+                    width: '100%',  // Make the panel's width 100% of the screen width
+                    easing: 'easeOutExpo',
+                    duration: 1000
+                });
+            } else {
+                // If it's not a mobile device, use the original animation
+                document.getElementById('panel').style.display = 'block';
+                anime({
+                    targets: '#panel',
+                    right: '0%',
+                    easing: 'easeOutExpo',
+                    duration: 1000
+                });
+            }
+                    // Show the return text
+                document.getElementById('returnText').style.display = 'block';
+                document.getElementById('returnText').style.zIndex = '9999999';
+
+            break; // Exit the loop after handling the double-clicked image
+        }
+    }
+});
+
+
 canvas.addEventListener('mouseup', (e) => {
     const releaseX = e.clientX;
     const releaseY = e.clientY;
