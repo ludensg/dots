@@ -330,7 +330,7 @@ function drawBottomLeftText1() {
 
 function drawBottomLeftText2() {
     const textBefore = "For more info ";
-    const coloredText = "click (or double-click) on an eye -> its title";
+    const coloredText = "double-click on an eye or click its title";
     const xPos = 10;  // Adjust for desired x position
     const yPos = canvas.height - 20;  // Adjust for desired y position (taking into account the font size)
 
