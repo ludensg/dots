@@ -24,8 +24,11 @@ let speedScaleFactor = 1;  // Initial value
 speedScaleFactor = SPEED_MULTIPLIER * Math.sqrt((window.innerWidth * window.innerHeight) / (REF_WIDTH * REF_HEIGHT));
 
 
-const REF_DOT_RADIUS = isLargeScreen ? 2 : 2;  // Dot radius at reference resolution
-const REF_SPACING = isLargeScreen ? 19: 11;   // Spacing between dots at reference resolution
+const REF_DOT_RADIUS = isLargeScreen ? 2 : 3;  // Dot radius at reference resolution
+const REF_SPACING = isLargeScreen ? 21 : 18;   // Spacing between dots at reference resolution
+
+const INIT_DOT_RADIUS = REF_DOT_RADIUS;
+const INIT_SPACING = REF_SPACING;
 
 // Calculate scaling factor
 const scaleFactor = 1.2; // window.innerWidth / REF_WIDTH;
@@ -64,6 +67,8 @@ const REF_DOT_COUNT_X = Math.ceil(REF_WIDTH / spacingX);
 const REF_DOT_COUNT_Y = Math.ceil(REF_HEIGHT / spacingY);
 let MAX_DOTS = (REF_DOT_COUNT_X * REF_DOT_COUNT_Y); // DOT Cap to prevent slowdowns
 
+let CENTER_X = canvas.width / 2;
+let CENTER_Y = canvas.height / 2;
 
 const dots = [];
 const dotSpeed = .8;  // Adjust this for faster/slower movement
@@ -75,7 +80,7 @@ for (let x = 0; x < canvas.width; x += spacingX) {
         if (dotCount >= MAX_DOTS) {
             break;
         }
-        dots.push({ x, y, vx: 0, vy: 0, originalX: x, originalY: y, speed: dotSpeed });
+        dots.push({ x, y, vx: 0, vy: 0, originalX: x, originalY: y, speed: dotSpeed, size: DOT_RADIUS});
         dotCount++;
     }
     if (dotCount >= MAX_DOTS) {
@@ -401,13 +406,16 @@ function drawDots() {
     for (const dot of dots) {
         ctx.beginPath();
         const radius = DOT_RADIUS;
-        ctx.arc(dot.x, dot.y, radius, 0, Math.PI * 2);
+        //ctx.arc(dot.x, dot.y, radius, 0, Math.PI * 2);
+        ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
         ctx.fillStyle = '#4a4848';  // Updated color (original: #3a3939)
         ctx.fill();
     }
 }
 
 // Function to reinitialize and redraw dots
+
+/* old version, changes sparsity on resize
 function handleResize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -436,6 +444,56 @@ function handleResize() {
     // Redraw the dots
     drawDots();
 }
+*/
+
+// new version, sparsity maintained
+function handleResize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    CENTER_X = canvas.width / 2;
+    CENTER_Y = canvas.height / 2;
+    // Recalculate scaling factor based on the original reference width
+    const scaleFactor = Math.min(window.innerWidth / REF_WIDTH, window.innerHeight / REF_HEIGHT);
+
+    // Adjust dot radius and spacing based on scaling factor
+    const DOT_RADIUS = REF_DOT_RADIUS * scaleFactor;
+    //const spacingX = Math.max(MIN_SPACING, INIT_SPACING * scaleFactor);
+    //const spacingY = Math.max(MIN_SPACING, INIT_SPACING * scaleFactor);
+
+    const spacingX = Math.max(MIN_SPACING, INIT_SPACING);
+    const spacingY = Math.max(MIN_SPACING, INIT_SPACING);   
+
+    // Recalculate the maximum number of dots
+    const REF_DOT_COUNT_X = Math.ceil(canvas.width / spacingX);
+    const REF_DOT_COUNT_Y = Math.ceil(canvas.height / spacingY);
+    MAX_DOTS = (REF_DOT_COUNT_X * REF_DOT_COUNT_Y);
+
+    // Calculate the speed scale factor
+    speedScaleFactor = SPEED_MULTIPLIER * Math.sqrt((canvas.width * canvas.height) / (REF_WIDTH * REF_HEIGHT));
+
+    // Reinitialize the dots
+    dots.length = 0;
+    let dotCount = 0;
+    for (let x = 0; x < canvas.width; x += spacingX) {
+        for (let y = 0; y < canvas.height; y += spacingY) {
+            if (dotCount >= MAX_DOTS) {
+                break;
+            }
+            dots.push({ x, y, vx: 0, vy: 0, originalX: x, originalY: y, speed: dotSpeed });
+            dotCount++;
+        }
+        if (dotCount >= MAX_DOTS) {
+            break;
+        }
+    }
+
+    drawGradient();
+    // Redraw the dots
+    drawDots();
+}
+
+
 
 // Attach the resize event listener
 window.addEventListener('resize', handleResize);
@@ -1062,11 +1120,42 @@ function adjustManifestoForMobile() {
 
 adjustManifestoForMobile()
 
+function drawGradient() {
+    centerX = canvas.width / 2;
+    centerY = canvas.height / 2;
+    const radius = Math.max(canvas.width, canvas.height) / 2;
+
+    // Number of steps in the gradient
+    const steps = 100;
+    const stepSize = radius / steps;
+
+    for (let i = 0; i <= steps; i++) {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, stepSize * i, 0, 2 * Math.PI, false);
+
+        // Calculate the opacity for each step
+        const opacity = 1 - (i / steps);
+        ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+
+        ctx.fill();
+    }
+}
+
+
 let hitbox = {};
 
+// curvature effect parameters
+const EFFECT_RADIUS = 400; // Radius of the effect area
+const MIN_DOT_SIZE = 0.5; // Minimum size of the dot in the effect area
+const EFFECT_RADIUS2 = 500; // Radius of the effect area
+const EFFECT_RADIUS3 = 500; // Radius of the effect area
+const DENSITY_RADIUS = 30; // Adjust this value as needed
+
 function animate() {
+    drawGradient();
     adjustDotsPerformance();
     // 1. Move dots upwards
+    /*
     for (const dot of dots) {
         dot.y -= dot.speed;
         dot.originalY -= dot.speed;
@@ -1076,9 +1165,46 @@ function animate() {
             dot.y += canvas.height;
             dot.originalY += canvas.height;
         }
+    } */
+
+    // 1. Move dots upwards and apply size effect
+    for (const dot of dots) {
+        dot.y -= dot.speed;
+        dot.originalY -= dot.speed;
+    
+        // Calculate distance from the center
+        const distance = Math.sqrt(Math.pow(dot.x - CENTER_X, 2) + Math.pow(dot.y - CENTER_Y, 2));
+    
+        // Adjust the size based on the distance
+        const sizeFactor = Math.max(0, 1 - Math.pow(distance / EFFECT_RADIUS, 2)); // More pronounced effect
+        // Adjust the size based on the distance
+        const sizeFactor2 = Math.max(0, 1 - Math.pow(distance / EFFECT_RADIUS2, 2)); // More pronounced effect
+        // Adjust the size based on the distance
+        //const sizeFactor3 = Math.max(0, 1 - Math.pow(distance * EFFECT_RADIUS3, 2)); // More pronounced effect
+
+        if (distance > EFFECT_RADIUS3)
+        {
+            // Outside the larger radius
+            const sizeFactor3 = (distance - EFFECT_RADIUS3) / (Math.max(canvas.width, canvas.height) / 2 - EFFECT_RADIUS3);
+            dot.size = MIN_DOT_SIZE + Math.min(3, Math.max(0, 1 - sizeFactor3) * (DOT_RADIUS - MIN_DOT_SIZE) );
+        }
+        else
+        {
+            dot.size = MIN_DOT_SIZE + sizeFactor * (DOT_RADIUS - MIN_DOT_SIZE);
+            dot.size = MIN_DOT_SIZE + Math.max(0, 1 - sizeFactor2) * (DOT_RADIUS - MIN_DOT_SIZE);
+        }
+
+        // Wrap around when out of canvas
+        if (dot.y < 0) {
+            dot.y += canvas.height;
+            dot.originalY += canvas.height;
+        }
     }
+    
+    
 
     // 2. Draw the dots and text
+    // Call the function to draw the gradient
     drawDots();
     drawTopLeftText();
     drawTopLeftSubtext();
