@@ -483,8 +483,8 @@ function drawSpeechBubble(x, y, width, height, text) {
 
     // Make the bubble bigger on mobile
     if (isMobile) {
-        width += 20;  // Adjust as needed
-        height += 10; // Adjust as needed
+        width += 10;  // Adjust as needed
+        height += 5; // Adjust as needed
     }
 
         // Breathing effect
