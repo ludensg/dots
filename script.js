@@ -16,7 +16,7 @@ const REF_HEIGHT = 1080;
 
 const isLargeScreen = window.innerWidth > 1200;
 
-const BASE_SPEED = 0.01;
+const BASE_SPEED = isLargeScreen? 0.0040 : 0.009;
 const SPEED_MULTIPLIER = .6;
 
 let speedScaleFactor = 1;  // Initial value
@@ -73,6 +73,7 @@ let CENTER_Y = canvas.height / 2;
 const dots = [];
 const dotSpeed = .8;  // Adjust this for faster/slower movement
 
+let dotter = 0; //tracks new dots created by clicking on images
 let dotCount = 0;
 
 for (let x = 0; x < canvas.width; x += spacingX) {
@@ -107,12 +108,15 @@ function adjustDotsPerformance() {
 
 const BUBBLE_OFFSET = 35;
 
+const FLOATAMP = 5; //10 is original
+const FLOATSP = 0.03; //0.06 is original
+
 const images = [
     { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye1/pic1.png', angle: 0, id: 'eye1', bubbleText: 'The Elmyr de Hory Exhibit',
     isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null, isGif: false,
 
-    floatAmplitude: 10,  // The maximum distance the image will float up or down
-    floatSpeed: 0.06,    // The speed of the floating effect
+    floatAmplitude: FLOATAMP,  // The maximum distance the image will float up or down
+    floatSpeed: FLOATSP,    // The speed of the floating effect
     floatTime: 0,        // A counter to keep track of the floating time
     isFloating: false,    // A flag to check if the image is currently floating
     returnTimeout: null,
@@ -134,8 +138,8 @@ const images = [
     { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye2/eye2editSMALL.png', angle: 0, id: 'eye2', bubbleText: 'Room 4-308-D',
     isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null, isGif: false,
 
-    floatAmplitude: 10,  // The maximum distance the image will float up or down
-    floatSpeed: 0.06,    // The speed of the floating effect
+    floatAmplitude: FLOATAMP,  // The maximum distance the image will float up or down
+    floatSpeed: FLOATSP,    // The speed of the floating effect
     floatTime: 0,        // A counter to keep track of the floating time
     isFloating: false,    // A flag to check if the image is currently floating
     returnTimeout: null,
@@ -157,8 +161,8 @@ const images = [
     { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eyexedit.jpg', angle: 0, id: 'eyex', bubbleText: '???',
     isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null, isGif: false,
 
-    floatAmplitude: 10,  // The maximum distance the image will float up or down
-    floatSpeed: 0.06,    // The speed of the floating effect
+    floatAmplitude: FLOATAMP,  // The maximum distance the image will float up or down
+    floatSpeed: FLOATSP,    // The speed of the floating effect
     floatTime: 0,        // A counter to keep track of the floating time
     isFloating: false,    // A flag to check if the image is currently floating
     returnTimeout: null,
@@ -180,8 +184,8 @@ const images = [
     { x: 100, y: 100, vx: -1, vy: -1, src: 'img/meninas.gif', angle: 0, id: 'meninas', bubbleText: '???',
     isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null, isGif: true,
 
-    floatAmplitude: 10,  // The maximum distance the image will float up or down
-    floatSpeed: 0.06,    // The speed of the floating effect
+    floatAmplitude: FLOATAMP,  // The maximum distance the image will float up or down
+    floatSpeed: FLOATSP,    // The speed of the floating effect
     floatTime: 0,        // A counter to keep track of the floating time
     isFloating: false,    // A flag to check if the image is currently floating
     returnTimeout: null,
@@ -413,38 +417,6 @@ function drawDots() {
     }
 }
 
-// Function to reinitialize and redraw dots
-
-/* old version, changes sparsity on resize
-function handleResize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // Recalculate scaling factor
-    const scaleFactor = window.innerWidth / window.innerWidth; // REF_WIDTH;
-
-    // Adjust dot radius based on scaling factor
-    const DOT_RADIUS = REF_DOT_RADIUS * scaleFactor;  
-    
-    // Adjust grid size to maintain consistent spacing
-    const spacingX = Math.max(MIN_SPACING, REF_SPACING * scaleFactor);
-    const spacingY = Math.max(MIN_SPACING, REF_SPACING * scaleFactor);
-
-    // Calculate the speed scale factor based on the current window size
-    speedScaleFactor = SPEED_MULTIPLIER * Math.sqrt((window.innerWidth * window.innerHeight) / (REF_WIDTH * REF_HEIGHT));
-
-    // Reinitialize the dots based on new canvas dimensions
-    dots.length = 0;  // Clear the existing dots
-    for (let x = 0; x < canvas.width; x += spacingX) {
-        for (let y = 0; y < canvas.height; y += spacingY) {
-            dots.push({ x, y, vx: 0, vy: 0, originalX: x, originalY: y, speed: dotSpeed });
-        }
-    }
-
-    // Redraw the dots
-    drawDots();
-}
-*/
 
 // new version, sparsity maintained
 function handleResize() {
@@ -489,6 +461,7 @@ function handleResize() {
     }
 
     drawGradient();
+
     // Redraw the dots
     drawDots();
 }
@@ -798,7 +771,6 @@ canvas.addEventListener('mousedown', (e) => {
             img.isDragging = true;
             lastX = clickedX;
             lastY = clickedY;
-
             if(!img.isOpaque)
             {
                 img.isOpaque = !img.isOpaque; // Toggle the opacity state of the clicked image
@@ -1120,24 +1092,161 @@ function adjustManifestoForMobile() {
 
 adjustManifestoForMobile()
 
-function drawGradient() {
-    centerX = canvas.width / 2;
-    centerY = canvas.height / 2;
-    const radius = Math.max(canvas.width, canvas.height) / 2;
+// Image emanating dot class
+class ImageDot { //best totalLifespan setting is 9000
+    constructor(x, y, size, velocity, totalLifespan = 2800) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.velocity = velocity;
+        this.lifespan = totalLifespan; // Adjust as needed for how long the dot should last
+        this.totalLifespan = totalLifespan;
+        this.life = true;
+        this.staticOpacity = this.normalRandomInRange(0, 1); // Initialize with a random opacity
+        this.verticalVelocityFactor = Math.random() * (0.5 - 0.3) + 0.3; // Random value between 0.3 and 0.5
+        this.horizontalVelocityFactor = Math.random() * (0.9 - 0.7) + 0.7; // Random value between 0.7 and 0.9
+    }
 
-    // Number of steps in the gradient
-    const steps = 100;
-    const stepSize = radius / steps;
+    update() {
+        // Update the position based on the velocity
+        this.x += this.velocity.x * this.horizontalVelocityFactor;
+        this.y += this.velocity.y * this.verticalVelocityFactor;
+        //this.y += (this.velocity.y > 0) ? this.velocity.y * downwardVelocityFactor : this.velocity.y;
 
-    for (let i = 0; i <= steps; i++) {
+        // Gradually decrease the size
+        const sizeDecreaseRate = isLargeScreen ? .03 : .07; // Represents x% decrease
+
+        // Decrease the size by the specified rate
+        this.size *= (1 - sizeDecreaseRate / 100);
+
+
+        // Reduce the lifespan
+        this.lifespan--;
+
+        if (this.lifespan == 0)
+        {
+            this.life = false;
+        }
+    }
+
+    draw(ctx) {
+        // Draw the dot on the canvas
+        // Random chance for twinkle (full opacity and white color)
+        const randomChance = Math.random();
+        const threshold = 0.00045; // Adjust this value for frequency
+        let twinkle = true;
+        let opacity = this.staticOpacity;
+        let color = `rgba(217, 217, 217, ${opacity})`; // Default color
+        let size = this.size
+
+        // Calculate opacity
+        if (this.lifespan < this.totalLifespan / 4) {
+            opacity = this.lifespan / (this.totalLifespan / 4);
+        }
+
+        // Check if the dot should twinkle
+        if (randomChance < threshold) {
+            if(twinkle){
+                opacity = 1;
+                color = `rgba(255, 255, 255, ${opacity})`; // Full white
+                size *= 1.27;
+            }
+            else{
+                opacity = .7;
+                color = `rgba(0, 0, 0, ${opacity})`; // Full black
+                size *= 1.27; 
+            }
+            twinkle = !twinkle;
+        }
+
         ctx.beginPath();
-        ctx.arc(centerX, centerY, stepSize * i, 0, 2 * Math.PI, false);
-
-        // Calculate the opacity for each step
-        const opacity = 1 - (i / steps);
-        ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
-
+        ctx.arc(this.x, this.y, size, 0, 2 * Math.PI);
+        ctx.fillStyle = color; // Dot color
         ctx.fill();
+    }
+
+    alive() {
+        return this.life;
+    }
+
+    // Helper function to generate normally distributed random numbers
+    normalRandomInRange(min, max) {
+        let u = 0, v = 0;
+        while(u === 0) u = Math.random(); // Converting [0,1) to (0,1)
+        while(v === 0) v = Math.random();
+        let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+
+        // Scale to a specific range
+        num = num / 10.0 + 0.5; // Translate to 0 -> 1
+        if (num > 1 || num < 0) num = this.normalRandomInRange(min, max); // resample between 0 and 1 if out of range
+        num *= max - min; // Stretch to fill range
+        num += min; // offset to min
+        return num;
+    }
+
+}
+
+
+// Array to hold the dots
+let imageDots = [];
+
+let frameCounter = 0;
+let firstCall = true;
+
+function createImageDotsAroundImage(img) {
+    // Create new dots every N frames
+    const createInterval = 7; // Adjust this value as needed
+    const radiusShrinkPercentage = isLargeScreen ? 100: 90; // Adjust this value as needed
+
+    if (firstCall || frameCounter % createInterval === 0 ) {
+        const imgCenterX = img.x + imgWidth / 2;
+        const imgCenterY = img.y + imgHeight / 2;
+
+        // Set radius to half the length of the smaller side of the image
+        let radius = Math.min(imgWidth, imgHeight) / 2;
+        // Apply the shrink percentage to the radius
+        radius *= (1 - radiusShrinkPercentage / 100);
+
+        dotsPerFrame = isLargeScreen ? 3 : 3;
+        for (let i = 0; i < dotsPerFrame; i++) { // Create fewer dots at a time
+            
+            // Random angle in radians
+            const angle = Math.random() * Math.PI * 2;
+
+            // Convert polar coordinates (radius, angle) to Cartesian coordinates (x, y)
+            const x = imgCenterX + radius * Math.cos(angle);
+            const y = imgCenterY + radius * Math.sin(angle);            
+
+            //const angle = Math.random() * Math.PI * 2;
+            const initEspeed = isLargeScreen ? .3: .2;
+            let espeedMultiplier = Math.random() * (2 - 0.5) + 0.5;
+            const espeed = initEspeed * espeedMultiplier;
+            const velocity = { x: Math.cos(angle) * espeed, y: Math.sin(angle) * espeed };
+            const size = isLargeScreen ? 2.1 : 1.8; // Initial size
+            const newDot = new ImageDot(x, y, size, velocity);
+            imageDots.push(newDot);
+
+            dotter++;
+        }
+        firstCall = false;
+    }
+}
+
+
+function updateDots() {
+    for (let i = imageDots.length - 1; i >= 0; i--) {
+        const imgdot = imageDots[i];
+        imgdot.update();
+        if (!imgdot.life) { // Update and check if the dot is dead
+            imageDots.splice(i, 1); // Remove dead dot
+        }
+    }
+}
+
+function DrawImageDots(ctx) {
+
+    for (const imgdot of imageDots) {
+        imgdot.draw(ctx); // Draw each dot
     }
 }
 
@@ -1152,7 +1261,7 @@ const EFFECT_RADIUS3 = 500; // Radius of the effect area
 const DENSITY_RADIUS = 30; // Adjust this value as needed
 
 function animate() {
-    drawGradient();
+    frameCounter++;
     adjustDotsPerformance();
     // 1. Move dots upwards
     /*
@@ -1204,7 +1313,6 @@ function animate() {
     
 
     // 2. Draw the dots and text
-    // Call the function to draw the gradient
     drawDots();
     drawTopLeftText();
     drawTopLeftSubtext();
@@ -1212,6 +1320,12 @@ function animate() {
     drawBottomLeftText2();
 
 
+                    // emanating dot logic
+
+                    updateDots();
+                    DrawImageDots(ctx);
+                    
+                                // emanating dot logic end
     // 2.5. Center image handling
     const elapsedTime = Date.now() - startTime;
     const bobbingOffset = Math.sin(elapsedTime * bobbingSpeed) * bobbingAmplitude;
@@ -1246,10 +1360,10 @@ function animate() {
     
     ctx.globalAlpha = 1;  // Reset the opacity
 
-
     // 3. Handle the images' behavior
     for (const img of images) {
         if (img.element) {
+            
             const aspectRatio = img.naturalWidth / img.naturalHeight;
                     // Adjust imgHeight for mobile
             let mobileScaleFactor = 1;
@@ -1311,6 +1425,9 @@ function animate() {
             img.floatTime = (img.floatTime + 0.02) % (2 * Math.PI);  // This will keep floatTime always between 0 and 2*PI
         } else if (img.isFloating) {
             isAnyImageHovering = true;
+
+            createImageDotsAroundImage(img);
+
             if (img.showBubble) {
                 const bubbleMoveSpeed = 1;  // Adjust speed as needed
                 if (Math.abs(img.bubbleX - img.bubbleTargetX) > bubbleMoveSpeed) {
@@ -1348,7 +1465,7 @@ function animate() {
             img.y = img.baseY + img.floatAmplitude * Math.sin(img.floatTime);
             
             // If the image has been floating for more than 10 seconds, stop the floating effect
-            if (img.floatTime > Math.PI * 10) {  // 10 seconds, assuming floatSpeed is 0.02
+            if (img.floatTime > Math.PI * 35) {  // 10 seconds, assuming floatSpeed is 0.02
                 img.isFloating = false;
                 isAnyImageHovering = false;
                 img.baseY = undefined;  // Reset the baseY for the next floating session
@@ -1385,6 +1502,7 @@ function animate() {
     }
 
     if (selectedImage) {
+
         const aspectRatio = selectedImage.naturalWidth / selectedImage.naturalHeight;
         const drawWidth = imgHeight * aspectRatio;
         ctx.drawImage(selectedImage.element, selectedImage.x, selectedImage.y, drawWidth, imgHeight);
