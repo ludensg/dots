@@ -27,6 +27,61 @@
             font-style: normal;
         }
 
+        .light-mode .img-link:hover img {
+            transform: scale(1.05); /* Subtle enlargement */
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6); /* More visible glow on light background */
+        }
+        .light-mode body {
+            color: #000000;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.829); /* 70% opacity white background */
+        }
+
+        .light-mode .wiki-quote {
+            border-left: 2px solid #50575e; /* Darker border color for light mode */
+            margin: 1.5em 2em;
+            padding: 0.5em 2em;
+            font-style: italic;
+            color: #333333; /* Darker text color for better readability */
+        }
+
+        .light-mode a:link {
+            color: #0000ff; /* Darker text color */
+            background-color: #d3d3d3; /* Lighter background color */
+            text-decoration: underline;
+        }
+
+        .light-mode h2 {
+            text-align: left;
+            border-bottom: 2px solid #50575e; /* Darker border color */
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            margin: 25px;
+            color: #333333; /* Darker text color */
+        }
+
+        .light-mode h3 {
+            text-align: left;
+            padding-right: 5px;
+            white-space: nowrap; 
+            color: #333333; /* Darker text color */
+        }
+
+        .light-mode .subtitle {
+            font-size: smaller;
+            color: #333333; /* Darker text color */
+            text-align: left;
+            margin-left: 45px;
+        }
+
+        .light-mode .gallery img {
+            width: 100%;
+            height: auto;
+            border: 1px solid #50575e; /* Darker border color */
+            transition: transform 0.3s;
+        }
+
+
         body {
             color: #cacaca;
             padding: 20px;
@@ -111,6 +166,10 @@
             margin-left: 20px; /* Updated to 'margin-left' from 'margin-right' */
         }
 
+        .light-mode .toc-header {
+            color: #000000;
+        }
+
         .toc-header {
             display: flex;
             justify-content: center;
@@ -118,6 +177,11 @@
             margin-bottom: 10px;
         }
 
+        .light-mode .toc{
+            background-color: #cfcfcf;
+            outline-color: #333;
+            color: #000000;
+        }
 
         .toc {
             flex-basis: 220px; /* Adjust based on your preference for the width of the table of contents */
@@ -135,6 +199,9 @@
             justify-content: right;
         }
 
+        .light-mode .wiki-quote {
+            border-left: 2px solid #8b8b8b;
+        }
         .wiki-quote {
             border-left: 2px solid #a2a9b1; /* Typical Wikipedia border color for blockquotes */
             margin: 1.5em 2em;

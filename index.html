@@ -27,7 +27,42 @@
     canvas {
         background: radial-gradient(ellipse 99% 25% at center, #333333 0%, #2e2e2e 70%);
     }
+/*
+    #manifestoButton {
+        bottom: 60px;
+    } */
 } 
+    /* Light mode styles */
+    .light-mode {
+        /* background: radial-gradient(ellipse 70% 80% at center, #000000 39%, #cdcdcd 80%, #d2d2d2 83%, #b2b2b2 95%); */
+        color: #000000; /* Example: black text for light mode */
+    }
+
+    .light-mode #manifestoButton, .light-mode #manifestoButtonCopy {
+        background-color: #f0f0f0; /* Light background for buttons */
+        color: #333333; /* Darker text for better contrast */
+    }
+
+    .light-mode #manifesto-content {
+        background-color: rgba(240,240,240,0.5); 
+        color: #000000; /* Darker text for better contrast */
+    }
+
+    .light-mode #dynamic-content {
+        /* background-color: #f0f0f0; */
+        color: #000000; /* Darker text for better contrast */
+    }
+
+    .light-mode #panel p {
+        /* background-color: #f0f0f0;  */
+        color: black;
+        /* background-color: rgba(240, 240, 240, .7) */
+    }
+
+    .light-mode .content-container{
+        background-color: rgba(240, 240, 240, .7)
+    }
+
 
         canvas {
             display: block;
@@ -83,7 +118,21 @@
         #returnText {
             position: absolute; /* or absolute/fixed, depending on your layout */
             z-index: 20; /* make sure this value is higher than the panel's z-index */
+            color: white;
         }
+
+        .light-mode #panel h2{
+            color: #000000;            
+        }
+
+        .light-mode #panel h3{
+            color: #000000;            
+        }
+
+        .light-mode h3{
+            color: #000000;            
+        }
+
 
         #panel h2 {
             /* font: 'PixelOperatorMonoHB8'; */
@@ -120,10 +169,10 @@
 
         #manifestoButton {
             z-index: 100; /* or any high value */
-            background-color: red;
             bottom: 30px; /* or adjust as needed */
             /* right: auto; /* remove the right positioning */
             /* left: 10px; /* position it 10px from the left */
+            opacity: 60%;
         }
 
 
@@ -131,18 +180,49 @@
             background-color: rgba(255,255,255,0.7); /* Change the background to white with 70% opacity */
             color: black; /* Change the text color to black */
             box-shadow: 0 0 10px 5px rgb(147, 147, 147); /* Add a white glow */
+            opacity: 90%;
         }
 
         #closeManifesto {
             position: absolute; /* or absolute/fixed, depending on your layout */
             z-index: 102; /* make sure this value is higher than the panel's z-index */ 
+            color: white;
         }
-     
+
+        #lightButton {
+            z-index: 100; /* or any high value */
+            background-color: red;
+            bottom: 30px; /* or adjust as needed */
+            /* right: auto; /* remove the right positioning */
+            /* left: 10px; /* position it 10px from the left */
+            opacity: 60%;
+        }
+
+
+        #lightButton:hover {
+            background-color: rgba(255,255,255,0.7); /* Change the background to white with 70% opacity */
+            color: black; /* Change the text color to black */
+            box-shadow: 0 0 10px 5px rgb(147, 147, 147); /* Add a white glow */
+            opacity: 90%;
+        }
+
+        #manifesto-content {
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .light-mode #returnText{
+            color: blue;
+        }
+
+        .light-mode #closeManifesto{
+            color: blue;
+        }
+
     </style>
 </head>
 <body>
     <canvas id="canvas"></canvas>
-    <div id="returnText" style="display: none; position: absolute; top: 10px; left: 70%; color: white;
+    <div id="returnText" style="display: none; position: absolute; top: 10px; left: 70%;
     background-color: grey; font-family: 'PixelOperatorMono'; text-decoration: underline; cursor: pointer;">
         [ r e t u r n ]
     </div>    
@@ -155,13 +235,20 @@
     box-shadow 0.3s; font-family: 'PixelOperatorMono';">
         MANIFESTO
     </div> 
-    <div id="closeManifesto" style="display: none; position: absolute; top: 85%; transform: translateX(-50%); left: 50%; right: 'auto'; color: white; background-color: grey; 
+
+        <div id="lightButton" style="position: absolute; padding: 10px 20px;
+    background-color: rgba(0,0,0,0.7); color: white; cursor: pointer; transition: background-color 0.3s, 
+    box-shadow 0.3s; font-family: 'PixelOperatorMono'; z-index: 500">
+        LIGHT MODE
+    </div>
+
+    <div id="closeManifesto" style="display: none; position: absolute; top: 85%; transform: translateX(-50%); left: 50%; right: 'auto'; background-color: grey; 
     font-family: 'PixelOperatorMono'; font-size: large ; text-decoration: underline; cursor: pointer; z-index: 10001">
         [ r e t u r n ]
     </div>   
     <div id="manifesto-content" style="box-sizing: border-box;
     position: absolute; bottom: -100%; width: 70%; height: 85%; 
-    background-color: rgba(0,0,0,0.5); overflow-y: scroll; z-index: 10000; left: 50%; transform: translateX(-50%);
+    overflow-y: scroll; z-index: 10000; left: 50%; transform: translateX(-50%);
     display: none;">  
     </div>
     <div id="panel" style="position: absolute; top: 0; right: -100%; width: 70%; height: 100%; background-color:
@@ -176,6 +263,6 @@
         </div>
         </div>        
     </div>
-    
+    <script src="script.js"></script>
 </body>
 </html>

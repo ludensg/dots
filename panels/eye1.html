@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Elmyr de Hory Exhibit</title>
     <style>
-        /* Basic styling for the template */
+
         .section {
             padding: 20px;
             margin-bottom: 20px;
@@ -32,6 +32,28 @@
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 10px;
         }
+        
+        .light-mode .section p {
+            color: black;
+        }
+
+        .light-mode .gallery img {
+            border: 1px solid #535353;
+        }
+
+        .light-mode #h2 {
+            border-bottom: 2px rgb(51, 51, 51);
+        }
+
+        .light-mode #h3 {
+            color: rgb(0, 0, 0);
+        }
+
+        .light-mode .wiki-quote {
+            color: rgb(94, 94, 94);
+        }
+
+
 
         .gallery img {
             width: 100%;
@@ -43,7 +65,7 @@
         .gallery img:hover {
             transform: scale(1.1);
         }
-
+        
         h2 {
             text-align: left;
             /* font: 'PixelOperatorMonoHB'; */
@@ -61,6 +83,10 @@
             color: #cacaca;
         }
 
+        .light-mode #subtitle {
+            color: rgb(51, 51, 51);
+        }
+
         .subtitle {
             font-size: smaller;
             color: #666;
@@ -74,6 +100,7 @@
             background-color: grey;
             text-decoration: underline;
         }
+
 
         .wiki-quote {
             border-left: 2px solid #a2a9b1; /* Typical Wikipedia border color for blockquotes */
@@ -238,7 +265,7 @@
         </div>
 
         <div class="col-3" style="margin-right: 5%;">
-            <a href="img/eye1/platesnshoes.jpg"" target="_blank" class="img-link">     
+            <a href="img/eye1/platesnshoes.jpg" target="_blank" class="img-link">     
                 <img src="img/eye1/shoe.jpg" alt="Shoe Closeup" style="display: block; margin-left: auto; float: left; width: 90%; height: auto; padding-top: 25%;">
             </a>
             </div>

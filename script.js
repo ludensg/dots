@@ -4,6 +4,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 const isMobile = window.innerWidth <= 800;  // You can adjust this value based on your needs
 let selectedImage = null;
+let lightmode = false;
 
 const generalOpaqueness = .5;
 
@@ -229,8 +230,8 @@ returnIcon.onload = function() {
 };
 
 
-const centerImage = new Image(); 
-centerImage.src = 'img/wikibittransparent.png';  // Wikilogo
+//const centerImage = new Image(); 
+//centerImage.src = lightmode ? 'img/wikibittransparent2.png' : 'img/wikibittransparent.png';  // Wikilogo
 let startTime = Date.now();  // To track the elapsed time for the bobbing effect
 const bobbingSpeed = 0.0005;  // Adjust this value to make the bobbing faster or slower
 const bobbingAmplitude = 10;  // Adjust this value to make the bobbing more or less pronounced
@@ -277,7 +278,7 @@ function drawTopLeftText() {
     const yPos = 30;  // Adjust for desired y position (taking into account the font size)
 
     ctx.font = "20px PixelOperatorMono";  // Adjust for desired font size and font family
-    ctx.fillStyle = "white";  // Adjust for desired text color
+    ctx.fillStyle = lightmode ? "black" : "white";  // Adjust for desired text color
     //ctx.fillText(text, xPos, yPos);
 
         // Iterate over each character
@@ -299,7 +300,7 @@ function drawTopLeftSubtext() {
     const yPos = 60;  // Adjust for desired y position (taking into account the font size)
 
     ctx.font = "14px PixelOperatorMono";  // Adjust for desired font size and font family
-    ctx.fillStyle = "#b4aeae";  // Adjust for desired text color
+    ctx.fillStyle = lightmode ? "black" : "#b4aeae";  // Adjust for desired text color
     ctx.fillText(text, xPos, yPos);
 }
 
@@ -311,14 +312,24 @@ function drawBottomLeftText1() {
     const xPos = 10;  // Adjust for desired x position
     const yPos = canvas.height - 40; // Adjust for desired y position (taking into account the font size)
 
-    ctx.font = "13px PixelOperatorMono";  // Adjust for desired font size and font family
-
-    // Draw the text before the number
-    ctx.fillStyle = "#b4aeae";  // Adjust for desired text color
-    ctx.fillText(textBeforeNumber, xPos, yPos);
-
     // Calculate the width of the text before the number to position the number correctly
     const textBeforeNumberWidth = ctx.measureText(textBeforeNumber).width;
+    const textNumberWidth = ctx.measureText(number).width;
+
+    const textHeight = parseInt(ctx.font, 10);
+    // Calculate the width of the text before the number to position the number correctly
+    const textAfterNumberWidth = ctx.measureText(textAfterNumber).width;
+
+    ctx.font = "13px PixelOperatorMono";  // Adjust for desired font size and font family
+    if(lightmode)
+    {
+        ctx.fillStyle = "#e6e6e8";
+        ctx.fillRect(xPos - 2, yPos - 11 , textBeforeNumberWidth + textAfterNumberWidth + number + 2, textHeight);
+    }
+
+    // Draw the text before the number
+    ctx.fillStyle = lightmode ? "black" : "#b4aeae";  // Adjust for desired text color
+    ctx.fillText(textBeforeNumber, xPos, yPos);
 
     // Draw the number in red
     ctx.fillStyle = "red";
@@ -328,7 +339,7 @@ function drawBottomLeftText1() {
     const numberWidth = ctx.measureText(number).width;
 
     // Draw the text after the number
-    ctx.fillStyle = "#b4aeae";  // Adjust for desired text color
+    ctx.fillStyle = lightmode ? "black" : "#b4aeae";  // Adjust for desired text color
     ctx.fillText(textAfterNumber, xPos + textBeforeNumberWidth + numberWidth, yPos);
 }
 
@@ -339,26 +350,33 @@ function drawBottomLeftText2() {
     const yPos = canvas.height - 20;  // Adjust for desired y position (taking into account the font size)
 
     ctx.font = "13px PixelOperatorMono";  // Adjust for desired font size and font family
-
-    // Draw the text before the colored part
-    ctx.fillStyle = "#b4aeae";  // Adjust for desired text color
-    ctx.fillText(textBefore, xPos, yPos);
+    const padding = 2;  // Adjust for desired padding around the text, for background rectangle
 
     // Calculate the width of the text before the colored part to position the colored text correctly
     const textBeforeWidth = ctx.measureText(textBefore).width;
+    const textBeforeHeight = parseInt(ctx.font, 10);
+
+    if(lightmode)
+    {
+        ctx.fillStyle = "#e6e6e8";
+        ctx.fillRect(xPos - 2, yPos - 11 , textBeforeWidth + 2 * padding, textBeforeHeight);
+    }
+
+    // Draw the text before the colored part
+    ctx.fillStyle = lightmode ? "black" : "#b4aeae";  // Adjust for desired text color
+    ctx.fillText(textBefore, xPos, yPos);
 
      // Calculate the width and height of the coloredText for the background rectangle
     const coloredTextWidth = ctx.measureText(coloredText).width;
     const coloredTextHeight = parseInt(ctx.font, 10);  // Extract font size from font string
     
      // Draw the background for the colored text
-    const padding = 2;  // Adjust for desired padding around the text
-    ctx.fillStyle = "#343232";  // Adjust for desired background color
+    ctx.fillStyle = lightmode ? "#cfcccc" : "#343232";  // Adjust for desired background color
     ctx.fillRect(xPos + textBeforeWidth - padding, yPos - coloredTextHeight + padding, coloredTextWidth + 2 * padding, coloredTextHeight);
     
 
     // Draw the colored text in a not-too-bright yellow
-    ctx.fillStyle = "#dcd15a";  // This is a muted yellow color, adjust if needed
+    ctx.fillStyle = lightmode ? "#4a47ed" : "#dcd15a";  // This is a muted yellow color, adjust if needed
     ctx.fillText(coloredText, xPos + textBeforeWidth, yPos);
 }
 
@@ -410,9 +428,27 @@ function drawDots() {
     for (const dot of dots) {
         ctx.beginPath();
         const radius = DOT_RADIUS;
-        //ctx.arc(dot.x, dot.y, radius, 0, Math.PI * 2);
+        let opacity = 1;
+        let lightOpacity = 1;
+
+        if(lightmode){
+            // Calculate distance to the nearest corner
+            const distanceToCorner = Math.min(
+                dot.x, canvas.width - dot.x, 
+                dot.y, canvas.height - dot.y
+            );
+
+            // Adjust opacity based on distance
+            const maxDistance = Math.sqrt(Math.pow(canvas.width / 2, 2) + Math.pow(canvas.height / 2, 2));
+            lightOpacity = Math.pow(distanceToCorner / maxDistance, 2); // Quadratic scale
+            // Ensure opacity never goes below 40%
+            lightOpacity = 0.4 + 0.6 * lightOpacity; // 40% + 60% of the calculated opacity
+        }
+
+        opacity = lightmode? lightOpacity : 1;
+
         ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
-        ctx.fillStyle = '#4a4848';  // Updated color (original: #3a3939)
+        ctx.fillStyle = lightmode ? `rgba(11, 11, 11, ${opacity})` : `rgba(74, 72, 72, ${opacity})`;  // Updated color (original: #3a3939)
         ctx.fill();
     }
 }
@@ -459,8 +495,6 @@ function handleResize() {
             break;
         }
     }
-
-    drawGradient();
 
     // Redraw the dots
     drawDots();
@@ -576,6 +610,7 @@ document.getElementById('manifestoButton').addEventListener('click', function() 
         document.getElementById('manifesto-content').innerHTML = data;
         document.getElementById('manifesto-content').style.display = 'block';
         document.getElementById('manifesto-content').style.zIndex = '999999';
+
         if(!manifestoIsUp)// Use anime.js to slide the manifesto-content div up
         {
             anime({
@@ -608,6 +643,63 @@ document.getElementById('manifestoButton').addEventListener('click', function() 
         // Toggle the value of manifestoIsUp
         manifestoIsUp = !manifestoIsUp;
     });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var manifestoButton = document.getElementById('manifestoButton');
+    var lightButton = document.getElementById('lightButton');
+
+    // Function to position the lightButton relative to the manifestoButton
+    function positionLightButton() {
+        var manifestoRect = manifestoButton.getBoundingClientRect();
+        lightButton.style.left = (manifestoRect.right + 10) + 'px'; // 10px gap from the manifestoButton
+        lightButton.style.bottom = manifestoButton.style.bottom;
+    }
+
+    // Position the lightButton on load
+    positionLightButton();
+});
+
+document.getElementById('lightButton').addEventListener('click', function()  {
+
+    lightmode = !lightmode;
+    // Function to position the lightButton relative to the manifestoButton
+    function positionLightButton() {
+        var manifestoRect = manifestoButton.getBoundingClientRect();
+        lightButton.style.left = (manifestoRect.right + 10) + 'px'; // 10px gap from the manifestoButton
+        lightButton.style.bottom = manifestoButton.style.bottom;
+    }
+    
+    // Position the lightButton on load
+    positionLightButton();
+    document.body.classList.toggle('light-mode');
+    
+    var panel = document.getElementById('panel');
+    var manifestoContent = document.getElementById('manifesto-content');
+    var manifesto = document.getElementById('manifesto.html');
+    var dynamicContent = document.getElementById('dynamic-content');
+    
+    for(i = 0; i > images.length; i++)
+    {
+        var contentURL = 'panels/' + img[i].id + '.html';
+        var content = document.getElementById(contentURL + '.html');
+        content.body.classList.toggle('light-mode');
+    }
+    
+    if(document.body.classList.contains('light-mode')) {
+        canvas.style.background = 'radial-gradient(ellipse 70% 80% at center, #ffffff 0%, #d3d3d3 39%, #ffffff 95%)';
+        panel.style.backgroundColor = 'rgba(240, 240, 240, .5)';
+        //panel.style.opacity = '70%';
+        manifestoContent.style.color = 'black';
+    } else {
+        canvas.style.background = 'radial-gradient(ellipse at center, #000000 0%, #2e2e2e 70%, #2c2c2c 100%)';
+        //panel.style.backgroundColor = 'black';
+        manifestoContent.style.color = 'white';
+        panel.style.backgroundColor = 'rgba(0, 0, 0, .5)';
+    } 
+
+    manifesto.body.classList.toggle('light-mode');
+    dynamicContent.body.classList.toggle('light-mode');
 });
 
 document.getElementById('closeManifesto').addEventListener('click', function() {
@@ -1063,6 +1155,11 @@ function adjustManifestoForMobile() {
     const manifestoElement = document.getElementById('manifesto-content');
     const manifestoButtonElement = document.getElementById('manifestoButton');
 
+    if(lightmode)
+    {
+        manifestoElement.style.color = 'black';
+    }
+
     if (isMobile) {  
         // Adjust the CSS properties for mobile
         closeManifestoElement.style.whiteSpace = 'nowrap';  // Prevent wrapping
@@ -1133,10 +1230,10 @@ class ImageDot { //best totalLifespan setting is 9000
         // Draw the dot on the canvas
         // Random chance for twinkle (full opacity and white color)
         const randomChance = Math.random();
-        const threshold = 0.00045; // Adjust this value for frequency
+        const threshold = lightmode ? 0.009 :  0.00045; // Adjust this value for frequency
         let twinkle = true;
         let opacity = this.staticOpacity;
-        let color = `rgba(217, 217, 217, ${opacity})`; // Default color
+        let color = lightmode ? `rgba(0, 0, 0, ${opacity})`: `rgba(217, 217, 217, ${opacity})`; // Default color
         let size = this.size
 
         // Calculate opacity
@@ -1145,18 +1242,27 @@ class ImageDot { //best totalLifespan setting is 9000
         }
 
         // Check if the dot should twinkle
-        if (randomChance < threshold) {
+        if (randomChance < threshold && !lightmode) {
             if(twinkle){
                 opacity = 1;
                 color = `rgba(255, 255, 255, ${opacity})`; // Full white
-                size *= 1.27;
+                size *= lightmode ? 1 : 1.27;
             }
-            else{
+            else {
                 opacity = .7;
                 color = `rgba(0, 0, 0, ${opacity})`; // Full black
-                size *= 1.27; 
+                size *= lightmode ? 1 : 1.27; 
             }
             twinkle = !twinkle;
+
+        }
+        if (randomChance < threshold && lightmode) {        
+            if(lightmode){
+                opacity = .8;
+                color = `(13, 5, 255, ${opacity})` ;
+                size *=  1.27;
+            }
+
         }
 
         ctx.beginPath();
@@ -1327,6 +1433,8 @@ function animate() {
                     
                                 // emanating dot logic end
     // 2.5. Center image handling
+    const centerImage = new Image(); 
+    centerImage.src = lightmode ? 'img/wikibittransparent2.png' : 'img/wikibittransparent.png';  // Wikilogo
     const elapsedTime = Date.now() - startTime;
     const bobbingOffset = Math.sin(elapsedTime * bobbingSpeed) * bobbingAmplitude;
 
@@ -1349,12 +1457,12 @@ function animate() {
     if (isHoveringOverCenterImage) {
         ctx.globalAlpha = 0.7;  // Increase opacity when mouse is over
         ctx.shadowBlur = 15; // Adjust to your liking
-        ctx.shadowColor = "white"; // Adjust to your desired glow color
+        ctx.shadowColor = lightmode ? "black" : "white"; // Adjust to your desired glow color
         ctx.drawImage(centerImage, centerX, centerY - 10, scaledWidth, scaledHeight);  // Raise the image a bit
             // Reset shadow properties after drawing
         ctx.shadowBlur = 0;
     } else {
-        ctx.globalAlpha = 0.5;
+        ctx.globalAlpha = lightmode ? 1 : 0.5;
         ctx.drawImage(centerImage, centerX, centerY, scaledWidth, scaledHeight);
     }
     
@@ -1379,7 +1487,7 @@ function animate() {
             
             const drawWidth = imgWidth * mobileScaleFactor;
 
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowColor = lightmode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)';
             ctx.shadowBlur = 5;
             ctx.shadowOffsetX = 4;
             ctx.shadowOffsetY = 5;
@@ -1522,7 +1630,7 @@ function generateMatrixEffect() {
     const matrixContainer = document.getElementById('matrixContainer');
 
     matrixContainer.style.fontFamily = 'PixelOperatorMono';
-    matrixContainer.style.color = 'grey'; 
+    matrixContainer.style.color = lightmode ? 'black' : 'grey'; 
     matrixContainer.style.fontSize = '16px';
     matrixContainer.style.whiteSpace = 'pre';
 
@@ -1561,6 +1669,7 @@ function generateMatrixEffect() {
     }
 
     function updateMatrix() {
+        matrixContainer.style.color = lightmode ? 'black' : 'grey'; 
         let matrix = '';
         if(matrixEffectActive) {
             for (let i = 0; i < paddingTop; i++) {
