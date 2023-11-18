@@ -38,6 +38,11 @@
         color: #000000; /* Example: black text for light mode */
     }
 
+    .light-mode #canvas {
+        background: (ellipse 70% 80% at center, #ffffff 0%, #d3d3d3 39%, #ffffff 95%);
+        transition: 0.3s ease-in-out;
+    }
+
     .light-mode #manifestoButton, .light-mode #manifestoButtonCopy {
         background-color: #f0f0f0; /* Light background for buttons */
         color: #333333; /* Darker text for better contrast */
@@ -79,6 +84,7 @@
             right: 0;
             bottom: 0;
             left: 0;
+            transition: 0.3s ease-in-out;
         }
 
         body, html {
@@ -189,9 +195,12 @@
             color: white;
         }
 
+        .light-mode #lightButton {
+            color: rgba(255, 255, 255, 0.849);
+        }
+
         #lightButton {
             z-index: 100; /* or any high value */
-            background-color: red;
             bottom: 30px; /* or adjust as needed */
             /* right: auto; /* remove the right positioning */
             /* left: 10px; /* position it 10px from the left */
@@ -200,9 +209,9 @@
 
 
         #lightButton:hover {
-            background-color: rgba(255,255,255,0.7); /* Change the background to white with 70% opacity */
             color: black; /* Change the text color to black */
-            box-shadow: 0 0 10px 5px rgb(147, 147, 147); /* Add a white glow */
+            border-radius: 100%; 
+            /* box-shadow: 0 0 60px white;  */
             opacity: 90%;
         }
 
@@ -236,11 +245,17 @@
         MANIFESTO
     </div> 
 
-        <div id="lightButton" style="position: absolute; padding: 10px 20px;
-    background-color: rgba(0,0,0,0.7); color: white; cursor: pointer; transition: background-color 0.3s, 
+    <!-- 
+        <div id="lightButton" style="position: absolute; padding: 5px 5px;
+    background-color: rgba(126, 126, 126, 0.678); color: white; cursor: pointer; transition: background-color 0.3s, 
     box-shadow 0.3s; font-family: 'PixelOperatorMono'; z-index: 500">
-        LIGHT MODE
-    </div>
+        <ion-icon name="contrast" style="font-size: 20px;"></ion-icon>
+    </div>  -->
+
+    <div id="lightButton" style="position: absolute; color: rgb(20, 19, 19); cursor: pointer; transition: background-color 0.3s, 
+    box-shadow 0.3s; font-family: 'PixelOperatorMono'; z-index: 500">
+        <ion-icon name="contrast" style="font-size: 20px;"></ion-icon>
+    </div> 
 
     <div id="closeManifesto" style="display: none; position: absolute; top: 85%; transform: translateX(-50%); left: 50%; right: 'auto'; background-color: grey; 
     font-family: 'PixelOperatorMono'; font-size: large ; text-decoration: underline; cursor: pointer; z-index: 10001">
@@ -264,5 +279,7 @@
         </div>        
     </div>
     <script src="script.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@ const isMobile = window.innerWidth <= 800;  // You can adjust this value based o
 let selectedImage = null;
 let lightmode = false;
 
-const generalOpaqueness = .5;
+let generalOpaqueness = .5;
 
 const screenWidth = screen.width;
 const screenHeight = screen.height;
@@ -345,7 +345,7 @@ function drawBottomLeftText1() {
 
 function drawBottomLeftText2() {
     const textBefore = "For more info ";
-    const coloredText = "double-click on an eye or click its title";
+    const coloredText = "double-click on an eye (or its title)";
     const xPos = 10;  // Adjust for desired x position
     const yPos = canvas.height - 20;  // Adjust for desired y position (taking into account the font size)
 
@@ -433,10 +433,15 @@ function drawDots() {
 
         if(lightmode){
             // Calculate distance to the nearest corner
-            const distanceToCorner = Math.min(
+            let distanceToCorner = Math.min(
                 dot.x, canvas.width - dot.x, 
                 dot.y, canvas.height - dot.y
             );
+
+            // Adjust for mobile screens
+            if (!isMobile) {
+                distanceToCorner *= .7; // Adjust the scale for mobile
+            }
 
             // Adjust opacity based on distance
             const maxDistance = Math.sqrt(Math.pow(canvas.width / 2, 2) + Math.pow(canvas.height / 2, 2));
@@ -445,10 +450,19 @@ function drawDots() {
             lightOpacity = 0.4 + 0.6 * lightOpacity; // 40% + 60% of the calculated opacity
         }
 
-        opacity = lightmode? lightOpacity : 1;
+        opacity = lightmode ? lightOpacity : 1;
 
         ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
-        ctx.fillStyle = lightmode ? `rgba(11, 11, 11, ${opacity})` : `rgba(74, 72, 72, ${opacity})`;  // Updated color (original: #3a3939)
+        let colorfill = `114, 108, 113` //default dark-mode colorfill  74, 72, 72
+        if (isMobile) {
+            colorfill = lightmode ? `11, 11, 11` : `114, 108, 113`;
+
+        }
+
+        else {
+            colorfill = lightmode ? `11, 11, 11` : `74, 72, 72`;
+        }
+        ctx.fillStyle = lightmode ? `rgba(${colorfill}, ${opacity})` : `rgba(${colorfill}, ${opacity})`;  // Updated color (original: #3a3939)
         ctx.fill();
     }
 }
@@ -678,6 +692,7 @@ document.getElementById('lightButton').addEventListener('click', function()  {
     var manifestoContent = document.getElementById('manifesto-content');
     var manifesto = document.getElementById('manifesto.html');
     var dynamicContent = document.getElementById('dynamic-content');
+    var maniButton = document.getElementById('manifestoButton');
     
     for(i = 0; i > images.length; i++)
     {
@@ -687,15 +702,24 @@ document.getElementById('lightButton').addEventListener('click', function()  {
     }
     
     if(document.body.classList.contains('light-mode')) {
-        canvas.style.background = 'radial-gradient(ellipse 70% 80% at center, #ffffff 0%, #d3d3d3 39%, #ffffff 95%)';
+        canvas.style.transition = '0.3s ease-in-out';
+        canvas.style.background = 'radial-gradient(ellipse 65% 65% at center, #d3d3d3 0%, #ffffff 55%, #d3d3d3 66%, #ffffff 110%)';
+        // else { canvas.style.background = 'radial-gradient(ellipse 70% 80% at center, #ffffff 0%, #d3d3d3 39%, #ffffff 95%)'; }
         panel.style.backgroundColor = 'rgba(240, 240, 240, .5)';
+        lightButton.style.color = 'grey';
         //panel.style.opacity = '70%';
         manifestoContent.style.color = 'black';
+        maniButton.style.backgroundColor = 'rgba(0, 0, 0, 0.678)';
+
     } else {
-        canvas.style.background = 'radial-gradient(ellipse at center, #000000 0%, #2e2e2e 70%, #2c2c2c 100%)';
+        canvas.style.transition = '0.3s ease-in-out';
+        canvas.style.background = 'radial-gradient(ellipse 65% 65% at center, #000000 0%, #2e2e2e 55%, #000000 100%, #2e2e2e 110%)';
+        // else { canvas.style.background = 'radial-gradient(ellipse at center, #000000 0%, #2e2e2e 70%, #2c2c2c 100%)'; }
         //panel.style.backgroundColor = 'black';
         manifestoContent.style.color = 'white';
         panel.style.backgroundColor = 'rgba(0, 0, 0, .5)';
+        lightButton.style.color = 'white';
+        maniButton.style.backgroundColor = 'rgba(126, 126, 126, 0.678)';
     } 
 
     manifesto.body.classList.toggle('light-mode');
@@ -1391,9 +1415,16 @@ function animate() {
         const distance = Math.sqrt(Math.pow(dot.x - CENTER_X, 2) + Math.pow(dot.y - CENTER_Y, 2));
     
         // Adjust the size based on the distance
-        const sizeFactor = Math.max(0, 1 - Math.pow(distance / EFFECT_RADIUS, 2)); // More pronounced effect
+        let sizeFactor = Math.max(0, 1 - Math.pow(distance / EFFECT_RADIUS, 2)); // More pronounced effect
         // Adjust the size based on the distance
-        const sizeFactor2 = Math.max(0, 1 - Math.pow(distance / EFFECT_RADIUS2, 2)); // More pronounced effect
+
+        let sizeFactor2 = Math.max(0, 1 - Math.pow(distance / EFFECT_RADIUS2, 2)); // More pronounced effect
+            // Adjust for mobile screens
+        if (isMobile) {
+            //sizeFactor *= 15; // Adjust the scale for mobile
+            sizeFactor2 *= 1.5; // Adjust the scale for mobile
+        }
+
         // Adjust the size based on the distance
         //const sizeFactor3 = Math.max(0, 1 - Math.pow(distance * EFFECT_RADIUS3, 2)); // More pronounced effect
 
@@ -1401,6 +1432,8 @@ function animate() {
         {
             // Outside the larger radius
             const sizeFactor3 = (distance - EFFECT_RADIUS3) / (Math.max(canvas.width, canvas.height) / 2 - EFFECT_RADIUS3);
+                        
+
             dot.size = MIN_DOT_SIZE + Math.min(3, Math.max(0, 1 - sizeFactor3) * (DOT_RADIUS - MIN_DOT_SIZE) );
         }
         else
@@ -1462,6 +1495,11 @@ function animate() {
             // Reset shadow properties after drawing
         ctx.shadowBlur = 0;
     } else {
+        
+        ctx.shadowColor = lightmode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.5)';
+        ctx.shadowBlur = lightmode ? 7 : 10;
+        ctx.shadowOffsetX = lightmode ? -8 : 0;
+        ctx.shadowOffsetY = lightmode ? -9 : 0;
         ctx.globalAlpha = lightmode ? 1 : 0.5;
         ctx.drawImage(centerImage, centerX, centerY, scaledWidth, scaledHeight);
     }
@@ -1469,6 +1507,8 @@ function animate() {
     ctx.globalAlpha = 1;  // Reset the opacity
 
     // 3. Handle the images' behavior
+
+    generalOpaqueness = lightmode ? .9 : .5;
     for (const img of images) {
         if (img.element) {
             
@@ -1488,9 +1528,9 @@ function animate() {
             const drawWidth = imgWidth * mobileScaleFactor;
 
             ctx.shadowColor = lightmode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)';
-            ctx.shadowBlur = 5;
-            ctx.shadowOffsetX = 4;
-            ctx.shadowOffsetY = 5;
+            ctx.shadowBlur = lightmode ? 3 : 5;
+            ctx.shadowOffsetX = lightmode ? -6 : 4;
+            ctx.shadowOffsetY = lightmode ? -7 : 5;
 
             
             // Before drawing the image, ensure global alpha is appropriate
