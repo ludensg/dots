@@ -447,7 +447,7 @@ function drawDots() {
             const maxDistance = Math.sqrt(Math.pow(canvas.width / 2, 2) + Math.pow(canvas.height / 2, 2));
             lightOpacity = Math.pow(distanceToCorner / maxDistance, 2); // Quadratic scale
             // Ensure opacity never goes below 40%
-            lightOpacity = 0.4 + 0.6 * lightOpacity; // 40% + 60% of the calculated opacity
+            lightOpacity = 0.3 + 0.6 * lightOpacity; // 40% + 60% of the calculated opacity
         }
 
         opacity = lightmode ? lightOpacity : 1;
@@ -460,7 +460,7 @@ function drawDots() {
         }
 
         else {
-            colorfill = lightmode ? `11, 11, 11` : `74, 72, 72`;
+            colorfill = lightmode ? `11, 11, 11` : `114, 108, 113`;
         }
         ctx.fillStyle = lightmode ? `rgba(${colorfill}, ${opacity})` : `rgba(${colorfill}, ${opacity})`;  // Updated color (original: #3a3939)
         ctx.fill();
