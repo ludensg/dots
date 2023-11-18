@@ -705,7 +705,7 @@ document.getElementById('lightButton').addEventListener('click', function()  {
         canvas.style.transition = '0.3s ease-in-out';
         canvas.style.background = 'radial-gradient(ellipse 65% 65% at center, #d3d3d3 0%, #ffffff 55%, #d3d3d3 66%, #ffffff 110%)';
         // else { canvas.style.background = 'radial-gradient(ellipse 70% 80% at center, #ffffff 0%, #d3d3d3 39%, #ffffff 95%)'; }
-        panel.style.backgroundColor = 'rgba(240, 240, 240, .5)';
+        panel.style.backgroundColor = 'rgba(240, 240, 240, .7)';
         lightButton.style.color = 'grey';
         //panel.style.opacity = '70%';
         manifestoContent.style.color = 'black';
