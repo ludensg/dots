@@ -1380,6 +1380,32 @@ function DrawImageDots(ctx) {
     }
 }
 
+// Function to simulate lightButton clicks with a delay
+function simulateButtonClicks() {
+    setTimeout(() => {
+        const lightButton = document.getElementById('lightButton');
+        let count = 0;
+        const maxToggles = 2; // Number of times to simulate the click
+        const intervalTime = 150; // Time between simulated clicks in milliseconds 
+
+        // Initial sequence: Toggle every second for a total of maxToggles times
+        const clickInterval = setInterval(() => {
+            lightButton.click(); // Simulate the click
+            count++;
+            if (count >= maxToggles) {
+                clearInterval(clickInterval); // Stop the initial sequence after reaching the max count
+
+                // Start toggling once per minute after the initial sequence
+                setInterval(() => {
+                    lightButton.click(); // Simulate the click for the per-minute toggling
+                }, 40000); // 60000 milliseconds = 1 minute
+            }
+        }, intervalTime);
+    }, 3000); // x seconds delay before starting the sequence
+}
+
+// Call the simulateButtonClicks function when the page loads
+document.addEventListener('DOMContentLoaded', simulateButtonClicks);
 
 let hitbox = {};
 
