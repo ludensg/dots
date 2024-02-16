@@ -159,6 +159,29 @@ const images = [
     isHovered: false,
     },
 
+    { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye3/eye3.png', angle: 0, id: 'eye3', bubbleText: 'Infiltration',
+    isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null, isGif: false,
+
+    floatAmplitude: FLOATAMP,  // The maximum distance the image will float up or down
+    floatSpeed: FLOATSP,    // The speed of the floating effect
+    floatTime: 0,        // A counter to keep track of the floating time
+    isFloating: false,    // A flag to check if the image is currently floating
+    returnTimeout: null,
+    isAnimatingBack: false,
+    ellipseWidth: 200 + getRandomInRange(-50, 50),  // Random variation
+    ellipseHeight: 260 + getRandomInRange(-50, 50),  // Random variation
+    angle: getRandomAngle(),
+    bubbleTargetX: BUBBLE_OFFSET,
+    bubbleX: 0,  // Initial position of the bubble
+    bubbleOpacity: 0,  // Initial opacity of the bubble
+    showBubble: false,  // Flag to determine if the bubble should be shown
+    reverseDirection: false,
+    isOpaque: generalOpaqueness,
+    opacity: .5,
+    timeoutId: null,
+    isHovered: false,
+    },
+    
     { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eyexedit.jpg', angle: 0, id: 'eyex', bubbleText: '???',
     isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null, isGif: false,
 
