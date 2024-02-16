@@ -8,6 +8,8 @@ let lightmode = false;
 
 let generalOpaqueness = .5;
 
+const WIKIPEDIA_EYES_REVEALED = 4;
+
 const screenWidth = screen.width;
 const screenHeight = screen.height;
 
@@ -206,7 +208,7 @@ const images = [
     },
 
     { x: 100, y: 100, vx: -1, vy: -1, src: 'img/meninas.gif', angle: 0, id: 'meninas', bubbleText: '???',
-    isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null, isGif: true,
+    isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null, isGif: false,
 
     floatAmplitude: FLOATAMP,  // The maximum distance the image will float up or down
     floatSpeed: FLOATSP,    // The speed of the floating effect
@@ -329,7 +331,7 @@ function drawTopLeftSubtext() {
 
 function drawBottomLeftText1() {
     const textBeforeNumber = "There are currently ";
-    const number = "2";
+    const number = WIKIPEDIA_EYES_REVEALED;
     const textAfterNumber = " revealed wikipedia eyes.";
 
     const xPos = 10;  // Adjust for desired x position
@@ -1602,7 +1604,7 @@ function animate() {
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
 
-
+/*
             // Update the gif position
             const gifElement = document.getElementById('animatedGif');
             const gifImage = images.find(i => i.src.endsWith('.gif'));
@@ -1613,7 +1615,7 @@ function animate() {
                 gifElement.style.width = drawWidth + 'px'; 
                 gifElement.style.height = adjustedImgHeight + 'px';  
                 gifElement.style.display = 'block';
-            }
+            } */
 
             ctx.globalAlpha = 1; // Reset the opacity to default after drawing
         }

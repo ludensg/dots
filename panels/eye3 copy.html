@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="refresh" content="0; URL='https://en.wikipedia.org/wiki/Las_Meninas'">
+    <title>Redirecting...</title>
+    <style>
+        .section {
+            padding: 20px;
+            margin-bottom: 20px;
+            /* border-bottom: 1px solid #e0e0e0; */
+            display: flex;
+            align-items: center;
+        }
+
+        .section p {
+            margin-left: 10%;
+            margin-right: 10%;
+            line-height: 1.5;
+        }
+
+        .section img {
+            width: 50%;
+            /*max-width: 100%; */
+            height: auto;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: auto;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.1);
+        }
+
+        .light-mode #h2 {
+            border-bottom: 2px rgb(51, 51, 51);
+        }
+
+        h2 {
+            text-align: left;
+            /* font: 'PixelOperatorMonoHB'; */
+            border-bottom: 2px solid #868686;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            margin: 25px;
+        }
+
+        .light-mode #h3 {
+            color: rgb(0, 0, 0);
+        }
+
+        h3 {
+            text-align: left;
+            /* font: 'PixelOperatorMonoHB'; */
+            padding-right: 5px;
+            white-space: nowrap; 
+            color: #cacaca;
+        }
+
+        .subtitle {
+            font-size: smaller;
+            color: #666;
+            text-align: left;
+            margin-left: 45px;
+        }
+
+        a:link {
+            /* font: 'PixelOperatorMonoHB8'; */
+            color: blue;
+            background-color: grey;
+            text-decoration: underline;
+        }
+
+        .light-mode .wiki-quote {
+            border-left: 2px solid #a2a9b1;
+            color: #7c7c7c;
+        }
+
+        .wiki-quote {
+            border-left: 2px solid #a2a9b1; /* Typical Wikipedia border color for blockquotes */
+            margin: 1.5em 2em;
+            padding: 0.5em 2em;
+            font-style: italic;
+            color: #cacaca;
+        }
+
+        smallest {
+            font-size: 10px;
+            opacity: .4;
+        }
+
+        .flexbox-container {
+            display: flex;
+            justify-content: space-between;
+            flex-flow: row nowrap;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+ 
+        .container img {
+            width: 200px;
+            height: 200px;
+            padding: 3px;
+            margin-left: 3px;
+        }
+
+        .line {
+            border-bottom: 2px solid #868686;
+            width: 50%;
+            margin:0 auto;
+        }
+
+        .img-link img {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .img-link:hover img {
+            transform: scale(1.05); /* Subtle enlargement */
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.6); /* Subtle glow */
+        }
+
+        a.img-link {
+            background: none;
+            display: inline-block;
+        }
+
+        .flex-container {
+            display: flex;
+            align-items: stretch;
+        }
+
+        .flex-container .img-link {
+            flex: 0 0 30%; /* This sets the base width of the image container to 40% */
+            display: flex; /* This makes the anchor tag a flex container */
+            justify-content: center; /* This centers the image horizontally */
+            align-items: center; /* This centers the image vertically */
+        }
+
+        .flex-container img {
+            max-width: 100%; /* This ensures the image doesn't overflow its container */
+            max-height: 100%; /* This ensures the image doesn't become too tall */
+        }
+
+        .flex-container .wiki-quote {
+            flex: 1; /* This ensures that the blockquote takes the remaining space */
+            overflow: hidden;
+            padding: 0 2%; /* Optional: Adds a little spacing between the image and the quote */
+        }
+    </style>
+</head>
+
+<body>
+    <body>
+        <p>If you are not redirected, <a href="https://en.wikipedia.org/wiki/Las_Meninas">click here</a>.</p>
+        <script>
+            // If you prefer to use JavaScript for redirection:
+            window.location.href = "https://en.wikipedia.org/wiki/Las_Meninas";
+        </script>
+    </body>
+</body>
