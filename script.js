@@ -1432,6 +1432,15 @@ function simulateButtonClicks() {
 // Call the simulateButtonClicks function when the page loads
 document.addEventListener('DOMContentLoaded', simulateButtonClicks);
 
+
+// Gif click handling
+const gifElement = document.getElementById('animatedGif');
+gifElement.addEventListener('click', function() {
+    // Handle the click event
+    window.open('https://en.wikipedia.org/wiki/Las_Meninas', '_blank');
+});
+
+
 let hitbox = {};
 
 // curvature effect parameters
@@ -1604,7 +1613,7 @@ function animate() {
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
 
-/*
+
             // Update the gif position
             const gifElement = document.getElementById('animatedGif');
             const gifImage = images.find(i => i.src.endsWith('.gif'));
@@ -1615,7 +1624,8 @@ function animate() {
                 gifElement.style.width = drawWidth + 'px'; 
                 gifElement.style.height = adjustedImgHeight + 'px';  
                 gifElement.style.display = 'block';
-            } */
+            }
+            
 
             ctx.globalAlpha = 1; // Reset the opacity to default after drawing
         }
