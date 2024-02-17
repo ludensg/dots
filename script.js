@@ -22,7 +22,7 @@ const REF_HEIGHT = 1080;
 
 const IMAGEDOT_SIZE = isLargeScreen ? 1.8 : 1.8; // Initial size
 const decrowd = true;
-const decrowdMobile = false;
+const decrowdMobile = true;
 const DECROWD_FACTOR = .9;
 const DECROWD_FACTOR_MOBILE = .9;
 const RANDOMSIZED = false;
@@ -493,7 +493,7 @@ function drawDots() {
 
             // Adjust for mobile screens
             if (!isMobile) {
-                distanceToCorner *= .7; // Adjust the scale for mobile
+                distanceToCorner *= 3; // Adjust the scale for mobile
             }
 
             // Adjust opacity based on distance
