@@ -871,6 +871,8 @@ document.getElementById('closeManifesto').addEventListener('click', function() {
 });
 
 
+let isLoadingContent = false; // Flag to track content loading state
+
 canvas.addEventListener('click', (e) => {
     const clickedX = e.clientX;
     const clickedY = e.clientY;
@@ -926,14 +928,12 @@ canvas.addEventListener('click', (e) => {
     }
 
 
-    let lastClickedImageId = null; // Variable to track the last clicked image ID
-
+    
     // If not clicked on a bubble, check if clicked inside an image
     if (!clickedOnBubble) {
         for (const img of images) {
             if (isPointInsideImage(clickedX, clickedY, img)) {
-                let lastClickedImageId = null; // Variable to track the last clicked image ID
-
+                isLoadingContent = true; // Set the flag to indicate loading is in progress
                 const contentURL = 'panels/' + img.id + '.html';
                 fetch(contentURL)
                 .then(response => {
@@ -943,21 +943,18 @@ canvas.addEventListener('click', (e) => {
                     return response.text();
                 })
                 .then(data => {
-                    if (img.id === lastClickedImageId) {
-                        // Code to display the content, update innerHTML of a panel
-                        matrixEffectActive = false;
-                        const contentContainer = document.getElementById('dynamic-content');
-                        contentContainer.style.zIndex = '999999';
-                        contentContainer.innerHTML = data;
-                    }
+                    const contentContainer = document.getElementById('dynamic-content');
+                    contentContainer.style.zIndex = '999999';
+                    contentContainer.innerHTML = ''; // Clear existing content before loading new content
+                    contentContainer.innerHTML = data; // Load new content
+                    isLoadingContent = false; // Reset the flag after loading is complete
                 })
                 .catch(error => {
                     console.error('Error fetching content:', error);
-                    matrixEffectActive = true;
-                    generateMatrixEffect();
+                    isLoadingContent = false; // Reset the flag if an error occurs
                 });
                 clickedOnImage = true;
-                break;
+                break; // Ensure only the content for the last clicked image is loaded
             }
 
             // Check if clicked inside a bubble
