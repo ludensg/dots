@@ -925,10 +925,15 @@ canvas.addEventListener('click', (e) => {
         }
     }
 
+
+    let lastClickedImageId = null; // Variable to track the last clicked image ID
+
     // If not clicked on a bubble, check if clicked inside an image
     if (!clickedOnBubble) {
         for (const img of images) {
             if (isPointInsideImage(clickedX, clickedY, img)) {
+                let lastClickedImageId = null; // Variable to track the last clicked image ID
+
                 const contentURL = 'panels/' + img.id + '.html';
                 fetch(contentURL)
                 .then(response => {
@@ -938,11 +943,13 @@ canvas.addEventListener('click', (e) => {
                     return response.text();
                 })
                 .then(data => {
-                    matrixEffectActive = false;
-                    const contentContainer = document.getElementById('dynamic-content');
-                    contentContainer.style.zIndex = '999999';
-                    contentContainer.innerHTML = data;
-
+                    if (img.id === lastClickedImageId) {
+                        // Code to display the content, update innerHTML of a panel
+                        matrixEffectActive = false;
+                        const contentContainer = document.getElementById('dynamic-content');
+                        contentContainer.style.zIndex = '999999';
+                        contentContainer.innerHTML = data;
+                    }
                 })
                 .catch(error => {
                     console.error('Error fetching content:', error);
