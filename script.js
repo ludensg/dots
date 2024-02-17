@@ -13,16 +13,32 @@ const WIKIPEDIA_EYES_REVEALED = 4;
 const screenWidth = screen.width;
 const screenHeight = screen.height;
 
+
+const isLargeScreen = window.innerWidth > 1200;
+
 // Reference resolution
 const REF_WIDTH = 1920;
 const REF_HEIGHT = 1080;
 
-const isLargeScreen = window.innerWidth > 1200;
+const IMAGEDOT_SIZE = isLargeScreen ? 1.8 : 1.8; // Initial size
+const decrowd = true;
+const decrowdMobile = false;
+const DECROWD_FACTOR = .9;
+const DECROWD_FACTOR_MOBILE = .9;
+const RANDOMSIZED = false;
+
+function RandomSize()
+{
+    let randomSizing = 0.6 + Math.random() * (1 - 0.6)
+    if(RANDOMSIZED) return randomSizing;
+    else return 1;
+}
+
 
 const BASE_SPEED = isLargeScreen? 0.0040 : 0.009;
-const SPEED_MULTIPLIER = .6;
+const SPEED_MULTIPLIER = .3; // original is .6
 
-let speedScaleFactor = 1;  // Initial value
+let speedScaleFactor = 1;  // Initial value 1
 // Calculate the speed scale factor based on the current window size
 speedScaleFactor = SPEED_MULTIPLIER * Math.sqrt((window.innerWidth * window.innerHeight) / (REF_WIDTH * REF_HEIGHT));
 
@@ -34,7 +50,7 @@ const INIT_DOT_RADIUS = REF_DOT_RADIUS;
 const INIT_SPACING = REF_SPACING;
 
 // Calculate scaling factor
-const scaleFactor = 1.2; // window.innerWidth / REF_WIDTH;
+const scaleFactor = .9; // 1.2, .8  SPACING DENSITY AND SIZE
 const windowFactor = screen.innerWidth / REF_WIDTH;
 
 
@@ -74,7 +90,7 @@ let CENTER_X = canvas.width / 2;
 let CENTER_Y = canvas.height / 2;
 
 const dots = [];
-const dotSpeed = .8;  // Adjust this for faster/slower movement
+const dotSpeed = .2;  // Adjust this for faster/slower movement, original was .8   DOT MOVEMENT SPEED HERE!!!
 
 let dotter = 0; //tracks new dots created by clicking on images
 let dotCount = 0;
@@ -84,7 +100,7 @@ for (let x = 0; x < canvas.width; x += spacingX) {
         if (dotCount >= MAX_DOTS) {
             break;
         }
-        dots.push({ x, y, vx: 0, vy: 0, originalX: x, originalY: y, speed: dotSpeed, size: DOT_RADIUS});
+        dots.push({ x, y, vx: 0, vy: 0, originalX: x, originalY: y, speed: dotSpeed, size: DOT_RADIUS, colorState: 'default'});
         dotCount++;
     }
     if (dotCount >= MAX_DOTS) {
@@ -114,6 +130,12 @@ const BUBBLE_OFFSET = 35;
 const FLOATAMP = 5; //10 is original
 const FLOATSP = 0.03; //0.06 is original
 
+function randomBool()
+{
+    let randomBool = Math.random() >= 0.5;
+    return randomBool;
+}
+
 const images = [
     { x: 100, y: 100, vx: 1, vy: 1, src: 'img/eye1/pic1.png', angle: 0, id: 'eye1', bubbleText: 'The Elmyr de Hory Exhibit',
     isDragging: false, momentumX: 0, momentumY: 0, element: null, isReturning: false, targetX: null, targetY: null, isGif: false,
@@ -131,7 +153,7 @@ const images = [
     bubbleX: 0,  // Initial position of the bubble
     bubbleOpacity: 0,  // Initial opacity of the bubble
     showBubble: false,  // Flag to determine if the bubble should be shown
-    reverseDirection: false,
+    reverseDirection: randomBool(),
     isOpaque: false,
     opacity: generalOpaqueness,
     timeoutId: null,
@@ -154,7 +176,7 @@ const images = [
     bubbleX: 0,  // Initial position of the bubble
     bubbleOpacity: 0,  // Initial opacity of the bubble
     showBubble: false,  // Flag to determine if the bubble should be shown
-    reverseDirection: false,
+    reverseDirection: randomBool(),
     isOpaque: generalOpaqueness,
     opacity: .5,
     timeoutId: null,
@@ -177,7 +199,7 @@ const images = [
     bubbleX: 0,  // Initial position of the bubble
     bubbleOpacity: 0,  // Initial opacity of the bubble
     showBubble: false,  // Flag to determine if the bubble should be shown
-    reverseDirection: false,
+    reverseDirection: randomBool(),
     isOpaque: generalOpaqueness,
     opacity: .5,
     timeoutId: null,
@@ -200,7 +222,7 @@ const images = [
     bubbleX: 0,  // Initial position of the bubble
     bubbleOpacity: 0,  // Initial opacity of the bubble
     showBubble: false,  // Flag to determine if the bubble should be shown
-    reverseDirection: true,
+    reverseDirection: randomBool(),
     isOpaque: false,
     opacity: generalOpaqueness,
     timeoutId: null,
@@ -223,7 +245,7 @@ const images = [
     bubbleX: 0,  // Initial position of the bubble
     bubbleOpacity: 0,  // Initial opacity of the bubble
     showBubble: false,  // Flag to determine if the bubble should be shown
-    reverseDirection: true,
+    reverseDirection: randomBool(),
     isOpaque: false,
     opacity: 1,
     timeoutId: null,
@@ -285,9 +307,10 @@ for (const img of images) {
 }
 
 
-
-const imgWidth = 100;  // Adjust as needed
-const imgHeight = 100; // Adjust as needed
+let stableRandom = RandomSize();
+let stableRandomFactor = RandomSize() * 100;
+const imgWidth = 100 * stableRandom;  // Adjust as needed
+const imgHeight = 100 * stableRandom; // Adjust as needed
 
 function calculateAngleFromCenter(x, y) {
     const dx = x - canvas.width / 2;
@@ -304,33 +327,37 @@ function drawTopLeftText() {
 
     ctx.font = "20px PixelOperatorMono";  // Adjust for desired font size and font family
     ctx.fillStyle = lightmode ? "black" : "white";  // Adjust for desired text color
-    //ctx.fillText(text, xPos, yPos);
+    ctx.globalAlpha = 0.5;
+    ctx.fillText(text, xPos, yPos);
 
         // Iterate over each character
         for (let i = 0; i < text.length; i++) {
             const char = text.charAt(i);
             
             // Adjust the y position based on a sine function
-            const waveY = yPos + 5 * Math.sin(i * 0.05 + waveOffset);  // Adjust the multiplier for more/less wave amplitude
+            const waveY = yPos + 5 * Math.sin(i * 0.09 + waveOffset);  // Adjust the multiplier for more/less wave amplitude ORIGINAL IS .05
     
-            ctx.fillText(char, xPos + i * 15, waveY);  // Adjust the multiplier for character spacing
+            //ctx.fillText(char, xPos + i * 15, waveY);  // Adjust the multiplier for character spacing
         }
     
-        waveOffset += 0.05;  // Adjust for faster/slower wave speed
+        waveOffset += 0.0013;  // Adjust for faster/slower wave speed
+        ctx.globalAlpha = 1;
 }
 
 function drawTopLeftSubtext() {
     const text = "A social sculpture by Ludens Gandelman.";  // Replace with your desired text
     const xPos = 10;  // Adjust for desired x position
-    const yPos = 60;  // Adjust for desired y position (taking into account the font size)
+    const yPos = 50;  // Adjust for desired y position (taking into account the font size)
 
-    ctx.font = "14px PixelOperatorMono";  // Adjust for desired font size and font family
+    ctx.font = "12px PixelOperatorMono";  // Adjust for desired font size and font family
     ctx.fillStyle = lightmode ? "black" : "#b4aeae";  // Adjust for desired text color
+    ctx.globalAlpha = 0.5;
     ctx.fillText(text, xPos, yPos);
+    ctx.globalAlpha = 1;
 }
 
 function drawBottomLeftText1() {
-    const textBeforeNumber = "There are currently ";
+    const textBeforeNumber = "There are currently   ";
     const number = WIKIPEDIA_EYES_REVEALED;
     const textAfterNumber = " revealed wikipedia eyes.";
 
@@ -412,10 +439,11 @@ function applyRippleEffect(dot, clickX, clickY) {
 
     // Use squared distance to avoid square root calculation
     const distanceSquared = dx * dx + dy * dy;
-    const maxDistanceSquared = 350 * 350;  // Adjust for larger/smaller ripple effect
+    const RIPPLE_SIZE = 200 //Default is 350
+    const maxDistanceSquared = RIPPLE_SIZE * RIPPLE_SIZE;  // Adjust for larger/smaller ripple effect
 
     if (distanceSquared < maxDistanceSquared) {
-        const offset = 25;  // Adjust for more/less pronounced effect
+        const offset = 80;  // Adjust for more/less pronounced effect
 
         // Since atan2 and trig functions are unavoidable for angle calculation, 
         // we compute them only once here
@@ -472,22 +500,48 @@ function drawDots() {
             const maxDistance = Math.sqrt(Math.pow(canvas.width / 2, 2) + Math.pow(canvas.height / 2, 2));
             lightOpacity = Math.pow(distanceToCorner / maxDistance, 2); // Quadratic scale
             // Ensure opacity never goes below 40%
-            lightOpacity = 0.3 + 0.6 * lightOpacity; // 40% + 60% of the calculated opacity
+            lightOpacity = 0.2 + 0.8 * lightOpacity; // 40% + 60% of the calculated opacity
         }
 
-        opacity = lightmode ? lightOpacity : 1;
+        opacity = lightmode ? lightOpacity : .4;
 
         ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
-        let colorfill = `114, 108, 113` //default dark-mode colorfill  74, 72, 72
-        if (isMobile) {
-            colorfill = lightmode ? `11, 11, 11` : `114, 108, 113`;
+        // Default colorfill values 
+        let colorfill;
+        const redChance = 0.0007; // Example probability for turning red
+        const blueChance = 0.0003; // Example probability for turning from red to blue
+        // Determine the dot's color based on its current state and random chance
+        if (lightmode) {
+            const randomChance = Math.random();
+            
+            // Transition from default to red
+            if (dot.colorState === 'default' && canChangeToRed && randomChance < redChance) {
+                dot.colorState = 'red';
+            }
+            // Transition from red to blue
+            else if (dot.colorState === 'red' && randomChance < blueChance) {
+                dot.colorState = 'blue';
+            }
 
+            // Set the colorfill based on the dot's current color state
+            switch (dot.colorState) {
+                case 'red':
+                    colorfill = `255, 0, 0`; // Red
+                    opacity = .8 * .8;
+                    break;
+                case 'blue':
+                    colorfill = `0, 0, 238`; // Blue
+                    opacity = .9 * .8;
+                    break;
+                default:
+                    colorfill = `114, 108, 113`; // Default grey
+                    opacity = .6 * .8;
+                    break;
+            }
         }
-
-        else {
-            colorfill = lightmode ? `11, 11, 11` : `114, 108, 113`;
-        }
-        ctx.fillStyle = lightmode ? `rgba(${colorfill}, ${opacity})` : `rgba(${colorfill}, ${opacity})`;  // Updated color (original: #3a3939)
+        else{ colorfill = `114, 108, 113` }
+        
+        ctx.fillStyle = `rgba(${colorfill}, ${opacity})`;
         ctx.fill();
     }
 }
@@ -699,6 +753,23 @@ document.addEventListener('DOMContentLoaded', function() {
     positionLightButton();
 });
 
+function AdjustDarkMode(){
+
+    var panel = document.getElementById('panel');
+    var manifestoContent = document.getElementById('manifesto-content');
+    var manifesto = document.getElementById('manifesto.html');
+    var dynamicContent = document.getElementById('dynamic-content');
+    var maniButton = document.getElementById('manifestoButton');
+    canvas.style.background = 'radial-gradient(ellipse 65% 65% at center, #000000 0%, #2e2e2e 55%, #000000 100%)';
+    // else { canvas.style.background = 'radial-gradient(ellipse at center, #000000 0%, #2e2e2e 70%, #2c2c2c 100%)'; }
+    //panel.style.backgroundColor = 'black';
+    manifestoContent.style.color = 'white';
+    panel.style.backgroundColor = 'rgba(0, 0, 0, .5)';
+    lightButton.style.color = 'white';
+    maniButton.style.backgroundColor = 'rgba(126, 126, 126, 0.678)';
+}
+AdjustDarkMode();
+
 document.getElementById('lightButton').addEventListener('click', function()  {
 
     lightmode = !lightmode;
@@ -728,7 +799,7 @@ document.getElementById('lightButton').addEventListener('click', function()  {
     
     if(document.body.classList.contains('light-mode')) {
         canvas.style.transition = '0.3s ease-in-out';
-        canvas.style.background = 'radial-gradient(ellipse 65% 65% at center, #d3d3d3 0%, #ffffff 55%, #d3d3d3 66%, #ffffff 110%)';
+        canvas.style.background = 'radial-gradient(ellipse 65% 65% at center, #c7c0c0 0%, #f9f1f1 55%, #c7c0c0 66%, #aea8a8 110%)';
         // else { canvas.style.background = 'radial-gradient(ellipse 70% 80% at center, #ffffff 0%, #d3d3d3 39%, #ffffff 95%)'; }
         panel.style.backgroundColor = 'rgba(240, 240, 240, .7)';
         lightButton.style.color = 'grey';
@@ -738,7 +809,7 @@ document.getElementById('lightButton').addEventListener('click', function()  {
 
     } else {
         canvas.style.transition = '0.3s ease-in-out';
-        canvas.style.background = 'radial-gradient(ellipse 65% 65% at center, #000000 0%, #2e2e2e 55%, #000000 100%, #2e2e2e 110%)';
+        canvas.style.background = 'radial-gradient(ellipse 65% 65% at center, #000000 0%, #2e2e2e 55%, #000000 100%)';
         // else { canvas.style.background = 'radial-gradient(ellipse at center, #000000 0%, #2e2e2e 70%, #2c2c2c 100%)'; }
         //panel.style.backgroundColor = 'black';
         manifestoContent.style.color = 'white';
@@ -1238,6 +1309,10 @@ function adjustManifestoForMobile() {
 
 adjustManifestoForMobile()
 
+let lightModeTime = 0; // Total time lightmode has been active, in seconds
+let canChangeToRed = false; // Flag to indicate if changing to red is allowed
+
+
 // Image emanating dot class
 class ImageDot { //best totalLifespan setting is 9000
     constructor(x, y, size, velocity, totalLifespan = 2800) {
@@ -1251,6 +1326,7 @@ class ImageDot { //best totalLifespan setting is 9000
         this.staticOpacity = this.normalRandomInRange(0, 1); // Initialize with a random opacity
         this.verticalVelocityFactor = Math.random() * (0.5 - 0.3) + 0.3; // Random value between 0.3 and 0.5
         this.horizontalVelocityFactor = Math.random() * (0.9 - 0.7) + 0.7; // Random value between 0.7 and 0.9
+        this.isBlue = false;
     }
 
     update() {
@@ -1282,8 +1358,10 @@ class ImageDot { //best totalLifespan setting is 9000
         const threshold = lightmode ? 0.009 :  0.00045; // Adjust this value for frequency
         let twinkle = true;
         let opacity = this.staticOpacity;
-        let color = lightmode ? `rgba(0, 0, 0, ${opacity})`: `rgba(217, 217, 217, ${opacity})`; // Default color
-        let size = this.size
+        let color = lightmode ? `rgba(185, 0, 0, ${opacity})`: `rgba(217, 217, 217, ${opacity})`; // Default color
+        let size = this.size * .8;
+        const blueChangeThreshold = 0.0011; // Lower probability for changing to blue
+        const BIG_SIZE = 1.4;
 
         // Calculate opacity
         if (this.lifespan < this.totalLifespan / 4) {
@@ -1295,23 +1373,41 @@ class ImageDot { //best totalLifespan setting is 9000
             if(twinkle){
                 opacity = 1;
                 color = `rgba(255, 255, 255, ${opacity})`; // Full white
-                size *= lightmode ? 1 : 1.27;
+                size *= 1.7;
             }
             else {
                 opacity = .7;
                 color = `rgba(0, 0, 0, ${opacity})`; // Full black
-                size *= lightmode ? 1 : 1.27; 
+                size *= 1.27; 
             }
             twinkle = !twinkle;
 
         }
+
+        /*
+
         if (randomChance < threshold && lightmode) {        
             if(lightmode){
                 opacity = .8;
-                color = `(13, 5, 255, ${opacity})` ;
+                color = `rgba(0, 0, 238, ${opacity})`;
                 size *=  1.27;
             }
+        } */
 
+        // Separate condition for changing to blue with a lower probability
+        if (!this.isBlue && randomChance < blueChangeThreshold && lightmode) {
+            opacity = .7;
+            this.isBlue = true; // Mark the dot as permanently blue
+            color = `rgba(0, 0, 238, ${opacity})`; // Wikipedia-link blue
+            // No size change here to keep the color change independent of size
+            size *=  BIG_SIZE;
+        }
+
+        if (this.isBlue && lightmode) {
+            opacity = .7;
+            color = `rgba(0, 0, 238, ${opacity})`; // Wikipedia-link blue
+            // No size change here to keep the color change independent of size
+            size ==  BIG_SIZE;
         }
 
         ctx.beginPath();
@@ -1362,7 +1458,8 @@ function createImageDotsAroundImage(img) {
         // Apply the shrink percentage to the radius
         radius *= (1 - radiusShrinkPercentage / 100);
 
-        dotsPerFrame = isLargeScreen ? 3 : 3;
+        // dotsPerFrame = isLargeScreen ? 3 : 3;
+        dotsPerFrame = 3;
         for (let i = 0; i < dotsPerFrame; i++) { // Create fewer dots at a time
             
             // Random angle in radians
@@ -1377,7 +1474,7 @@ function createImageDotsAroundImage(img) {
             let espeedMultiplier = Math.random() * (2 - 0.5) + 0.5;
             const espeed = initEspeed * espeedMultiplier;
             const velocity = { x: Math.cos(angle) * espeed, y: Math.sin(angle) * espeed };
-            const size = isLargeScreen ? 2.1 : 1.8; // Initial size
+            const size = IMAGEDOT_SIZE; // Initial size
             const newDot = new ImageDot(x, y, size, velocity);
             imageDots.push(newDot);
 
@@ -1409,25 +1506,42 @@ function DrawImageDots(ctx) {
 function simulateButtonClicks() {
     setTimeout(() => {
         const lightButton = document.getElementById('lightButton');
-        let count = 0;
+        let count = 2;
         const maxToggles = 2; // Number of times to simulate the click
-        const intervalTime = 150; // Time between simulated clicks in milliseconds 
+        const intervalTime = 2000; // Time between simulated clicks in milliseconds 
 
         // Initial sequence: Toggle every second for a total of maxToggles times
         const clickInterval = setInterval(() => {
-            lightButton.click(); // Simulate the click
-            count++;
+            if (count < maxToggles) {
+                lightButton.click(); // Simulate the click
+                count++;
+            }
             if (count >= maxToggles) {
                 clearInterval(clickInterval); // Stop the initial sequence after reaching the max count
 
                 // Start toggling once per minute after the initial sequence
                 setInterval(() => {
                     lightButton.click(); // Simulate the click for the per-minute toggling
-                }, 40000); // 60000 milliseconds = 1 minute
+                }, 60000); // 60000 milliseconds = 1 minute
             }
         }, intervalTime);
     }, 3000); // x seconds delay before starting the sequence
 }
+
+function lightModeTracker(){
+    setInterval(() => {
+        if (lightmode) {
+            lightModeTime++;
+            if (lightModeTime >= 5) {
+                canChangeToRed = true;
+                // Optionally, stop the interval if no longer needed
+            }
+        }
+    }, 1000); // Runs every 1000 milliseconds (1 second)
+    
+}
+
+lightModeTracker();
 
 // Call the simulateButtonClicks function when the page loads
 document.addEventListener('DOMContentLoaded', simulateButtonClicks);
@@ -1448,7 +1562,7 @@ const EFFECT_RADIUS = 400; // Radius of the effect area
 const MIN_DOT_SIZE = 0.5; // Minimum size of the dot in the effect area
 const EFFECT_RADIUS2 = 500; // Radius of the effect area
 const EFFECT_RADIUS3 = 500; // Radius of the effect area
-const DENSITY_RADIUS = 30; // Adjust this value as needed
+const DENSITY_RADIUS = 10; // Adjust this value as needed (30 originally)
 
 function animate() {
     frameCounter++;
@@ -1583,9 +1697,19 @@ function animate() {
                 mobileScaleFactorH = window.innerHeight / REF_HEIGHT; 
                 mobileScaleFactorH = Math.max(0.7, mobileScaleFactor); // Ensure it doesn't get too small. Adjust as needed.
             }
-            const adjustedImgHeight = imgHeight * mobileScaleFactorH;
-            
-            const drawWidth = imgWidth * mobileScaleFactor;
+            let adjustedImgHeight = imgHeight * mobileScaleFactorH;
+            let drawWidth = imgWidth * mobileScaleFactor;
+            if (decrowd && !isMobile)
+            {
+                adjustedImgHeight = adjustedImgHeight * DECROWD_FACTOR;
+                drawWidth = drawWidth * DECROWD_FACTOR;
+            }
+
+            if (decrowdMobile && isMobile)
+            {
+                adjustedImgHeight = adjustedImgHeight * DECROWD_FACTOR_MOBILE;
+                drawWidth = drawWidth * DECROWD_FACTOR_MOBILE;
+            }
 
             ctx.shadowColor = lightmode ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)';
             ctx.shadowBlur = lightmode ? 3 : 5;

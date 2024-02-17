@@ -179,7 +179,7 @@
             bottom: 30px; /* or adjust as needed */
             /* right: auto; /* remove the right positioning */
             /* left: 10px; /* position it 10px from the left */
-            opacity: 60%;
+            opacity: 30%;
         }
 
 
@@ -187,7 +187,7 @@
             background-color: rgba(255,255,255,0.7); /* Change the background to white with 70% opacity */
             color: black; /* Change the text color to black */
             box-shadow: 0 0 10px 5px rgb(147, 147, 147); /* Add a white glow */
-            opacity: 90%;
+            opacity: 80%;
         }
 
         #closeManifesto {
@@ -205,15 +205,23 @@
             bottom: 30px; /* or adjust as needed */
             /* right: auto; /* remove the right positioning */
             /* left: 10px; /* position it 10px from the left */
-            opacity: 60%;
+            opacity: 30%;
+        }
+        
+        #lightButton:hover {
+            background-color: rgba(255,255,255,0.7); /* Change the background to white with 70% opacity */
+            box-shadow:
+            0 0 10px 5px #ffffff90,  /* inner white */
+            0 0 25px 7px rgba(255, 0, 255, 0.459), /* middle magenta */
+            0 0 35px 10px rgba(0, 255, 255, 0.42); /* outer cyan */
+            border-radius: 50%; 
         }
 
 
         #lightButton:hover {
             color: black; /* Change the text color to black */
-            border-radius: 100%; 
             /* box-shadow: 0 0 60px white;  */
-            opacity: 90%;
+            opacity: 60%;
         }
 
         #manifesto-content {
@@ -253,8 +261,8 @@
         <ion-icon name="contrast" style="font-size: 20px;"></ion-icon>
     </div>  -->
 
-    <div id="lightButton" style="position: absolute; color: white; opacity: 85%; cursor: pointer; transition: background-color 0.3s, 
-    box-shadow 0.3s; font-family: 'PixelOperatorMono'; z-index: 500">
+    <div id="lightButton" style="position: absolute; color: white; opacity: 65%; cursor: pointer; transition: background-color 0.3s, 
+    box-shadow 0.3s; font-family: 'PixelOperatorMono'; z-index: 500; border-radius: 50%;">
         <ion-icon name="contrast" style="font-size: 20px;"></ion-icon>
     </div> 
 
