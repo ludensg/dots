@@ -801,7 +801,7 @@ document.getElementById('lightButton').addEventListener('click', function()  {
         canvas.style.transition = '0.3s ease-in-out';
         canvas.style.background = 'radial-gradient(ellipse 65% 65% at center, #c7c0c0 0%, #f9f1f1 55%, #c7c0c0 66%, #aea8a8 110%)';
         // else { canvas.style.background = 'radial-gradient(ellipse 70% 80% at center, #ffffff 0%, #d3d3d3 39%, #ffffff 95%)'; }
-        panel.style.backgroundColor = 'rgba(240, 240, 240, .7)';
+        panel.style.backgroundColor = 'rgba(250, 249, 246, .8)';
         lightButton.style.color = 'grey';
         //panel.style.opacity = '70%';
         manifestoContent.style.color = 'black';
