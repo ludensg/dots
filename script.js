@@ -291,6 +291,36 @@ function getRandomAngle() {
     return Math.random() * 2 * Math.PI;  // Returns a random angle between 0 and 2π
 }
 
+const assignedAngles = []; // Track assigned angles
+const MIN_ANGLE_DIFF = Math.PI / 10; // Minimum angle difference, e.g., π/10 radians
+
+function assignAngle() {
+    let newAngle = Math.random() * 2 * Math.PI; // Random starting angle
+    let isTooClose = true;
+
+    // Attempt to find an angle that is not too close to others
+    while (isTooClose) {
+        isTooClose = false;
+        for (let angle of assignedAngles) {
+            if (Math.abs(angle - newAngle) < MIN_ANGLE_DIFF || Math.abs(angle - newAngle) > 2 * Math.PI - MIN_ANGLE_DIFF) {
+                // Angle is too close to an existing angle, find a new one
+                newAngle = Math.random() * 2 * Math.PI;
+                isTooClose = true;
+                break; // Exit the for loop and try again
+            }
+        }
+    }
+
+    // Once a suitable angle is found, add it to the list of assigned angles
+    assignedAngles.push(newAngle);
+    return newAngle;
+}
+
+// For each image, call assignAngle to get its unique angle
+for (let img of images) {
+    img.angle = assignAngle();
+}
+
 
 for (const img of images) {
     img.initialX = img.x;
