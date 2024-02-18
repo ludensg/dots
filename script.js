@@ -84,7 +84,7 @@ let matrixEffectActive = false;
 //DOT GENERATION lOGIC
 const REF_DOT_COUNT_X = Math.ceil(REF_WIDTH / spacingX);
 const REF_DOT_COUNT_Y = Math.ceil(REF_HEIGHT / spacingY);
-let MAX_DOTS = (REF_DOT_COUNT_X * REF_DOT_COUNT_Y); // DOT Cap to prevent slowdowns
+let MAX_DOTS = (REF_DOT_COUNT_X * REF_DOT_COUNT_Y) * 1.9; // DOT Cap to prevent slowdowns
 
 let CENTER_X = canvas.width / 2;
 let CENTER_Y = canvas.height / 2;
