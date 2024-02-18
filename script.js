@@ -573,7 +573,7 @@ function drawDots() {
         }
         else{ colorfill = `114, 108, 113` }
 
-        if(isMobile) {opacity *= 1.5;}
+        if(isMobile) {opacity *= 1.15;}
         
         ctx.fillStyle = `rgba(${colorfill}, ${opacity})`;
         ctx.fill();
