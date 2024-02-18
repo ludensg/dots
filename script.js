@@ -57,7 +57,9 @@ const windowFactor = screen.innerWidth / REF_WIDTH;
 //const spacingX = canvas.width / grid_size;
 //const spacingY = canvas.height / grid_size;
 
-const DOT_RADIUS = REF_DOT_RADIUS * scaleFactor;
+let dotRadiusVariant = isMobile ? 2 : 1;
+
+const DOT_RADIUS = REF_DOT_RADIUS * scaleFactor * dotRadiusVariant;
 
 
 const MIN_SPACING = 15;
@@ -523,7 +525,7 @@ function drawDots() {
 
             // Adjust for mobile screens
             if (!isMobile) {
-                distanceToCorner *= 3; // Adjust the scale for mobile
+                distanceToCorner *= -3; // Adjust the scale for mobile
             }
 
             // Adjust opacity based on distance
@@ -570,6 +572,8 @@ function drawDots() {
             }
         }
         else{ colorfill = `114, 108, 113` }
+
+        if(isMobile) {opacity *= 1.5;}
         
         ctx.fillStyle = `rgba(${colorfill}, ${opacity})`;
         ctx.fill();
