@@ -943,6 +943,7 @@ canvas.addEventListener('click', (e) => {
                     return response.text();
                 })
                 .then(data => {
+                    matrixEffectActive = false;
                     const contentContainer = document.getElementById('dynamic-content');
                     contentContainer.style.zIndex = '999999';
                     contentContainer.innerHTML = ''; // Clear existing content before loading new content
@@ -952,6 +953,8 @@ canvas.addEventListener('click', (e) => {
                 .catch(error => {
                     console.error('Error fetching content:', error);
                     isLoadingContent = false; // Reset the flag if an error occurs
+                    matrixEffectActive = true;
+                    generateMatrixEffect();
                 });
                 clickedOnImage = true;
                 break; // Ensure only the content for the last clicked image is loaded
